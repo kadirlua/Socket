@@ -52,3 +52,20 @@ catch(const sdk::general::SecureSocketException& ex)
   std::cout << "Err code: " << ex.getErrorCode() << ", Err Msg: " << ex.getErrorMsg() << "\n"; 
 }
 ```
+
+# Compile OpenSSL library
+Before compile OpenSSL you need Strawberry Perl that you can download and install from: https://strawberryperl.com/. You also need nasm assembler which can be downloaded and installed from: https://www.nasm.us/
+
+1. Download the lastest (v.3.0.0) source files from: https://www.openssl.org/source/.
+2. Extract the zipped file to the local disk(C) (For example C:\openssl)
+3. Run the Native Tools Command Prompt for VS (x86 or x64 which arch will be compiled) as Administrator.
+4. Type the following commands step by step:
+5. cd C:/openssl
+6. perl configure VC-WIN32 no-shared (for x86)
+7. perl configure VC-WIN64A no-shared (for x64)
+8. nmake
+9. nmake install
+10. It will take a while the last two steps. So you can take a cup of coffee or tea and relax :)
+
+# Conclusion
+If you have any questions, please do not hesitate to ask us!
