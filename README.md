@@ -7,7 +7,8 @@ Secure and non-secure version of Socket classes. You need OpenSSL for secure ver
 try{
   auto clientSocket = std::make_unique<sdk::network::Socket>(portNumber);
   clientSocket->setIpAddress("127.0.0.1");
-  clientSocket->setBlockingMode(1); //set non-blocking mode is active
+  SocketOption<Socket> socketOpt{ *clientSocket };
+  socketOpt.setBlockingMode(1);	//set non-blocking mode is active
   clientSocket->connect();  //connect to the server
   
   auto socketObj = clientSocket->createNewSocket(clientSocket->getSocketId());
@@ -31,7 +32,8 @@ try{
   static const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\privateKey.key";
   auto clientSecureSocket = std::make_unique<sdk::network::SecureSocket>(portNumber, connection_method::client);
   clientSecureSocket->setIpAddress("127.0.0.1");
-  clientSecureSocket->setBlockingMode(1); //set non-blocking mode is active
+  SocketOption<SecureSocket> socketOpt{ *clientSecureSocket };
+  socketOpt.setBlockingMode(1);	//set non-blocking mode is active
   clientSecureSocket->connect();  //connect to the server
   
   clientSecureSocket->loadCertificateFile(cert_file);
