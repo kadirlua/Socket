@@ -58,7 +58,7 @@ namespace sdk {
 						SOCKET new_socket_id = m_socket_ptr->accept();
 						auto socket_obj = m_socket_ptr->createnewSocket(new_socket_id);
 						std::unique_lock<std::mutex> lock_(vec_mutex);
-						thread_vec.emplace_back(new WorkerThread<SocketObj>(socket_obj));
+						thread_vec.emplace_back(new WorkerThread<SocketObject>(socket_obj));
 						lock_.unlock();
 						vec_cv.notify_one();
 					}
@@ -75,7 +75,7 @@ namespace sdk {
 		}
 
 		template<>
-		void WorkerThread<SocketObj>::handle_thread_proc(std::weak_ptr<SocketObj> socket_obj)
+		void WorkerThread<SocketObject>::handle_thread_proc(std::weak_ptr<SocketObject> socket_obj)
 		{
 			auto sharedSocketPtr = socket_obj.lock();
 			if (sharedSocketPtr)

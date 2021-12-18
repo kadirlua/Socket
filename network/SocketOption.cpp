@@ -8,7 +8,7 @@ namespace sdk {
 
 		//Explicit template specialization
 		template class SocketOption<Socket>;
-		template class SocketOption<SocketObj>;
+		template class SocketOption<SocketObject>;
 #if OPENSSL_SUPPORTED
 		template class SocketOption<SecureSocket>;
 		template class SocketOption<SecureSocketObj>;

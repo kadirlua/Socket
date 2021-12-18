@@ -28,7 +28,7 @@ namespace sdk {
 		private:
 			bool m_bInterrupt{};
 			std::unique_ptr<network::Socket> m_socket;
-			std::shared_ptr<network::SocketObj> m_socket_obj;
+			std::shared_ptr<network::SocketObject> m_socket_obj;
 		};
 	};
 };

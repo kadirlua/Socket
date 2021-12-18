@@ -14,7 +14,7 @@ namespace sdk {
 
 		/**************************Secure Object Part**************************/
 		SecureSocketObj::SecureSocketObj(SOCKET socketid, const SecureSocket& ss) :
-			SocketObj{ socketid, ss }
+			SocketObject{ socketid, ss }
 		{
 			m_ssl = SSL_new(ss.get_ctx());
 			if (m_ssl)

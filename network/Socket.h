@@ -43,7 +43,7 @@ namespace sdk {
 		//	After all operations done, do not forget to call WSA_Cleanup to clean memory properly.
 	
 		class Socket {
-			friend class SocketObj;
+			friend class SocketObject;
 			friend class SecureSocketObj;
 		public:
 			Socket(int port_, protocol_type type = protocol_type::tcp , IpVersion ipVer = IpVersion::IPv4);
@@ -96,7 +96,7 @@ namespace sdk {
 			*	param1: The id of socket.
 			*	returns: A shared pointer of socket object.
 			*/
-			std::shared_ptr<SocketObj> createnewSocket(SOCKET) const;
+			std::shared_ptr<SocketObject> createnewSocket(SOCKET) const;
 			/*
 			*	This function is useful for client applications to set an ip address.
 			*	param: Ip adress.

@@ -57,11 +57,11 @@ namespace sdk {
 
 		class Socket;	//incomplete type
 
-		class SocketObj
+		class SocketObject
 		{
 		public:
-			SocketObj(SOCKET socketid, const Socket& socket_ref) noexcept;
-			virtual ~SocketObj();
+			SocketObject(SOCKET socketid, const Socket& socket_ref) noexcept;
+			virtual ~SocketObject();
 
 			/*
 			*	This function used for reading operations from related socket.

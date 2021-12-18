@@ -69,7 +69,7 @@ namespace sdk {
 			workerThread_t purging_thread;
 		};
 
-		static std::vector<std::unique_ptr<WorkerThread<network::SocketObj>>> thread_vec;
+		static std::vector<std::unique_ptr<WorkerThread<network::SocketObject>>> thread_vec;
 		static std::mutex vec_mutex;
 		static std::condition_variable vec_cv;
 		static bool purging_flag{};

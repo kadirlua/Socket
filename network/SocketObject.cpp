@@ -9,14 +9,14 @@
 namespace sdk {
 	namespace network {
 
-		SocketObj::SocketObj(SOCKET socketid, const Socket& socket_ref) noexcept :
+		SocketObject::SocketObject(SOCKET socketid, const Socket& socket_ref) noexcept :
 			m_socket_id{ socketid },
 			m_socket_ref{ socket_ref }
 		{
 
 		}
 
-		SocketObj::~SocketObj()
+		SocketObject::~SocketObject()
 		{
 			shutdown(m_socket_id, SD_SEND);
 
@@ -28,7 +28,7 @@ namespace sdk {
 			}
 		}
 
-		std::string SocketObj::read(int max_size /*= 0*/) const
+		std::string SocketObject::read(int max_size /*= 0*/) const
 		{
 			const int buf_len = (max_size > 0 && max_size < MAX_MESSAGE_SIZE) ? max_size : MAX_MESSAGE_SIZE - 1;
 
@@ -43,7 +43,7 @@ namespace sdk {
 
 			const auto& callback_interupt = m_socket_ref.m_callback_interrupt;
 
-			SocketOption<SocketObj> socketOpt{ *this };
+			SocketOption<SocketObject> socketOpt{ *this };
 
 			/*if (socketOpt.getBytesAvailable() == 0)
 				return str_message;*/
@@ -116,7 +116,7 @@ namespace sdk {
 		}
 
 
-		size_t SocketObj::read(char& msgByte) const
+		size_t SocketObject::read(char& msgByte) const
 		{
 			int numBytes = recv(m_socket_id, &msgByte, 1, 0);
 			if (numBytes < 0)
@@ -126,25 +126,25 @@ namespace sdk {
 			return static_cast<size_t>(numBytes);
 		}
 
-		size_t SocketObj::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
+		size_t SocketObject::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
 		{
 			auto received_str = read(max_size);
 			std::move(received_str.begin(), received_str.end(), std::back_inserter(message));
 			return message.size();
 		}
 
-		size_t SocketObj::read(std::string& message, int max_size /*= 0*/) const
+		size_t SocketObject::read(std::string& message, int max_size /*= 0*/) const
 		{
 			message = read(max_size);
 			return message.size();
 		}
 
-		int SocketObj::write(std::initializer_list<char> data_list) const
+		int SocketObject::write(std::initializer_list<char> data_list) const
 		{
 			return write(data_list.begin(), (int)data_list.size());
 		}
 
-		int SocketObj::write(const char* data, int data_size) const
+		int SocketObject::write(const char* data, int data_size) const
 		{
 			int sendBytes = 0;
 
@@ -168,13 +168,13 @@ namespace sdk {
 			return sendBytes;
 		}
 
-		int SocketObj::write(const std::vector<unsigned char>& message) const
+		int SocketObject::write(const std::vector<unsigned char>& message) const
 		{
 			std::string strBuf(message.begin(), message.end());
 			return write(strBuf.c_str(), (int)strBuf.size());
 		}
 
-		int SocketObj::write(const std::string& message) const
+		int SocketObject::write(const std::string& message) const
 		{
 			return write(message.c_str(),
 				static_cast<int>(message.size()));

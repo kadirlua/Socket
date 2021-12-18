@@ -21,7 +21,7 @@ namespace sdk {
 		*	Creates an instance of secure socket layer object via socket id
 		*	to use independent connection operations.
 		*/
-		class SecureSocketObj : public SocketObj
+		class SecureSocketObj : public SocketObject
 		{
 		public:
 			SecureSocketObj(SOCKET socketid, const SecureSocket& ss);
