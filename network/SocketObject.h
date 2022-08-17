@@ -60,7 +60,7 @@ namespace sdk {
 		class SocketObject
 		{
 		public:
-			SocketObject(SOCKET socketid, const Socket& socket_ref) noexcept;
+			explicit SocketObject(SOCKET socketid, const Socket& socket_ref) noexcept;
 			virtual ~SocketObject();
 
 			/*

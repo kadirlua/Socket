@@ -29,8 +29,9 @@ namespace sdk {
 			IPv6 = AF_INET6
 		};
 
-
-		static constexpr auto const INTERRUPT_MSG = "I/O interrupt callback is called by user.";
+		namespace {
+			static constexpr auto const INTERRUPT_MSG = "I/O interrupt callback is called by user.";
+		}
 
 		//	socket interrupt callback
 		using socket_interrupt_callback_t = std::function<bool(void *)>;
@@ -46,7 +47,8 @@ namespace sdk {
 			friend class SocketObject;
 			friend class SecureSocketObj;
 		public:
-			Socket(int port_, protocol_type type = protocol_type::tcp , IpVersion ipVer = IpVersion::IPv4);
+			explicit Socket(int port_, protocol_type type = protocol_type::tcp , 
+				IpVersion ipVer = IpVersion::IPv4);
 		
 			virtual ~Socket();
 
@@ -104,7 +106,7 @@ namespace sdk {
 			*	exception: This function never throws an exception.
 			*/
 			void setIpAddress(std::string ip_) noexcept {
-				m_ip_address = ip_;
+				m_ip_address = std::move(ip_);
 			}
 			/*
 			*	This function is useful for all socket applications to set an port numner.

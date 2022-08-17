@@ -24,7 +24,7 @@ namespace sdk {
 		class SecureSocketObj : public SocketObject
 		{
 		public:
-			SecureSocketObj(SOCKET socketid, const SecureSocket& ss);
+			explicit SecureSocketObj(SOCKET socketid, const SecureSocket& ss);
 			~SecureSocketObj() override;
 			/*
 			*	This method used for validating hostname for certificate verification.

@@ -25,7 +25,8 @@ namespace sdk {
 
 		class SecureSocket : public Socket {
 		public:
-			SecureSocket(int port, connection_method meth, protocol_type type = protocol_type::tcp , IpVersion IpVer = IpVersion::IPv4);
+			explicit SecureSocket(int port, connection_method meth,
+				protocol_type type = protocol_type::tcp , IpVersion IpVer = IpVersion::IPv4);
 			~SecureSocket() override;
 
 			//non copyable

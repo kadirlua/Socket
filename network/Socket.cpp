@@ -40,8 +40,8 @@ namespace sdk {
 			m_protocol_type{ type },
 			m_ipVersion{ ipVer }
 		{
-			
-			if ((m_socket_id = socket(static_cast<int>(m_ipVersion), static_cast<int>(type), 0)) == INVALID_SOCKET)
+			m_socket_id = socket(static_cast<int>(m_ipVersion), static_cast<int>(type), 0);
+			if (m_socket_id == INVALID_SOCKET)
 			{
 				throw general::SocketException(WSAGetLastError());
 			}
@@ -51,9 +51,8 @@ namespace sdk {
 				m_st_address_t.sin_family = AF_INET;
 				m_st_address_t.sin_addr.s_addr = htonl(INADDR_ANY);
 				m_st_address_t.sin_port = htons(m_port_number);
-			}			
-			
-			if (m_ipVersion == IpVersion::IPv6)
+			}
+			else if (m_ipVersion == IpVersion::IPv6)
 			{
 				m_st_address6_t.sin6_family = AF_INET6;
 				m_st_address6_t.sin6_port = htons(m_port_number);
@@ -119,10 +118,14 @@ namespace sdk {
 			if (strIpAddr.empty())
 				throw general::SocketException("IP address is not valid.");
 
-			if(m_ipVersion == IpVersion::IPv4)
-				err = inet_pton(static_cast<int>(m_ipVersion), strIpAddr.c_str(), &m_st_address_t.sin_addr);
-			if(m_ipVersion == IpVersion::IPv6)
-				err = inet_pton(static_cast<int>(m_ipVersion),  strIpAddr.c_str(), &m_st_address6_t.sin6_addr);
+			if (m_ipVersion == IpVersion::IPv4) {
+				err = inet_pton(static_cast<int>(m_ipVersion), 
+					strIpAddr.c_str(), &m_st_address_t.sin_addr);
+			}
+			else if (m_ipVersion == IpVersion::IPv6) {
+				err = inet_pton(static_cast<int>(m_ipVersion), 
+					strIpAddr.c_str(), &m_st_address6_t.sin6_addr);
+			}
 
 			if (err == SOCKET_ERROR)
 			{
