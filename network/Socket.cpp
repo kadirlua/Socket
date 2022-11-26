@@ -1,5 +1,6 @@
 ﻿#include "Socket.h"
 #include "general/SocketException.h"
+#include <cstring>
 
 #ifdef _WIN32
 #pragma comment(lib, "Ws2_32.lib")
