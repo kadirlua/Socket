@@ -12,6 +12,7 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <netdb.h>
 	#ifndef UINT_PTR
 		#if defined(_WIN64)
 		typedef unsigned long long UINT_PTR;
