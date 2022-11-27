@@ -3,14 +3,14 @@
 
 namespace sdk {
 	namespace application {
-		class Client
-		{
+		class Client {
 		public:
-
-			Client(std::string ip, int port, network::protocol_type type = network::protocol_type::tcp, network::IpVersion ipVer = network::IpVersion::IPv4);
+			Client(std::string ip, int port,
+				network::protocol_type type = network::protocol_type::tcp,
+				network::IpVersion ipVer = network::IpVersion::IPv4);
 			virtual ~Client() = default;
 
-			//non copyable
+			// non copyable
 			Client(const Client&) = delete;
 			Client& operator=(const Client&) = delete;
 
@@ -21,7 +21,8 @@ namespace sdk {
 			int write(std::vector<unsigned char>& message) const;
 			size_t read(std::vector<unsigned char>& response_msg, int max_size = 0) const;
 			size_t read(std::string& message, int max_size = 0) const;
-			bool isInterrupted() const noexcept {
+			bool isInterrupted() const noexcept
+			{
 				return m_bInterrupt;
 			}
 
@@ -30,5 +31,5 @@ namespace sdk {
 			std::unique_ptr<network::Socket> m_socket;
 			std::shared_ptr<network::SocketObject> m_socket_obj;
 		};
-	};
-};
+	}
+}

@@ -5,29 +5,30 @@
 #include <condition_variable>
 #include <thread>
 
-
 namespace sdk {
 	namespace application {
 
-		template<typename T>
-		class WorkerThread : public std::thread
-		{
+		template <typename T>
+		class WorkerThread : public std::thread {
 		public:
 			explicit WorkerThread(std::shared_ptr<T> obj_ptr) :
 				std::thread(&WorkerThread::handle_thread_proc, this, obj_ptr)
 			{
 			}
 
-			~WorkerThread() {
+			~WorkerThread()
+			{
 				if (joinable())
 					join();
 			}
 
-			bool isClosed() const noexcept {
+			bool isClosed() const noexcept
+			{
 				return close_flag;
 			}
 
-			void setFlag(bool flag) noexcept {
+			void setFlag(bool flag) noexcept
+			{
 				close_flag = flag;
 			}
 
@@ -37,12 +38,10 @@ namespace sdk {
 			bool close_flag{};
 		};
 
-		struct thread_deleter
-		{
+		struct thread_deleter {
 			inline void operator()(std::thread* ptr) const
 			{
-				if (ptr)
-				{
+				if (ptr) {
 					if (ptr->joinable())
 						ptr->join();
 					delete ptr;
@@ -51,13 +50,12 @@ namespace sdk {
 		};
 
 		using workerThread_t = std::unique_ptr<std::thread, thread_deleter>;
-		class Server
-		{
+		class Server {
 		public:
 			Server(int port, network::protocol_type type = network::protocol_type::tcp, network::IpVersion ipVer = network::IpVersion::IPv4);
 			virtual ~Server();
 
-			//non copyable
+			// non copyable
 			Server(const Server&) = delete;
 			Server& operator=(const Server&) = delete;
 
@@ -74,4 +72,4 @@ namespace sdk {
 		static std::condition_variable vec_cv;
 		static bool purging_flag{};
 	};
-};
+}

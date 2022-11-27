@@ -13,15 +13,13 @@ namespace sdk {
 			m_socket_id{ socketid },
 			m_socket_ref{ socket_ref }
 		{
-
 		}
 
 		SocketObject::~SocketObject()
 		{
 			shutdown(m_socket_id, SD_SEND);
 
-			while (closesocket(m_socket_id) == SOCKET_ERROR)
-			{
+			while (closesocket(m_socket_id) == SOCKET_ERROR) {
 				auto err = WSAGetLastError();
 				if (err != WSAEWOULDBLOCK)
 					break;
@@ -34,7 +32,7 @@ namespace sdk {
 
 			std::string str_message;
 			std::unique_ptr<char[]> rec_ptr{ std::make_unique<char[]>(buf_len) };
-			
+
 			int receive_byte{};
 			int iResult;
 			struct timeval tv = { 0, 0 };
@@ -49,21 +47,18 @@ namespace sdk {
 				return str_message;*/
 
 			do {
-				while ((receive_byte = recv(m_socket_id, rec_ptr.get(), buf_len, 0)) == SOCKET_ERROR)
-				{
+				while ((receive_byte = recv(m_socket_id, rec_ptr.get(), buf_len, 0)) == SOCKET_ERROR) {
 					if (callback_interupt &&
 						callback_interupt(m_socket_ref.m_userdata_ptr))
 						throw general::SocketException(INTERRUPT_MSG);
 
-					switch (auto lasterror = WSAGetLastError())
-					{
-					case WSAEWOULDBLOCK:
-					{
+					switch (auto lasterror = WSAGetLastError()) {
+					case WSAEWOULDBLOCK: {
 						auto recvTimeout = socketOpt.getRecvTimeout();
-						//	The default value of recieve timeout is 0. 
-						//	If an user decided to set timeout value, there is no problem at all. 
+						//	The default value of recieve timeout is 0.
+						//	If an user decided to set timeout value, there is no problem at all.
 						//	Otherwise set the default value to an acceptable timeout value.
-						if (recvTimeout.tv_sec == 0 && 
+						if (recvTimeout.tv_sec == 0 &&
 							recvTimeout.tv_usec == 0)
 							recvTimeout.tv_sec = 5;
 
@@ -75,16 +70,15 @@ namespace sdk {
 							throw general::SocketException(WSAGetLastError());
 						if (!FD_ISSET(m_socket_id, &readfds))
 							return str_message;
-					}
-						break;
+					} break;
 					default:
 						throw general::SocketException(lasterror);
 					}
 				}
 
 				if (receive_byte == 0)
-					return str_message;	//the connection is closed.
-				
+					return str_message; // the connection is closed.
+
 				if (receive_byte > 0)
 					std::move(rec_ptr.get(), rec_ptr.get() + receive_byte, std::back_inserter(str_message));
 
@@ -96,9 +90,9 @@ namespace sdk {
 					break;
 
 				/*
-				*	Wait for a while to detect if we reached the end of the data
-				*	select will return immediately without waiting...
-				*/
+				 *	Wait for a while to detect if we reached the end of the data
+				 *	select will return immediately without waiting...
+				 */
 
 				FD_ZERO(&readfds);
 				FD_SET(m_socket_id, &readfds);
@@ -119,8 +113,7 @@ namespace sdk {
 		size_t SocketObject::read(char& msgByte) const
 		{
 			int numBytes = recv(m_socket_id, &msgByte, 1, 0);
-			if (numBytes < 0)
-			{
+			if (numBytes < 0) {
 				throw general::SocketException(WSAGetLastError());
 			}
 			return static_cast<size_t>(numBytes);
@@ -150,14 +143,12 @@ namespace sdk {
 
 			const auto& callback_interupt = m_socket_ref.m_callback_interrupt;
 
-			while ((sendBytes = send(m_socket_id, data, data_size, 0)) == SOCKET_ERROR)
-			{
+			while ((sendBytes = send(m_socket_id, data, data_size, 0)) == SOCKET_ERROR) {
 				if (callback_interupt &&
 					callback_interupt(m_socket_ref.m_userdata_ptr))
 					throw general::SocketException(INTERRUPT_MSG);
 
-				switch (auto lasterror = WSAGetLastError())
-				{
+				switch (auto lasterror = WSAGetLastError()) {
 				case WSAEWOULDBLOCK:
 					break;
 				default:

@@ -13,15 +13,15 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
-		class SecureServer
-		{
+		class SecureServer {
 		public:
 			SecureServer(int port, network::protocol_type type = network::protocol_type::tcp, network::IpVersion ipVer = network::IpVersion::IPv4);
 			virtual ~SecureServer();
 
-			//non copyable
+			// non copyable
 			SecureServer(const SecureServer&) = delete;
 			SecureServer& operator=(const SecureServer&) = delete;
+
 		private:
 			std::unique_ptr<network::SecureSocket> m_socket_ptr;
 

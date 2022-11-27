@@ -4,7 +4,8 @@
 #include <mutex>
 
 struct pcout : std::stringstream {
-	~pcout() {
+	~pcout()
+	{
 		std::lock_guard<std::mutex> lock_(mtx_);
 		std::cout << rdbuf();
 		std::cout.flush();

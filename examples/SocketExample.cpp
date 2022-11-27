@@ -38,9 +38,9 @@ static const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\key.key";
 class MySocket : public Socket {
 public: 
     MySocket(int portNumber) :
-        Socket(portNumber) {
-
-    }
+		Socket(portNumber)
+	{
+	}
 
     ~MySocket() override = default;
 
@@ -49,55 +49,54 @@ public:
     }
 };
 
-
 static void th_handler(std::string msg)
 {
-    std::vector<unsigned char> response;
+	std::vector<unsigned char> response;
 
-    try {
+	try {
 
 #if _TEST_SECURE_SERVER
-#if     _TEST_IPv6
-        SecureClient sclient("::1", 8086, protocol_type::tcp, IpVersion::IPv6);
+#if _TEST_IPv6
+		SecureClient sclient("::1", 8086, protocol_type::tcp, IpVersion::IPv6);
 #else
-        SecureClient sclient("127.0.0.1", 8086);
+		SecureClient sclient("127.0.0.1", 8086);
 #endif
-        
-        sclient.setCertificateAtr(cert_file, key_file);
-        sclient.connectServer();
-        /*sclient.write(msg);
-        sclient.read(response);*/
 
-        sclient.write({ 'a', 'b', 'c' });    //initializer_list support!
-        sclient.read(response);
+		sclient.setCertificateAtr(cert_file, key_file);
+		sclient.connectServer();
+		/*sclient.write(msg);
+		sclient.read(response);*/
+
+		sclient.write({ 'a', 'b', 'c' }); // initializer_list support!
+		sclient.read(response);
 #else
-#if     _TEST_IPv6
-        Client client("::1", 8086, protocol_type::tcp, IpVersion::IPv6);
+#if _TEST_IPv6
+		Client client("::1", 8086, protocol_type::tcp, IpVersion::IPv6);
 #else
-        Client client("127.0.0.1", 8086);
+		Client client("127.0.0.1", 8086);
 #endif
-        
-        client.connectServer();
 
-        ///*client.write(msg);
-        //client.read(response);*/ 
+		client.connectServer();
 
-        client.write({ 'a', 'b', 'c' });    //initializer_list support!
-        client.read(response);
+		///*client.write(msg);
+		// client.read(response);*/
+
+		client.write({ 'a', 'b', 'c' }); // initializer_list support!
+		client.read(response);
 #endif // _TEST_SECURE_SERVER
 
-        if (response.size() == 0) {
-            pcout{} << "empty response" << "\n";
-        }
-        else {
-            std::string str(response.begin(), response.end());
-            pcout{} << str << "\n";
-        }
-    }
-    catch (const sdk::general::SocketException& ex)
-    {
-        pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
-    }
+		if (response.size() == 0) {
+			pcout{} << "empty response"
+					<< "\n";
+		}
+		else {
+			std::string str(response.begin(), response.end());
+			pcout{} << str << "\n";
+		}
+	}
+	catch (const sdk::general::SocketException& ex) {
+		pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
+	}
 }
 
 static std::condition_variable server_cv;
@@ -106,80 +105,74 @@ static std::mutex server_mutex;
 
 void serverfunc()
 {
-    try {
+	try {
 #if _TEST_SECURE_SERVER
-    #if     _TEST_IPv6
-            SecureServer server(8086, protocol_type::tcp, IpVersion::IPv6);
-    #else
-            SecureServer server(8086);
-    #endif
+#if _TEST_IPv6
+		SecureServer server(8086, protocol_type::tcp, IpVersion::IPv6);
 #else
-    #if     _TEST_IPv6
-            Server server(8086, protocol_type::tcp, IpVersion::IPv6);
-    #else
-            Server server(8086);
-    #endif
+		SecureServer server(8086);
 #endif
-        
-        server_cv.notify_one();
-        while (true)
-        {
-            std::this_thread::sleep_for(std::chrono::microseconds(500));
-        }
-    }
-    catch (const SocketException& ex)
-    {
-        pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
-    }
+#else
+#if _TEST_IPv6
+		Server server(8086, protocol_type::tcp, IpVersion::IPv6);
+#else
+		Server server(8086);
+#endif
+#endif
+
+		server_cv.notify_one();
+		while (true) {
+			std::this_thread::sleep_for(std::chrono::microseconds(500));
+		}
+	}
+	catch (const SocketException& ex) {
+		pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
+	}
 }
 
 int main()
 {
-    if (Socket::WSA_startup_init(0x202))
-    {
-        /*  start server    */
+	if (Socket::WSA_startup_init(0x202)) {
+		/*  start server    */
 #if _TEST_SECURE_SERVER
-        SecureSocket::SSLLibraryInit();
+		SecureSocket::SSLLibraryInit();
 
-        // print openssl library version number
-        std::cout << SecureSocket::get_openssl_version() << "\n";
+		// print openssl library version number
+		std::cout << SecureSocket::get_openssl_version() << "\n";
 #endif
-        std::thread server(&serverfunc);
+		std::thread server(&serverfunc);
 
-        std::unique_lock<std::mutex> lock(server_mutex);
-        server_cv.wait(lock);
-        lock.unlock();
+		std::unique_lock<std::mutex> lock(server_mutex);
+		server_cv.wait(lock);
+		lock.unlock();
 
-        /*  start clients   */
+		/*  start clients   */
 
-        std::vector<std::thread> myThreadsVec;
+		std::vector<std::thread> myThreadsVec;
 
-        for (unsigned int i = 1; i <= std::thread::hardware_concurrency(); i++)
-        {
-            std::string strMsg("hello i am thread ");
-            strMsg += std::to_string(i);
-            myThreadsVec.emplace_back(&th_handler, strMsg);
-        }
+		for (unsigned int i = 1; i <= std::thread::hardware_concurrency(); i++) {
+			std::string strMsg("hello i am thread ");
+			strMsg += std::to_string(i);
+			myThreadsVec.emplace_back(&th_handler, strMsg);
+		}
 
-        /*  join all threads    */
+		/*  join all threads    */
 
-        std::for_each(myThreadsVec.begin(), myThreadsVec.end(), 
-            [](std::thread& th) {
-                th.join();
-            });
+		std::for_each(myThreadsVec.begin(), myThreadsVec.end(),
+			[](std::thread& th) {
+				th.join();
+			});
 
-        server.join();
-        /*try {
-            Server server(8086);
-            while (true)
-            {
-                std::this_thread::sleep_for(std::chrono::microseconds(500));
-            }
-        }
-        catch (const SocketException& ex)
-        {
-            pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
-        }*/
-        Socket::WSA_Cleanup();
-    }
+		server.join();
+		/*try {
+			Server server(8086);
+			while (true) {
+				std::this_thread::sleep_for(std::chrono::microseconds(500));
+			}
+		}
+		catch (const SocketException& ex) {
+			pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
+		}*/
+		Socket::WSA_Cleanup();
+	}
 }

@@ -5,15 +5,17 @@ namespace sdk {
 	namespace application {
 
 		using namespace network;
-		
+
 		static inline bool callbackInterrupt(void* userdata_ptr)
 		{
 			Client* client = reinterpret_cast<Client*>(userdata_ptr);
 			return client->isInterrupted();
 		}
 
-		Client::Client(std::string ip, int port, network::protocol_type type /*= protocol_type::tcp*/, network::IpVersion ipVer /*= IpVersion::IPv4*/) :
-			m_socket{std::make_unique<Socket>(port, type, ipVer)}
+		Client::Client(std::string ip, int port,
+			network::protocol_type type /*= protocol_type::tcp*/,
+			network::IpVersion ipVer /*= IpVersion::IPv4*/) :
+			m_socket{ std::make_unique<Socket>(port, type, ipVer) }
 		{
 			m_socket->setIpAddress(ip);
 			m_socket->setInterruptCallback(&callbackInterrupt, this);
@@ -57,5 +59,4 @@ namespace sdk {
 			return m_socket_obj->read(message, max_size);
 		}
 	}
-
 }
