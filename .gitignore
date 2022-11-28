@@ -4,3 +4,5 @@
 
 /.vs
 /out/build/x64-Debug
+/Socket/x64/Debug
+/x64/Debug
