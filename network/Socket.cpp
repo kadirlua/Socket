@@ -110,8 +110,9 @@ namespace sdk {
 			int err{};
 			auto strIpAddr = getIpAddress();
 
-			if (strIpAddr.empty())
+			if (strIpAddr.empty()) {
 				throw general::SocketException("IP address is not valid.");
+			}
 
 			if (m_ipVersion == IpVersion::IPv4) {
 				err = inet_pton(static_cast<int>(m_ipVersion),
@@ -145,18 +146,21 @@ namespace sdk {
 					fd_set writefds{}, exceptfds{};
 
 					do {
-						if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr))
+						if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr)) {
 							throw general::SocketException(INTERRUPT_MSG);
+						}
 
 						FD_ZERO(&writefds);
 						FD_SET(m_socket_id, &writefds);
 						FD_ZERO(&exceptfds);
 						FD_SET(m_socket_id, &exceptfds);
 						err = select((int)m_socket_id + 1, nullptr, &writefds, &exceptfds, &timeout);
-						if (err < 0)
+						if (err < 0) {
 							throw general::SocketException(WSAGetLastError());
-						if (FD_ISSET(m_socket_id, &exceptfds))
+						}
+						if (FD_ISSET(m_socket_id, &exceptfds)) {
 							throw general::SocketException("Cannot connect to the server");
+						}
 					} while (!FD_ISSET(m_socket_id, &writefds));
 
 				} break;
@@ -199,26 +203,30 @@ namespace sdk {
 
 				while ((new_sock_id = ::accept(m_socket_id, st_address, &addrlen)) == INVALID_SOCKET) {
 					//	check if any interrupt happened by user
-					if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr))
+					if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr)) {
 						throw general::SocketException(INTERRUPT_MSG);
+					}
 
 					switch (auto lasterror = WSAGetLastError()) {
 					case WSAEWOULDBLOCK: {
 						fd_set readfds{}, exceptfds{};
 
 						do {
-							if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr))
+							if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr)) {
 								throw general::SocketException(INTERRUPT_MSG);
+							}
 
 							FD_ZERO(&readfds);
 							FD_SET(m_socket_id, &readfds);
 							FD_ZERO(&exceptfds);
 							FD_SET(m_socket_id, &exceptfds);
 							auto err = select((int)m_socket_id + 1, &readfds, nullptr, &exceptfds, &timeout);
-							if (err < 0)
+							if (err < 0) {
 								throw general::SocketException(WSAGetLastError());
-							if (FD_ISSET(m_socket_id, &exceptfds))
+							}
+							if (FD_ISSET(m_socket_id, &exceptfds)) {
 								throw general::SocketException("Cannot connect to the server");
+							}
 						} while (!FD_ISSET(m_socket_id, &readfds));
 					} break;
 					default:

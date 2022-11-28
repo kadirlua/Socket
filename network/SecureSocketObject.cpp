@@ -49,8 +49,9 @@ namespace sdk {
 
 		void SecureSocketObj::setHostname(const char* hostname)
 		{
-			if (SSL_set_tlsext_host_name(m_ssl, hostname) != 1)
+			if (SSL_set_tlsext_host_name(m_ssl, hostname) != 1) {
 				throw general::SecureSocketException("set host name failed!");
+			}
 
 			m_hostname = hostname;
 		}
@@ -62,8 +63,9 @@ namespace sdk {
 			int err_code{};
 			while ((err_code = SSL_connect(m_ssl)) == -1) {
 				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr))
+					callback_interupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
+				}
 
 				switch (int ret_code = SSL_get_error(m_ssl, err_code)) {
 				case SSL_ERROR_WANT_READ:
@@ -88,8 +90,9 @@ namespace sdk {
 			int err_code{};
 			while ((err_code = SSL_accept(m_ssl)) != 1) {
 				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr))
+					callback_interupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
+				}
 
 				switch (int ret_code = SSL_get_error(m_ssl, err_code)) {
 				case SSL_ERROR_WANT_READ:
@@ -168,15 +171,18 @@ namespace sdk {
 					std::move(rec_ptr.get(), rec_ptr.get() + receive_byte, std::back_inserter(str_message));
 				}
 
-				if (SSL_pending(m_ssl) == 0)
+				if (SSL_pending(m_ssl) == 0) {
 					break;
+				}
 
 				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr))
+					callback_interupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
+				}
 
-				if (max_size > 0 && str_message.size() >= (size_t)max_size)
+				if (max_size > 0 && str_message.size() >= (size_t)max_size) {
 					break;
+				}
 
 			} while (receive_byte > 0);
 
@@ -208,8 +214,9 @@ namespace sdk {
 			int sendBytes{};
 			while ((sendBytes = SSL_write(m_ssl, data, data_size)) == -1) {
 				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr))
+					callback_interupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
+				}
 
 				switch (auto err_code = SSL_get_error(m_ssl, sendBytes)) {
 				case SSL_ERROR_WANT_WRITE:

@@ -36,17 +36,19 @@ static const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\key.key";
 
 //  basic example of inherited from Socket class
 class MySocket : public Socket {
-public: 
-    MySocket(int portNumber) :
+public:
+	MySocket(int portNumber) :
 		Socket(portNumber)
 	{
 	}
 
-    ~MySocket() override = default;
+	~MySocket() override = default;
 
-    void connect() override {
-        std::cout << "Override this method" << "\n";
-    }
+	void connect() override
+	{
+		std::cout << "Override this method"
+				  << "\n";
+	}
 };
 
 static void th_handler(std::string msg)

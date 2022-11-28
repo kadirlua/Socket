@@ -13,8 +13,9 @@ namespace sdk {
 		static inline int verify_callback(int preverify_ok, X509_STORE_CTX* x509_ctx)
 		{
 			X509* cert = X509_STORE_CTX_get_current_cert(x509_ctx);
-			if (!cert)
+			if (!cert) {
 				return 0;
+			}
 
 			int err_code = X509_STORE_CTX_get_error(x509_ctx);
 			int check;
@@ -23,30 +24,37 @@ namespace sdk {
 			}
 
 			auto subject_name = X509_get_subject_name(cert);
-			if (!subject_name)
-				return 0;
+			if (!subject_name) {
+				return 0;	
+			}
 
 			char buf[6][256]{};
 			printf("Certificate subject:\n");
 			check = X509_NAME_get_text_by_NID(subject_name, NID_commonName, buf[0], sizeof(buf[0]));
-			if (check > 0)
+			if (check > 0) {
 				printf(" - Common name: %s\n", buf[0]);
+			}
 			check = X509_NAME_get_text_by_NID(subject_name, NID_organizationName, buf[1], sizeof(buf[1]));
-			if (check > 0)
+			if (check > 0) {
 				printf(" - Organization name: %s\n", buf[1]);
+			}
 			check = X509_NAME_get_text_by_NID(subject_name, NID_organizationalUnitName, buf[2], sizeof(buf[2]));
-			if (check > 0)
+			if (check > 0) {
 				printf(" - Organizational unit name: %s\n", buf[2]);
+			}
 			printf("Certificate issuer:\n");
 			check = X509_NAME_get_text_by_NID(subject_name, NID_commonName, buf[3], sizeof(buf[3]));
-			if (check > 0)
+			if (check > 0) {
 				printf(" - Common name: %s\n", buf[3]);
+			}
 			check = X509_NAME_get_text_by_NID(subject_name, NID_organizationName, buf[4], sizeof(buf[4]));
-			if (check > 0)
+			if (check > 0) {
 				printf(" - Organization name: %s\n", buf[4]);
+			}
 			check = X509_NAME_get_text_by_NID(subject_name, NID_organizationalUnitName, buf[5], sizeof(buf[5]));
-			if (check > 0)
+			if (check > 0) {
 				printf(" - Organizational unit name: %s\n", buf[5]);
+			}
 
 			return preverify_ok;
 		}

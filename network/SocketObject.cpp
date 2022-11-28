@@ -21,8 +21,9 @@ namespace sdk {
 
 			while (closesocket(m_socket_id) == SOCKET_ERROR) {
 				auto err = WSAGetLastError();
-				if (err != WSAEWOULDBLOCK)
+				if (err != WSAEWOULDBLOCK) {
 					break;
+				}
 			}
 		}
 
@@ -49,8 +50,9 @@ namespace sdk {
 			do {
 				while ((receive_byte = recv(m_socket_id, rec_ptr.get(), buf_len, 0)) == SOCKET_ERROR) {
 					if (callback_interupt &&
-						callback_interupt(m_socket_ref.m_userdata_ptr))
+						callback_interupt(m_socket_ref.m_userdata_ptr)) {
 						throw general::SocketException(INTERRUPT_MSG);
+					}
 
 					switch (auto lasterror = WSAGetLastError()) {
 					case WSAEWOULDBLOCK: {
@@ -59,35 +61,42 @@ namespace sdk {
 						//	If an user decided to set timeout value, there is no problem at all.
 						//	Otherwise set the default value to an acceptable timeout value.
 						if (recvTimeout.tv_sec == 0 &&
-							recvTimeout.tv_usec == 0)
+							recvTimeout.tv_usec == 0) {
 							recvTimeout.tv_sec = 5;
+						}
 
 						FD_ZERO(&readfds);
 						FD_SET(m_socket_id, &readfds);
 
 						iResult = select((int)m_socket_id + 1, &readfds, nullptr, nullptr, &recvTimeout);
-						if (iResult < 0)
+						if (iResult < 0) {
 							throw general::SocketException(WSAGetLastError());
-						if (!FD_ISSET(m_socket_id, &readfds))
+						}
+						if (!FD_ISSET(m_socket_id, &readfds)) {
 							return str_message;
+						}
 					} break;
 					default:
 						throw general::SocketException(lasterror);
 					}
 				}
 
-				if (receive_byte == 0)
+				if (receive_byte == 0) {
 					return str_message; // the connection is closed.
+				}
 
-				if (receive_byte > 0)
+				if (receive_byte > 0) {
 					std::move(rec_ptr.get(), rec_ptr.get() + receive_byte, std::back_inserter(str_message));
+				}
 
 				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr))
+					callback_interupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SocketException(INTERRUPT_MSG);
+				}
 
-				if (max_size > 0 && str_message.size() >= (size_t)max_size)
+				if (max_size > 0 && str_message.size() >= (size_t)max_size) {
 					break;
+				}
 
 				/*
 				 *	Wait for a while to detect if we reached the end of the data
@@ -99,11 +108,12 @@ namespace sdk {
 				FD_ZERO(&exceptfds);
 				FD_SET(m_socket_id, &exceptfds);
 				iResult = select((int)m_socket_id + 1, &readfds, nullptr, &exceptfds, &tv);
-				if (iResult < 0)
+				if (iResult < 0) {
 					throw general::SocketException(WSAGetLastError());
-				if (!FD_ISSET(m_socket_id, &readfds) || FD_ISSET(m_socket_id, &exceptfds))
+				}
+				if (!FD_ISSET(m_socket_id, &readfds) || FD_ISSET(m_socket_id, &exceptfds)) {
 					break;
-
+				}
 			} while (receive_byte > 0);
 
 			return str_message;
@@ -145,8 +155,9 @@ namespace sdk {
 
 			while ((sendBytes = send(m_socket_id, data, data_size, 0)) == SOCKET_ERROR) {
 				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr))
+					callback_interupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SocketException(INTERRUPT_MSG);
+				}
 
 				switch (auto lasterror = WSAGetLastError()) {
 				case WSAEWOULDBLOCK:
