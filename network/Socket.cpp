@@ -13,6 +13,8 @@ namespace sdk {
 
 		bool Socket::WSA_startup_init(unsigned short versionReq) noexcept
 		{
+			// There's no harm in calling WSAStartup() multiple times but no benefit
+			// either, we may as well skip it after the first.
 			if (!m_wsa_init) {
 #ifdef _WIN32
 				WSADATA wsaData;
