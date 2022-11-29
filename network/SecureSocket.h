@@ -39,7 +39,7 @@ namespace sdk {
 			 *	param1: The id of socket.
 			 *	returns: A shared pointer of secure socket layer object.
 			 */
-			std::shared_ptr<SecureSocketObj> createnewSocket(SOCKET socket_id) const;
+			NODISCARD std::shared_ptr<SecureSocketObj> createnewSocket(SOCKET socket_id) const;
 			/*
 			 *	This function sets the list of available ciphers for ctx using the control string str.
 			 *	If this function not use, the default ciphelist is "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256".
@@ -87,7 +87,7 @@ namespace sdk {
 			 *	returns: Error message.
 			 *	exception : This function never throws an exception.
 			 */
-			SSL_CTX* get_ctx() const noexcept
+			NODISCARD SSL_CTX* get_ctx() const noexcept
 			{
 				return m_ctx;
 			}

@@ -93,13 +93,13 @@ namespace sdk {
 			 *	returns: nothing
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			virtual SOCKET accept();
+			NODISCARD virtual SOCKET accept();
 			/*
 			 *	This function creates an instance of socket.
 			 *	param1: The id of socket.
 			 *	returns: A shared pointer of socket object.
 			 */
-			std::shared_ptr<SocketObject> createnewSocket(SOCKET) const;
+			NODISCARD std::shared_ptr<SocketObject> createnewSocket(SOCKET) const;
 			/*
 			 *	This function is useful for client applications to set an ip address.
 			 *	param: Ip adress.
@@ -125,7 +125,7 @@ namespace sdk {
 			 *	returns: The id of socket.
 			 *	exception: This function never throws an exception.
 			 */
-			SOCKET getSocketId() const noexcept
+			NODISCARD SOCKET getSocketId() const noexcept
 			{
 				return m_socket_id;
 			}
@@ -134,7 +134,7 @@ namespace sdk {
 			 *	returns: port number int type.
 			 *	exception: This function never throws an exception.
 			 */
-			int getPort() const noexcept
+			NODISCARD int getPort() const noexcept
 			{
 				return m_port_number;
 			}
