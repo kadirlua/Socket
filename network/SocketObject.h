@@ -7,10 +7,10 @@
 #elif defined(__linux__) || defined(__APPLE__)
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
-#include <sys/time.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netdb.h>
