@@ -6,14 +6,6 @@
 namespace sdk {
 	namespace network {
 
-		// Explicit template specialization
-		template class SocketOption<Socket>;
-		template class SocketOption<SocketObject>;
-#if OPENSSL_SUPPORTED
-		template class SocketOption<SecureSocket>;
-		template class SocketOption<SecureSocketObj>;
-#endif // OPENSSL_SUPPORTED
-
 		template <typename T>
 		void SocketOption<T>::setDebug(int debugMode) const
 		{
@@ -148,5 +140,13 @@ namespace sdk {
 
 			return bufSize;
 		}
+
+		// Explicit template specialization
+		template class SocketOption<Socket>;
+		template class SocketOption<SocketObject>;
+#if OPENSSL_SUPPORTED
+		template class SocketOption<SecureSocket>;
+		template class SocketOption<SecureSocketObj>;
+#endif // OPENSSL_SUPPORTED
 	}
 }
