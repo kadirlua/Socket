@@ -52,7 +52,6 @@ ${OPENSSL_INCLUDE_DIR}
 )
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
-target_link_libraries(${PROJECT_NAME} -lpthread)
 if (${OPENSSL_VAL})
 target_link_libraries(${PROJECT_NAME} OpenSSL::SSL)
 endif()
@@ -60,6 +59,7 @@ endif()
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} Ws2_32 crypt32)
 else()
+  find_package(Threads)
   target_link_libraries(${PROJECT_NAME} PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
