@@ -14,6 +14,11 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netdb.h>
+
+#if defined(__APPLE__)
+#include <sys/_types/_timeval.h>
+#endif
+
 #ifndef UINT_PTR
 #if defined(_WIN64)
 typedef unsigned long long UINT_PTR;
@@ -43,13 +48,6 @@ typedef UINT_PTR SOCKET;
 #define WSAEISCONN EISCONN
 
 #define WSAGetLastError() errno
-
-#ifndef struct timeval
-struct timeval {
-	long tv_sec;  /* seconds */
-	long tv_usec; /* and microseconds */
-};
-#endif
 
 #endif
 
