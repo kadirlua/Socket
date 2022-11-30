@@ -4,7 +4,7 @@
 #ifdef _WIN32
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#elif __linux__
+#elif defined(__linux__) || defined(__APPLE__)
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
