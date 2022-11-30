@@ -44,6 +44,13 @@ typedef UINT_PTR SOCKET;
 
 #define WSAGetLastError() errno
 
+#ifndef struct timeval
+struct timeval {
+	long tv_sec;  /* seconds */
+	long tv_usec; /* and microseconds */
+};
+#endif
+
 #endif
 
 #include <vector>
