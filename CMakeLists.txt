@@ -59,6 +59,8 @@ endif()
 
 if(WIN32)
   target_link_libraries(${PROJECT_NAME} Ws2_32 crypt32)
+else()
+  target_link_libraries(${PROJECT_NAME} PUBLIC ${CMAKE_THREAD_LIBS_INIT})
 endif()
 
 if(MSVC)
