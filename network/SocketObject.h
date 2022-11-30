@@ -6,13 +6,13 @@
 #include <ws2tcpip.h>
 #elif defined(__linux__) || defined(__APPLE__)
 #include <stdio.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <sys/time.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
-#include <unistd.h>
 #include <netdb.h>
 #ifndef UINT_PTR
 #if defined(_WIN64)
