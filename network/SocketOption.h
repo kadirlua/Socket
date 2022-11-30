@@ -3,7 +3,7 @@
 
 #ifdef _WIN32
 #include <WinSock2.h>
-#elif __linux__
+#elif __linux__ || defined(__APPLE__)
 #include <sys/time.h>
 #endif
 

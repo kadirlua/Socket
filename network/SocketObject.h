@@ -15,10 +15,6 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
-#if defined(__APPLE__)
-#include <sys/_types/_timeval.h>
-#endif
-
 #ifndef UINT_PTR
 #if defined(_WIN64)
 typedef unsigned long long UINT_PTR;
