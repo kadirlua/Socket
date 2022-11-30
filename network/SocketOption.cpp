@@ -62,7 +62,11 @@ namespace sdk {
 		template <typename T>
 		void SocketOption<T>::setRecvTimeout(long seconds, long microseconds) const
 		{
+#if defined(__APPLE__)
+			const timeval sl{ seconds, static_cast<__darwin_suseconds_t>(microseconds) };
+#else
 			const timeval sl{ seconds, microseconds };
+#endif
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_RCVTIMEO,
 					reinterpret_cast<const char*>(&sl), sizeof(sl)) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
