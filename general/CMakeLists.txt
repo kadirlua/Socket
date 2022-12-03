@@ -1,0 +1,9 @@
+set(LIBRARY_NAME BaseException)
+set(PROJECT_GENERAL_DIR ${PROJECT_DIR}/general)
+
+set(PROJECT_GENERAL_SOURCES
+	${PROJECT_GENERAL_DIR}/BaseException.cpp
+	${PROJECT_GENERAL_DIR}/SocketException.cpp
+)
+
+add_library(${LIBRARY_NAME} STATIC ${PROJECT_GENERAL_SOURCES})
