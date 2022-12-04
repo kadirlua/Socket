@@ -14,12 +14,6 @@
 #include <algorithm>
 
 #if OPENSSL_SUPPORTED
-
-#if _WIN32
-#pragma comment(lib, "libssl.lib")
-#pragma comment(lib, "libcrypto.lib")
-#endif
-
 #define _TEST_SECURE_SERVER 0
 #endif // OPENSSL_SUPPORTED
 

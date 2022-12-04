@@ -100,7 +100,11 @@ namespace sdk {
 
 			static const char* get_openssl_version() noexcept
 			{
+#if OPENSSL_VERSION_NUMBER < 0x30000000L
+				return OpenSSL_version(OPENSSL_VERSION);
+#else
 				return OpenSSL_version(OPENSSL_FULL_VERSION_STRING);
+#endif
 			}
 
 		private:
