@@ -10,7 +10,7 @@ set(PROJECT_EXAMPLES_SOURCES
     ${PROJECT_EXAMPLES_DIR}/SocketExample.cpp
 )
 
-find_package(OpenSSL)
+find_package(OpenSSL QUIET)
 
 add_compile_definitions(OPENSSL_SUPPORTED=${OPENSSL_FOUND})
 
