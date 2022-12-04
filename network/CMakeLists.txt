@@ -38,6 +38,10 @@ if(MSVC)
     target_compile_options(${LIBRARY_NAME} PUBLIC "/Zc:__cplusplus")
 endif()
 
+if (OPENSSL_FOUND)
 target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${OPENSSL_INCLUDE_DIR})
+else()
+target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR})
+endif()
 
 target_link_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_BINARY_DIR}/general)
