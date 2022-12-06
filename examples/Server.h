@@ -18,8 +18,9 @@ namespace sdk {
 
 			~WorkerThread()
 			{
-				if (joinable())
+				if (joinable()) {
 					join();
+				}
 			}
 
 			bool isClosed() const noexcept

@@ -64,12 +64,11 @@ namespace sdk {
 			while (!purging_flag_) {
 				std::unique_lock<std::mutex> lock_(vec_mutex_);
 				vec_cv_.wait(lock_, []() { return !thread_vec_.empty() || purging_flag; });
-				for (auto iter = thread_vec_.rbegin(); iter != thread_vec_.rend(); iter++) {
-					if ((*iter)->isClosed()) {
-						thread_vec_.erase(iter.base() - 1);
-						break;
-					}
-				}
+				thread_vec_.erase(std::remove_if(thread_vec_.begin(), thread_vec_.end(),
+									  [](auto& socketObj) {
+										  return socketObj->isClosed();
+									  }),
+					thread_vec_.end());
 			}
 		}
 
