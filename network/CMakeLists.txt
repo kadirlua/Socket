@@ -9,14 +9,26 @@ set(PROJECT_NETWORK_SOURCES
     ${PROJECT_NETWORK_DIR}/SocketOption.cpp
 )
 
-set(OPENSSL_USE_STATIC_LIBS TRUE)
-set(OPENSSL_MSVC_STATIC_RT TRUE)
+set(LIB_SHARED_ENABLED_BY_DEFAULT OFF)
+set(LIB_STATIC_ENABLED_BY_DEFAULT ON)
 
-find_package(OpenSSL QUIET)
+option(LIB_SHARED "Build a shared version of the library" ${LIB_SHARED_ENABLED_BY_DEFAULT})
+option(LIB_STATIC "Build a static version of the library" ${LIB_STATIC_ENABLED_BY_DEFAULT})
 
-add_library(${LIBRARY_NAME} STATIC ${PROJECT_NETWORK_SOURCES})
+find_package(OpenSSL)
+
+if(LIB_SHARED)
+    add_library(${LIBRARY_NAME} SHARED ${PROJECT_NETWORK_SOURCES})
+elseif(LIB_STATIC)
+    set(OPENSSL_USE_STATIC_LIBS TRUE)
+    if (MSVC)
+        set(OPENSSL_MSVC_STATIC_RT TRUE)
+    endif()
+    add_library(${LIBRARY_NAME} STATIC ${PROJECT_NETWORK_SOURCES})
+endif()
 
 message("OpenSSL Found: ${OPENSSL_FOUND} with version: ${OPENSSL_VERSION}")
+message("Library Static: ${LIB_STATIC}, Shared: ${LIB_SHARED}")
 
 add_compile_definitions(OPENSSL_SUPPORTED=${OPENSSL_FOUND})
 
@@ -39,9 +51,9 @@ if(MSVC)
 endif()
 
 if (OPENSSL_FOUND)
-target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${OPENSSL_INCLUDE_DIR})
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${OPENSSL_INCLUDE_DIR})
 else()
-target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR})
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR})
 endif()
 
 target_link_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_BINARY_DIR}/general)
