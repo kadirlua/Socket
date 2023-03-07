@@ -3,6 +3,7 @@
 #include "network/SocketOption.h"
 #include "pcout.h"
 
+#include <algorithm>
 
 namespace sdk {
 	namespace application {
