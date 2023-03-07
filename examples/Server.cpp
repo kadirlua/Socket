@@ -15,7 +15,7 @@ namespace sdk {
 				std::unique_lock<std::mutex> lock_(vec_mutex);
 				vec_cv.wait(lock_, []() { return !thread_vec.empty() || purging_flag; });
 				thread_vec.erase(std::remove_if(thread_vec.begin(), thread_vec.end(),
-									 [](auto& socketObj) {
+									 [](const auto& socketObj) {
 										 return socketObj->isClosed();
 									 }),
 					thread_vec.end());
