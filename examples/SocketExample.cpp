@@ -160,15 +160,7 @@ int main()
 			});
 
 		server.join();
-		/*try {
-			Server server(8086);
-			while (true) {
-				std::this_thread::sleep_for(std::chrono::microseconds(500));
-			}
-		}
-		catch (const SocketException& ex) {
-			pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
-		}*/
+
 		Socket::WSA_Cleanup();
 	}
 }
