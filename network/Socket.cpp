@@ -63,8 +63,9 @@ namespace sdk {
 			shutdown(m_socket_id, SD_SEND);
 			while (closesocket(m_socket_id) == SOCKET_ERROR) {
 				auto err = WSAGetLastError();
-				if (err != WSAEWOULDBLOCK)
+				if (err != WSAEWOULDBLOCK) {
 					break;
+				}
 			}
 		}
 
@@ -138,8 +139,9 @@ namespace sdk {
 
 			while (::connect(m_socket_id, st_address, addressSize) == SOCKET_ERROR) {
 				//	check if any interrupt happened by user
-				if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr))
+				if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr)) {
 					throw general::SocketException(INTERRUPT_MSG);
+				}
 
 				const int lastError = WSAGetLastError();
 

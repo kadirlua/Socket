@@ -135,8 +135,9 @@ namespace sdk {
 		unsigned long SocketOption<T>::getBytesAvailable() const
 		{
 			u_long bufSize = 0;
-			if (ioctlsocket(m_socket.getSocketId(), FIONREAD, &bufSize) == SOCKET_ERROR)
+			if (ioctlsocket(m_socket.getSocketId(), FIONREAD, &bufSize) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
+			}
 
 			return bufSize;
 		}

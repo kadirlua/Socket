@@ -124,8 +124,9 @@ namespace sdk {
 					}
 				}
 			}
-			else
-				throw general::SecureSocketException("client did not give a certificate");
+			else {
+				throw general::SecureSocketException("client did not give a certificate");	
+			}
 		}
 
 		size_t SecureSocketObj::read(char& msgByte) const
@@ -151,8 +152,9 @@ namespace sdk {
 			do {
 				while ((receive_byte = SSL_read(m_ssl, rec_ptr.get(), buf_len)) == -1) {
 					if (callback_interupt &&
-						callback_interupt(m_socket_ref.m_userdata_ptr))
+						callback_interupt(m_socket_ref.m_userdata_ptr)) {
 						throw general::SecureSocketException(INTERRUPT_MSG);
+					}
 
 					switch (auto err_code = SSL_get_error(m_ssl, receive_byte)) {
 					case SSL_ERROR_WANT_READ:
