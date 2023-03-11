@@ -133,7 +133,7 @@ namespace sdk {
 				throw general::SocketException("IP address is not valid IPv4 dotted-decimal string or a valid IPv6 address string.");
 			}
 
-			int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_st_address_t) : sizeof(m_st_address6_t));
+			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_st_address_t) : sizeof(m_st_address6_t));
 
 			const sockaddr* st_address = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_st_address_t) : reinterpret_cast<const sockaddr*>(&m_st_address6_t));
 
@@ -179,7 +179,7 @@ namespace sdk {
 
 		void Socket::bind()
 		{
-			int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_st_address_t) : sizeof(m_st_address6_t));
+			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_st_address_t) : sizeof(m_st_address6_t));
 			const sockaddr* st_address = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_st_address_t) : reinterpret_cast<const sockaddr*>(&m_st_address6_t));
 			if (::bind(m_socket_id, st_address, addressSize) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());

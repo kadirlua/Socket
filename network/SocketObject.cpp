@@ -131,7 +131,7 @@ namespace sdk {
 
 		size_t SocketObject::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
 		{
-			auto received_str = read(max_size);
+			const auto received_str = read(max_size);
 			std::move(received_str.begin(), received_str.end(), std::back_inserter(message));
 			return message.size();
 		}
@@ -172,7 +172,7 @@ namespace sdk {
 
 		int SocketObject::write(const std::vector<unsigned char>& message) const
 		{
-			std::string strBuf(message.begin(), message.end());
+			const std::string strBuf(message.begin(), message.end());
 			return write(strBuf.c_str(), (int)strBuf.size());
 		}
 
