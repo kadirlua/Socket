@@ -5,7 +5,7 @@ namespace sdk {
 	namespace application {
 		class Client {
 		public:
-			Client(std::string ip, int port,
+			Client(const std::string& ip, int port,
 				network::protocol_type type = network::protocol_type::tcp,
 				network::IpVersion ipVer = network::IpVersion::IPv4);
 			virtual ~Client() = default;

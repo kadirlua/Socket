@@ -12,7 +12,7 @@ namespace sdk {
 			return client->isInterrupted();
 		}
 
-		Client::Client(std::string ip, int port,
+		Client::Client(const std::string& ip, int port,
 			network::protocol_type type /*= protocol_type::tcp*/,
 			network::IpVersion ipVer /*= IpVersion::IPv4*/) :
 			m_socket{ std::make_unique<Socket>(port, type, ipVer) }
