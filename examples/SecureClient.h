@@ -9,7 +9,7 @@ namespace sdk {
 
 		class SecureClient {
 		public:
-			SecureClient(std::string ip, int port,
+			SecureClient(const std::string& ip, int port,
 				network::protocol_type type = network::protocol_type::tcp,
 				network::IpVersion ipVer = network::IpVersion::IPv4);
 			virtual ~SecureClient() = default;

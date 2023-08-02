@@ -14,7 +14,7 @@ namespace sdk {
 			return client->isInterrupted();
 		}
 
-		SecureClient::SecureClient(std::string ip, int port, network::protocol_type type /*= network::protocol_type::tcp*/, network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
+		SecureClient::SecureClient(const std::string& ip, int port, network::protocol_type type /*= network::protocol_type::tcp*/, network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
 			m_socket_ptr{ std::make_unique<SecureSocket>(port, connection_method::client, type, ipVer) }
 
 		{
