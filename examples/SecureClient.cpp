@@ -33,7 +33,6 @@ namespace sdk {
 
 		void SecureClient::connectServer()
 		{
-
 			m_secure_obj = m_socket_ptr->createnewSocket(m_socket_ptr->getSocketId());
 			m_secure_obj->connect();
 		}
