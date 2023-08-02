@@ -3,7 +3,9 @@
 ################################################################################
 
 /.vs
-/out/build/x64-Debug
-/Socket/x64/Debug
-/x64/Debug
-/out/build/x86-Debug
+/.vscode
+/out
+/Socket/x64
+/x64
+/out
+/build
