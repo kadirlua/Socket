@@ -17,8 +17,8 @@ namespace sdk {
 			void connectServer();
 			int write(std::initializer_list<char> msg) const;
 			int write(const char* msg, int msg_size) const;
-			int write(std::string& msg) const;
-			int write(std::vector<unsigned char>& message) const;
+			int write(const std::string& msg) const;
+			int write(const std::vector<unsigned char>& message) const;
 			size_t read(std::vector<unsigned char>& response_msg, int max_size = 0) const;
 			size_t read(std::string& message, int max_size = 0) const;
 			bool isInterrupted() const noexcept

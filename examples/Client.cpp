@@ -39,12 +39,12 @@ namespace sdk {
 			return m_socket_obj->write(msg, msg_size);
 		}
 
-		int Client::write(std::string& msg) const
+		int Client::write(const std::string& msg) const
 		{
 			return m_socket_obj->write(msg);
 		}
 
-		int Client::write(std::vector<unsigned char>& msg) const
+		int Client::write(const std::vector<unsigned char>& msg) const
 		{
 			return m_socket_obj->write(msg);
 		}
