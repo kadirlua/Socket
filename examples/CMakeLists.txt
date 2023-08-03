@@ -21,3 +21,5 @@ target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR})
 target_link_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_BINARY_DIR}/network)
 
 target_link_libraries(${LIBRARY_NAME} PUBLIC Socket)
+
+add_test(${LIBRARY_NAME} SocketTest)
