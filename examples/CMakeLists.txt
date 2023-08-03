@@ -22,4 +22,4 @@ target_link_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_BINARY_DIR}/network)
 
 target_link_libraries(${LIBRARY_NAME} PUBLIC Socket)
 
-add_test(${LIBRARY_NAME} SocketTest)
+add_test(SocketTest ${LIBRARY_NAME})
