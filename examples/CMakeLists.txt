@@ -1,4 +1,4 @@
-set(LIBRARY_NAME SocketExample)
+set(PROJECT_NAME SocketExample)
 set(PROJECT_EXAMPLES_DIR ${PROJECT_DIR}/examples)
 
 set(PROJECT_EXAMPLES_SOURCES
@@ -14,12 +14,12 @@ find_package(OpenSSL)
 
 add_compile_definitions(OPENSSL_SUPPORTED=${OPENSSL_FOUND})
 
-add_executable(${LIBRARY_NAME} ${PROJECT_EXAMPLES_SOURCES})
+add_executable(${PROJECT_NAME} ${PROJECT_EXAMPLES_SOURCES})
 
-target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_DIR})
 
-target_link_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_BINARY_DIR}/network)
+target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_BINARY_DIR}/network)
 
-target_link_libraries(${LIBRARY_NAME} PUBLIC Socket)
+target_link_libraries(${PROJECT_NAME} PUBLIC Socket)
 
-#add_test(SocketTest ${LIBRARY_NAME})
+#add_test(SocketTest ${PROJECT_NAME})
