@@ -10,10 +10,6 @@ set(PROJECT_EXAMPLES_SOURCES
     ${PROJECT_EXAMPLES_DIR}/SocketExample.cpp
 )
 
-find_package(OpenSSL)
-
-add_compile_definitions(OPENSSL_SUPPORTED=${OPENSSL_FOUND})
-
 add_executable(${PROJECT_NAME} ${PROJECT_EXAMPLES_SOURCES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_DIR})

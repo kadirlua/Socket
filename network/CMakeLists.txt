@@ -9,41 +9,29 @@ set(PROJECT_NETWORK_SOURCES
     ${PROJECT_NETWORK_DIR}/SocketOption.cpp
 )
 
-set(LIB_SHARED_ENABLED_BY_DEFAULT OFF)
-set(LIB_STATIC_ENABLED_BY_DEFAULT ON)
+# build options
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+option(BUILD_WITH_OPENSSL "Build with openssl support" OFF)
 
-option(LIB_SHARED "Build a shared version of the library" ${LIB_SHARED_ENABLED_BY_DEFAULT})
-option(LIB_STATIC "Build a static version of the library" ${LIB_STATIC_ENABLED_BY_DEFAULT})
+if (BUILD_WITH_OPENSSL)
+    find_package(OpenSSL REQUIRED)
+    add_compile_definitions(OPENSSL_SUPPORTED=1)
+endif()
 
-find_package(OpenSSL)
-
-if(LIB_SHARED)
+if (BUILD_SHARED_LIBS)
     add_library(${LIBRARY_NAME} SHARED ${PROJECT_NETWORK_SOURCES})
-elseif(LIB_STATIC)
-    set(OPENSSL_USE_STATIC_LIBS TRUE)
-    if (MSVC)
-        set(OPENSSL_MSVC_STATIC_RT TRUE)
-    endif()
+else()
     add_library(${LIBRARY_NAME} STATIC ${PROJECT_NETWORK_SOURCES})
 endif()
 
-message("OpenSSL Found: ${OPENSSL_FOUND} with version: ${OPENSSL_VERSION}")
-message("Library Static: ${LIB_STATIC}, Shared: ${LIB_SHARED}")
-
-add_compile_definitions(OPENSSL_SUPPORTED=${OPENSSL_FOUND})
-
-if(WIN32)
-    if (OPENSSL_FOUND)
+if(OPENSSL_FOUND)
+    if (WIN32)
         target_link_libraries(${LIBRARY_NAME} PUBLIC OpenSSL::SSL Ws2_32 crypt32 BaseException)
     else()
-        target_link_libraries(${LIBRARY_NAME} PUBLIC Ws2_32 crypt32 BaseException)
+        target_link_libraries(${LIBRARY_NAME} PUBLIC OpenSSL::SSL BaseException)
     endif()
 else()
-    if (OPENSSL_FOUND)
-        target_link_libraries(${LIBRARY_NAME} PUBLIC OpenSSL::SSL BaseException)
-    else()
-        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException)
-    endif()
+    target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException)
 endif()
 
 if(MSVC)
