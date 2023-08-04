@@ -1,6 +1,11 @@
 set(LIBRARY_NAME Socket)
 set(PROJECT_NETWORK_DIR ${PROJECT_DIR}/network)
 
+# Socket library requires C++11 or higher features
+if (NOT CMAKE_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 11)
+endif ()
+
 set(PROJECT_NETWORK_SOURCES
     ${PROJECT_NETWORK_DIR}/Socket.cpp
     ${PROJECT_NETWORK_DIR}/SecureSocket.cpp
