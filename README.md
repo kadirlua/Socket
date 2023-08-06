@@ -4,7 +4,7 @@ Secure and non-secure version of Socket classes. You need OpenSSL for secure ver
 # Very basic example of usage non-secure version:
 
 ```c++
-try{
+try {
   auto clientSocket = std::make_unique<sdk::network::Socket>(portNumber);
   clientSocket->setIpAddress("127.0.0.1");
   SocketOption<Socket> socketOpt{ *clientSocket };
@@ -18,7 +18,7 @@ try{
   socketObj->read(response);
   std::cout << "response from the server: " << response << "\n";
 }
-catch(const sdk::general::SocketException& ex)
+catch (const sdk::general::SocketException& ex)
 {
   std::cout << "Err code: " << ex.getErrorCode() << ", Err Msg: " << ex.getErrorMsg() << "\n"; 
 }
@@ -27,7 +27,7 @@ catch(const sdk::general::SocketException& ex)
 # Very basic example of usage secure version:
 
 ```c++
-try{
+try {
   static const char* cert_file = "C:\\Program Files\\OpenSSL\\bin\\mycert.pem";
   static const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\privateKey.key";
   auto clientSecureSocket = std::make_unique<sdk::network::SecureSocket>(portNumber, connection_method::client);
@@ -47,7 +47,7 @@ try{
   socketSecureObj->read(response);
   std::cout << "response from the server: " << response << "\n";
 }
-catch(const sdk::general::SecureSocketException& ex)
+catch (const sdk::general::SecureSocketException& ex)
 {
   std::cout << "Err code: " << ex.getErrorCode() << ", Err Msg: " << ex.getErrorMsg() << "\n"; 
 }
@@ -60,12 +60,14 @@ Before compile OpenSSL you need Strawberry Perl that you can download and instal
 2. Extract the zipped file to the local disk(C) (For example C:\openssl)
 3. Run the Native Tools Command Prompt for VS (x86 or x64 which arch will be compiled) as Administrator.
 4. Type the following commands step by step:
-5. cd C:/openssl
-6. perl configure VC-WIN32 no-shared (for x86)
-7. perl configure VC-WIN64A no-shared (for x64)
-8. nmake
-9. nmake install
-10. It will take a while the last two steps. So you can take a cup of coffee or tea and relax :)
+```bash
+cd C:/openssl
+perl configure VC-WIN32 no-shared (for x86)
+perl configure VC-WIN64A no-shared (for x64)
+nmake
+nmake install
+```
+5. It will take a while the last two steps. So you can take a cup of coffee or tea and relax :)
 
 # Conclusion
 If you have any questions, please do not hesitate to ask me!
