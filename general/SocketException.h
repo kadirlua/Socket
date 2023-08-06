@@ -2,6 +2,7 @@
 #define SOCKET_EXCEPTION_H_
 
 #include "BaseException.h"
+#include "ExceptionExport.h"
 
 namespace sdk {
     namespace general {
@@ -9,7 +10,7 @@ namespace sdk {
         /*
         *   These classes determines exception errors while using socket classes.
         */
-        class SocketException : public BaseException
+        class EXCEPTION_API SocketException : public BaseException
         {
         public:
             SocketException(int err_code) noexcept;
@@ -30,7 +31,7 @@ namespace sdk {
             std::string GetWSALastErrorMessage() const noexcept;
         };
 
-        class SecureSocketException : public SocketException
+        class EXCEPTION_API SecureSocketException : public SocketException
         {
         public:
             SecureSocketException(int err_code) noexcept;

@@ -1,6 +1,7 @@
 #ifndef BASE_EXCEPTION_H_
 #define BASE_EXCEPTION_H_
 
+#include "ExceptionExport.h"
 #include <string>
 
 namespace sdk {
@@ -10,7 +11,7 @@ namespace sdk {
 		*	You can inherit your own exception classes.
 		*	class myexception : public BaseException{}.
 		*/
-		class BaseException
+		class EXCEPTION_API BaseException
 		{
 		public:
 			BaseException() noexcept;
