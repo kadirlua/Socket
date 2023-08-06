@@ -17,14 +17,20 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         buildType: ["Debug", "Release"]
         shared: [true, false]
+        buildOpenssl: [true, false]
+
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v3
 
+    - if: ${{ matrix.buildOpenssl }}
+      name: Install OpenSSL library
+      run: vcpkg install openssl
+
     - name: Configure CMake shared=${{ matrix.shared }}
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} -DBUILD_SHARED_LIBS=${{ matrix.shared }}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} -DBUILD_SHARED_LIBS=${{ matrix.shared }} -BUILD_WITH_OPENSSL=${{ matrix.buildOpenssl }}
 
     - name: Build
       # Build your program with the given configuration
