@@ -43,7 +43,7 @@ namespace sdk {
 		//	Before call these methods you must call WSA_startup_init() once.
 		//	After all operations done, do not forget to call WSA_Cleanup to clean memory properly.
 
-		class Socket {
+		class SOCKET_API Socket {
 			friend class SocketObject;
 			friend class SecureSocketObj;
 

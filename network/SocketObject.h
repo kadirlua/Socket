@@ -47,6 +47,8 @@ typedef UINT_PTR SOCKET;
 
 #endif
 
+#include "SocketExport.h"
+
 #include <vector>
 #include <string>
 
@@ -66,7 +68,7 @@ namespace sdk {
 
 		class Socket; // incomplete type
 
-		class SocketObject {
+		class SOCKET_API SocketObject {
 		public:
 			explicit SocketObject(SOCKET socketid, const Socket& socket_ref) noexcept;
 			virtual ~SocketObject();

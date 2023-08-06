@@ -23,7 +23,7 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
-		class SecureSocket : public Socket {
+		class SOCKET_API SecureSocket : public Socket {
 		public:
 			explicit SecureSocket(int port, connection_method meth,
 				protocol_type type = protocol_type::tcp, IpVersion IpVer = IpVersion::IPv4);

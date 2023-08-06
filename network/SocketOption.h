@@ -1,6 +1,8 @@
 #ifndef SOCKET_OPTION_H_
 #define SOCKET_OPTION_H_
 
+#include "SocketExport.h"
+
 #ifdef _WIN32
 #include <WinSock2.h>
 #elif __linux__ || defined(__APPLE__)
@@ -10,7 +12,7 @@
 namespace sdk {
 	namespace network {
 		template <typename T>
-		class SocketOption final {
+		class SOCKET_API SocketOption final {
 		private:
 			const T& m_socket;
 
