@@ -21,10 +21,21 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Configure CMake shared=${{ matrix.shared }}
+    - name: Restore vcpkg packages
+      run: vcpkg integrate install
+
+    - name: Install OpenSSL
+      run: vcpkg install openssl 
+
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} -DBUILD_SHARED_LIBS=${{ matrix.shared }}
+    - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies (Non-Windows)
+      if: runner.os != 'Windows'
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} -DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=1
+
+    - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies (Windows)
+      if: runner.os == 'Windows'
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} -DCMAKE_TOOLCHAIN_FILE=${Env:VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=1
 
     - name: Build
       # Build your program with the given configuration
