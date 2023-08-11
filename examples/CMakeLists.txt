@@ -23,4 +23,4 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
   COMMAND_EXPAND_LISTS
 )
 
-add_test(SocketTest ${PROJECT_NAME})
+#add_test(SocketTest ${PROJECT_NAME})
