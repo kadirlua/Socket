@@ -18,4 +18,9 @@ target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_BINARY_DIR}/network)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC Socket)
 
-#add_test(SocketTest ${PROJECT_NAME})
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:${PROJECT_NAME}> $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
+  COMMAND_EXPAND_LISTS
+)
+
+add_test(SocketTest ${PROJECT_NAME})
