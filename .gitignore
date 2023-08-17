@@ -39,17 +39,32 @@
 *.out
 *.app
 
-/build
-/out
-/.vs
-/.vscode
-/.idea
+# for CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+cmake_uninstall.cmake
+.ninja_*
+*.ninja
 
-/.vs
-/.vscode
-/.idea
-/out
-/Socket/x64
-/x64
-/out
-/build
+# for CLion
+.idea
+cmake-build-*
+
+# for Visual Studio Code
+.vscode/
+build
+
+# for Visual C++
+.vs
+out
+Debug
+Release
+x64
+Socket/Debug
+Socket/Release
+Socket/x64
+*.user
+*.ncb
+*.suo
+*.sdf
