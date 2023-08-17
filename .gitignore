@@ -44,12 +44,6 @@
 /.vs
 /.vscode
 /.idea
-
-/.vs
-/.vscode
-/.idea
-/out
 /Socket/x64
 /x64
-/out
-/build
+/cmake-build-*
