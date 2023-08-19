@@ -13,12 +13,12 @@ namespace sdk {
 #if OPENSSL_SUPPORTED
 
 		/**************************Secure Object Part**************************/
-		SecureSocketObj::SecureSocketObj(SOCKET socketid, const SecureSocket& ss) :
-			SocketObject{ socketid, ss }
+		SecureSocketObj::SecureSocketObj(SOCKET socketId, const SecureSocket& ss) :
+			SocketObject{ socketId, ss }
 		{
 			m_ssl = SSL_new(ss.get_ctx());
 			if (m_ssl) {
-				if (SSL_set_fd(m_ssl, (int)socketid) == 0) {
+				if (SSL_set_fd(m_ssl, (int)socketId) == 0) {
 					throw general::SecureSocketException(SSL_get_error(m_ssl, 0));
 				}
 			}
@@ -58,12 +58,12 @@ namespace sdk {
 
 		void SecureSocketObj::connect()
 		{
-			const auto& callback_interupt = m_socket_ref.m_callback_interrupt;
+			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			int err_code{};
 			while ((err_code = SSL_connect(m_ssl)) == -1) {
-				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr)) {
+				if (callback_interrupt &&
+					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
 				}
 
@@ -85,12 +85,12 @@ namespace sdk {
 
 		void SecureSocketObj::accept() // this function used for handshake
 		{
-			const auto& callback_interupt = m_socket_ref.m_callback_interrupt;
+			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			int err_code{};
 			while ((err_code = SSL_accept(m_ssl)) != 1) {
-				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr)) {
+				if (callback_interrupt &&
+					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
 				}
 
@@ -147,12 +147,12 @@ namespace sdk {
 
 			int receive_byte = 0;
 
-			const auto& callback_interupt = m_socket_ref.m_callback_interrupt;
+			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			do {
 				while ((receive_byte = SSL_read(m_ssl, rec_ptr.get(), buf_len)) == -1) {
-					if (callback_interupt &&
-						callback_interupt(m_socket_ref.m_userdata_ptr)) {
+					if (callback_interrupt &&
+						callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 						throw general::SecureSocketException(INTERRUPT_MSG);
 					}
 
@@ -177,8 +177,8 @@ namespace sdk {
 					break;
 				}
 
-				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr)) {
+				if (callback_interrupt &&
+					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
 				}
 
@@ -211,12 +211,12 @@ namespace sdk {
 
 		int SecureSocketObj::write(const char* data, int data_size) const
 		{
-			const auto& callback_interupt = m_socket_ref.m_callback_interrupt;
+			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			int sendBytes{};
 			while ((sendBytes = SSL_write(m_ssl, data, data_size)) == -1) {
-				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr)) {
+				if (callback_interrupt &&
+					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
 				}
 

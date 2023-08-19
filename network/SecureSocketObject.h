@@ -23,7 +23,7 @@ namespace sdk {
 		 */
 		class SOCKET_API SecureSocketObj : public SocketObject {
 		public:
-			explicit SecureSocketObj(SOCKET socketid, const SecureSocket& ss);
+			explicit SecureSocketObj(SOCKET socketId, const SecureSocket& ss);
 			~SecureSocketObj() override;
 			/*
 			 *	This method used for validating hostname for certificate verification.
