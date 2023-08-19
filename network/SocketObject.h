@@ -70,7 +70,7 @@ namespace sdk {
 
 		class SOCKET_API SocketObject {
 		public:
-			explicit SocketObject(SOCKET socketid, const Socket& socket_ref) noexcept;
+			explicit SocketObject(SOCKET socketId, const Socket& socket_ref) noexcept;
 			virtual ~SocketObject();
 
 			/*

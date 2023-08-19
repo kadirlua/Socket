@@ -9,8 +9,8 @@
 namespace sdk {
 	namespace network {
 
-		SocketObject::SocketObject(SOCKET socketid, const Socket& socket_ref) noexcept :
-			m_socket_id{ socketid },
+		SocketObject::SocketObject(SOCKET socketId, const Socket& socket_ref) noexcept :
+			m_socket_id{ socketId },
 			m_socket_ref{ socket_ref }
 		{
 		}
@@ -40,7 +40,7 @@ namespace sdk {
 
 			fd_set readfds{}, exceptfds{};
 
-			const auto& callback_interupt = m_socket_ref.m_callback_interrupt;
+			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			SocketOption<SocketObject> socketOpt{ *this };
 
@@ -49,8 +49,8 @@ namespace sdk {
 
 			do {
 				while ((receive_byte = recv(m_socket_id, rec_ptr.get(), buf_len, 0)) == SOCKET_ERROR) {
-					if (callback_interupt &&
-						callback_interupt(m_socket_ref.m_userdata_ptr)) {
+					if (callback_interrupt &&
+						callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 						throw general::SocketException(INTERRUPT_MSG);
 					}
 
@@ -89,8 +89,8 @@ namespace sdk {
 					std::move(rec_ptr.get(), rec_ptr.get() + receive_byte, std::back_inserter(str_message));
 				}
 
-				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr)) {
+				if (callback_interrupt &&
+					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
@@ -151,11 +151,11 @@ namespace sdk {
 		{
 			int sendBytes = 0;
 
-			const auto& callback_interupt = m_socket_ref.m_callback_interrupt;
+			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			while ((sendBytes = send(m_socket_id, data, data_size, 0)) == SOCKET_ERROR) {
-				if (callback_interupt &&
-					callback_interupt(m_socket_ref.m_userdata_ptr)) {
+				if (callback_interrupt &&
+					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
