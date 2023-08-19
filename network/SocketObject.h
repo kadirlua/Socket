@@ -129,7 +129,7 @@ namespace sdk {
 			 */
 			NODISCARD virtual int write(const std::string& message) const;
 			/*
-			 *	Gets an socket id from related socket.
+			 *	Gets a socket id from related socket.
 			 *	returns: The id of socket.
 			 *	exception: This function never throws an exception.
 			 */

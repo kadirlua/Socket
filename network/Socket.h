@@ -60,7 +60,7 @@ namespace sdk {
 			/*
 			 *	This function initiates use of the Winsock DLL by a process.
 			 *	param1: version number
-			 *	returns: true if succesfully, false otherwise.
+			 *	returns: true if successfully, false otherwise.
 			 */
 			static bool WSA_startup_init(unsigned short versionReq) noexcept;
 			/*
@@ -69,7 +69,7 @@ namespace sdk {
 			 */
 			static void WSA_Cleanup() noexcept;
 			/*
-			 *	Duty of connect method is connect to server for client applications.
+			 *	Duty of connect method is connected to server for client applications.
 			 *	returns: nothing
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
@@ -102,7 +102,7 @@ namespace sdk {
 			NODISCARD std::shared_ptr<SocketObject> createnewSocket(SOCKET) const;
 			/*
 			 *	This function is useful for client applications to set an ip address.
-			 *	param: Ip adress.
+			 *	param: Ip address.
 			 *	returns: nothing.
 			 *	exception: This function never throws an exception.
 			 */

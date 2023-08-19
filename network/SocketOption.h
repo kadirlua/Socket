@@ -32,8 +32,8 @@ namespace sdk {
 			 */
 			void setDebug(int debugMode) const;
 			/*
-			 *	If you want to bind two sockets of the same protocol to the same source adress and port.
-			 *	param1: Reuse adress is active if 1, disabled 0.
+			 *	If you want to bind two sockets of the same protocol to the same source address and port.
+			 *	param1: Reuse address is active if 1, disabled 0.
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
@@ -79,7 +79,7 @@ namespace sdk {
 			 */
 			int getDebug() const;
 			/*
-			 *	Gets reuse adress state on socket.
+			 *	Gets reuse address state on socket.
 			 *	returns: Active if returns 1, disabled 0.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
@@ -92,15 +92,15 @@ namespace sdk {
 			int getKeepAlive() const;
 
 			/*
-			 *	Gets default recieve timeout.
-			 *	returns: returns default recieve timeout.
+			 *	Gets default receive timeout.
+			 *	returns: returns default receive timeout.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
 			timeval getRecvTimeout() const;
 
 			/*
-			 *	Gets default recieve timeout.
-			 *	returns: returns default recieve timeout.
+			 *	Gets default receive timeout.
+			 *	returns: returns default receive timeout.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
 			unsigned long getBytesAvailable() const;

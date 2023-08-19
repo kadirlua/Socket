@@ -58,8 +58,8 @@ namespace sdk {
 					case WSAEWOULDBLOCK: {
 						auto recvTimeout = socketOpt.getRecvTimeout();
 						//	The default value of recieve timeout is 0.
-						//	If an user decided to set timeout value, there is no problem at all.
-						//	Otherwise set the default value to an acceptable timeout value.
+						//	If a user decided to set timeout value, there is no problem at all.
+						//	Otherwise, set the default value to an acceptable timeout value.
 						if (recvTimeout.tv_sec == 0 &&
 							recvTimeout.tv_usec == 0) {
 							recvTimeout.tv_sec = 5;
