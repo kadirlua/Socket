@@ -51,7 +51,7 @@ namespace sdk {
 				while (true) {
 					try {
 						SOCKET new_socket_id = m_socket_ptr->accept();
-						auto socket_obj = m_socket_ptr->createnewSocket(new_socket_id);
+						auto socket_obj = m_socket_ptr->createNewSocket(new_socket_id);
 						std::unique_lock<std::mutex> lock_(vec_mutex);
 						thread_vec.emplace_back(new WorkerThread<SocketObject>(socket_obj));
 						lock_.unlock();
