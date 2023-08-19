@@ -9,8 +9,7 @@
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "cmakeCommandArgs": "-DBUILD_SHARED_LIBS=0 -DBUILD_WITH_OPENSSL=0",
       "buildCommandArgs": "",
-      "ctestCommandArgs": "",
-      "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+      "ctestCommandArgs": ""
     },
     {
       "name": "x86-Debug-Static",
@@ -21,8 +20,7 @@
       "cmakeCommandArgs": "-DBUILD_SHARED_LIBS=0 -DBUILD_WITH_OPENSSL=0",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x86" ],
-      "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+      "inheritEnvironments": [ "msvc_x86" ]
     },
     {
       "name": "x86-Release-Static",
@@ -33,8 +31,7 @@
       "cmakeCommandArgs": "-DBUILD_SHARED_LIBS=0 -DBUILD_WITH_OPENSSL=0",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x86" ],
-      "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+      "inheritEnvironments": [ "msvc_x86" ]
     },
     {
       "name": "x64-Release-Static",
@@ -45,8 +42,7 @@
       "cmakeCommandArgs": "-DBUILD_SHARED_LIBS=0 -DBUILD_WITH_OPENSSL=0",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+      "inheritEnvironments": [ "msvc_x64_x64" ]
     },
     {
       "name": "x64-Debug-Shared",
@@ -57,7 +53,6 @@
       "cmakeCommandArgs": "-DBUILD_SHARED_LIBS=1 -DBUILD_WITH_OPENSSL=0",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
       "inheritEnvironments": [ "msvc_x64_x64" ]
     },
     {
@@ -69,7 +64,6 @@
       "cmakeCommandArgs": "-DBUILD_SHARED_LIBS=1 -DBUILD_WITH_OPENSSL=0",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
       "inheritEnvironments": [ "msvc_x86" ]
     },
     {
@@ -81,7 +75,6 @@
       "cmakeCommandArgs": "-DBUILD_SHARED_LIBS=1 -DBUILD_WITH_OPENSSL=0",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
       "inheritEnvironments": [ "msvc_x86" ]
     },
     {
@@ -93,7 +86,6 @@
       "cmakeCommandArgs": "-DBUILD_SHARED_LIBS=1 -DBUILD_WITH_OPENSSL=0",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
       "inheritEnvironments": [ "msvc_x64_x64" ]
     },
     {
@@ -106,8 +98,7 @@
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": []
+      "inheritEnvironments": [ "msvc_x64_x64" ]
     },
     {
       "name": "x86-Debug-Static-SSL",
@@ -119,8 +110,7 @@
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-      "inheritEnvironments": [ "msvc_x86" ],
-      "variables": []
+      "inheritEnvironments": [ "msvc_x86" ]
     },
     {
       "name": "x86-Release-Static-SSL",
@@ -132,8 +122,7 @@
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-      "inheritEnvironments": [ "msvc_x86" ],
-      "variables": []
+      "inheritEnvironments": [ "msvc_x86" ]
     },
     {
       "name": "x64-Release-Static-SSL",
@@ -145,8 +134,7 @@
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": []
+      "inheritEnvironments": [ "msvc_x64_x64" ]
     },
     {
       "name": "x64-Debug-Shared-SSL",
@@ -158,8 +146,7 @@
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": []
+      "inheritEnvironments": [ "msvc_x64_x64" ]
     },
     {
       "name": "x86-Debug-Shared-SSL",
@@ -171,8 +158,7 @@
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-      "inheritEnvironments": [ "msvc_x86" ],
-      "variables": []
+      "inheritEnvironments": [ "msvc_x86" ]
     },
     {
       "name": "x86-Release-Shared-SSL",
@@ -184,8 +170,7 @@
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-      "inheritEnvironments": [ "msvc_x86" ],
-      "variables": []
+      "inheritEnvironments": [ "msvc_x86" ]
     },
     {
       "name": "x64-Release-Shared-SSL",
@@ -197,8 +182,7 @@
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "cmakeToolchain": "${env.USERPROFILE}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": []
+      "inheritEnvironments": [ "msvc_x64_x64" ]
     }
   ]
 }
