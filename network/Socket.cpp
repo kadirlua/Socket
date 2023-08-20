@@ -97,7 +97,7 @@ namespace sdk {
 				}
 
 				// convert the IP to a string
-				if (!inet_ntop(p->ai_family, addr, ipStr, sizeof(ipStr))) {
+				if (inet_ntop(p->ai_family, addr, ipStr, sizeof(ipStr)) == nullptr) {
 					throw general::SocketException(WSAGetLastError());
 				}
 			}
