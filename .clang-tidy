@@ -1,0 +1,18 @@
+---
+Checks: >
+  -*,
+  bugprone-*,
+  misc-*,
+  modernize-*,
+  cppcoreguidelines-*,
+  -modernize-use-trailing-return-type,
+  performance-*,
+  portability-*,
+  readability-*,
+  -misc-non-private-member-variables-in-classes,
+  -readability-named-parameter,
+  -readability-braces-around-statements,
+  -readability-magic-numbers
+
+# Turn all the warnings from the checks above into errors.
+WarningsAsErrors: "*"
