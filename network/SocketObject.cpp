@@ -123,7 +123,7 @@ namespace sdk {
 
 		size_t SocketObject::read(char& msgByte) const
 		{
-			int numBytes = recv(m_socket_id, &msgByte, 1, 0);
+			int const numBytes = recv(m_socket_id, &msgByte, 1, 0);
 			if (numBytes < 0) {
 				throw general::SocketException(WSAGetLastError());
 			}
