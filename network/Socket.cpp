@@ -71,7 +71,10 @@ namespace sdk {
 
 		std::string Socket::getIpAddress() const
 		{
-			struct addrinfo hints{}, *res, *p;
+			struct addrinfo hints{};
+			struct addrinfo *res = nullptr;
+			struct addrinfo *ptr = nullptr;
+
 			char ipStr[INET6_ADDRSTRLEN]{};
 
 			memset(&hints, 0, sizeof(hints));
@@ -82,22 +85,22 @@ namespace sdk {
 				throw general::SocketException(WSAGetLastError());
 			}
 
-			for (p = res; p != nullptr; p = p->ai_next) {
-				void* addr;
+			for (ptr = res; ptr != nullptr; ptr = ptr->ai_next) {
+				void* pAddr = nullptr;
 
 				// get the pointer to the address itself,
 				// different fields in IPv4 and IPv6:
-				if (p->ai_family == AF_INET) { // IPv4
-					auto ipv4 = reinterpret_cast<struct sockaddr_in*>(p->ai_addr);
-					addr = &(ipv4->sin_addr);
+				if (ptr->ai_family == AF_INET) { // IPv4
+					auto* ipv4 = reinterpret_cast<struct sockaddr_in*>(ptr->ai_addr);
+					pAddr = &(ipv4->sin_addr);
 				}
 				else { // IPv6
-					auto ipv6 = reinterpret_cast<struct sockaddr_in6*>(p->ai_addr);
-					addr = &(ipv6->sin6_addr);
+					auto* ipv6 = reinterpret_cast<struct sockaddr_in6*>(ptr->ai_addr);
+					pAddr = &(ipv6->sin6_addr);
 				}
 
 				// convert the IP to a string
-				if (inet_ntop(p->ai_family, addr, ipStr, sizeof(ipStr)) == nullptr) {
+				if (inet_ntop(ptr->ai_family, pAddr, ipStr, sizeof(ipStr)) == nullptr) {
 					throw general::SocketException(WSAGetLastError());
 				}
 			}
@@ -148,7 +151,8 @@ namespace sdk {
 
 				switch (lastError) {
 				case WSAEWOULDBLOCK: {
-					fd_set writeFds{}, exceptFds{};
+					fd_set writeFds{};
+					fd_set exceptFds{};
 
 					do {
 						if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr)) {
@@ -214,7 +218,8 @@ namespace sdk {
 
 					switch (auto lasterror = WSAGetLastError()) {
 					case WSAEWOULDBLOCK: {
-						fd_set readFds{}, exceptFds{};
+						fd_set readFds{};
+						fd_set exceptFds{};
 
 						do {
 							if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr)) {
