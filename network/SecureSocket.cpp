@@ -64,20 +64,21 @@ namespace sdk {
 
 		void SecureSocket::loadCertificateFile(const char* cert_file, int type /*= SSL_FILETYPE_PEM*/) const
 		{
-			int ret_code{};
-			if ((ret_code = SSL_CTX_use_certificate_file(m_ctx, cert_file, type)) <= 0) {
+			const int ret_code = SSL_CTX_use_certificate_file(m_ctx, cert_file, type);
+			if (ret_code <= 0) {
 				throw general::SecureSocketException(ret_code, "Error setting the certificate file");
 			}
 		}
 
 		void SecureSocket::loadPrivateKeyFile(const char* key_file, int type /*= SSL_FILETYPE_PEM*/) const
 		{
-			int ret_code{};
-			if ((ret_code = SSL_CTX_use_PrivateKey_file(m_ctx, key_file, type)) <= 0) {
+			int ret_code = SSL_CTX_use_PrivateKey_file(m_ctx, key_file, type);
+			if (ret_code <= 0) {
 				throw general::SecureSocketException(ret_code, "Error setting the key file.");
 			}
 
-			if ((ret_code = SSL_CTX_check_private_key(m_ctx)) == 0) {
+			ret_code = SSL_CTX_check_private_key(m_ctx);
+			if (ret_code == 0) {
 				throw general::SecureSocketException(ret_code, "Private key does not match the certificate public key.");
 			}
 		}
@@ -90,8 +91,8 @@ namespace sdk {
 
 		void SecureSocket::loadVerifyLocations(const char* ca_file, const char* ca_path) const
 		{
-			int ret_code = 0;
-			if ((ret_code = SSL_CTX_load_verify_locations(m_ctx, ca_file, ca_path)) < 1) {
+			const int ret_code = SSL_CTX_load_verify_locations(m_ctx, ca_file, ca_path);
+			if (ret_code < 1) {
 				throw general::SecureSocketException(ret_code, "Error setting the verify locations.");
 			}
 		}
