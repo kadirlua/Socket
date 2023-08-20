@@ -56,6 +56,8 @@ namespace sdk {
 			// non copyable
 			Socket(const Socket&) = delete;
 			Socket& operator=(const Socket&) = delete;
+			Socket(Socket&&) noexcept = delete;
+			Socket& operator=(Socket&&) noexcept = delete;
 
 			/*
 			 *	This function initiates use of the Winsock DLL by a process.
