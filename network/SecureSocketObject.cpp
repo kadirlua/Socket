@@ -109,7 +109,7 @@ namespace sdk {
 			}
 
 			X509* peer = SSL_get_peer_certificate(m_ssl);
-			if (peer) {
+			if (peer != nullptr) {
 				const long ret_code = SSL_get_verify_result(m_ssl);
 				if (ret_code != X509_V_OK) {
 					throw general::SecureSocketException(ret_code);
