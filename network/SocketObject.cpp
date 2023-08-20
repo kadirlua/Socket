@@ -38,7 +38,8 @@ namespace sdk {
 			int iResult;
 			struct timeval tv = { 0, 0 };
 
-			fd_set readfds{}, exceptfds{};
+			fd_set readFds{};
+			fd_set exceptFds{};
 
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
@@ -65,14 +66,14 @@ namespace sdk {
 							recvTimeout.tv_sec = 5;
 						}
 
-						FD_ZERO(&readfds);
-						FD_SET(m_socket_id, &readfds);
+						FD_ZERO(&readFds);
+						FD_SET(m_socket_id, &readFds);
 
-						iResult = select((int)m_socket_id + 1, &readfds, nullptr, nullptr, &recvTimeout);
+						iResult = select((int)m_socket_id + 1, &readFds, nullptr, nullptr, &recvTimeout);
 						if (iResult < 0) {
 							throw general::SocketException(WSAGetLastError());
 						}
-						if (!FD_ISSET(m_socket_id, &readfds)) {
+						if (!FD_ISSET(m_socket_id, &readFds)) {
 							return str_message;
 						}
 					} break;
@@ -103,15 +104,15 @@ namespace sdk {
 				 *	select will return immediately without waiting...
 				 */
 
-				FD_ZERO(&readfds);
-				FD_SET(m_socket_id, &readfds);
-				FD_ZERO(&exceptfds);
-				FD_SET(m_socket_id, &exceptfds);
-				iResult = select((int)m_socket_id + 1, &readfds, nullptr, &exceptfds, &tv);
+				FD_ZERO(&readFds);
+				FD_SET(m_socket_id, &readFds);
+				FD_ZERO(&exceptFds);
+				FD_SET(m_socket_id, &exceptFds);
+				iResult = select((int)m_socket_id + 1, &readFds, nullptr, &exceptFds, &tv);
 				if (iResult < 0) {
 					throw general::SocketException(WSAGetLastError());
 				}
-				if (!FD_ISSET(m_socket_id, &readfds) || FD_ISSET(m_socket_id, &exceptfds)) {
+				if (!FD_ISSET(m_socket_id, &readFds) || FD_ISSET(m_socket_id, &exceptFds)) {
 					break;
 				}
 			} while (receive_byte > 0);
