@@ -34,7 +34,6 @@ namespace sdk {
 			while ((err = SSL_shutdown(m_ssl)) <= 0 && !bDone) {
 				switch (const int ret_code = SSL_get_error(m_ssl, err)) {
 				case SSL_ERROR_WANT_READ:
-					break;
 				case SSL_ERROR_WANT_WRITE:
 					break;
 				default:
@@ -67,7 +66,7 @@ namespace sdk {
 					throw general::SecureSocketException(INTERRUPT_MSG);
 				}
 
-				switch (int ret_code = SSL_get_error(m_ssl, err_code)) {
+				switch (const int ret_code = SSL_get_error(m_ssl, err_code)) {
 				case SSL_ERROR_WANT_READ:
 				case SSL_ERROR_WANT_WRITE:
 				case SSL_ERROR_WANT_CONNECT:
