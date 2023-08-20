@@ -99,8 +99,8 @@ namespace sdk {
 
 		void SecureSocket::loadClientCertificateList(const char* path) const
 		{
-			auto stack_ptr = SSL_load_client_CA_file(path);
-			if (!stack_ptr) {
+			auto* stack_ptr = SSL_load_client_CA_file(path);
+			if (stack_ptr == nullptr) {
 				throw general::SecureSocketException(-1, "can not load client CA file");
 			}
 
