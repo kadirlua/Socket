@@ -13,11 +13,11 @@ namespace sdk {
 #if OPENSSL_SUPPORTED
 
 		/**************************Secure Object Part**************************/
-		SecureSocketObj::SecureSocketObj(SOCKET socketId, const SecureSocket& ss) :
-			SocketObject{ socketId, ss }
+		SecureSocketObj::SecureSocketObj(SOCKET socketId, const SecureSocket& sSocket) :
+			SocketObject{ socketId, sSocket },
+			m_ssl{ SSL_new(sSocket.get_ctx()) }
 		{
-			m_ssl = SSL_new(ss.get_ctx());
-			if (m_ssl) {
+			if (m_ssl != nullptr) {
 				if (SSL_set_fd(m_ssl, (int)socketId) == 0) {
 					throw general::SecureSocketException(SSL_get_error(m_ssl, 0));
 				}
