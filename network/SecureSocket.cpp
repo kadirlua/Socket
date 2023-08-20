@@ -56,8 +56,8 @@ namespace sdk {
 
 		void SecureSocket::setCipherList(const char* str) const
 		{
-			int ret_code{};
-			if ((ret_code = SSL_CTX_set_cipher_list(m_ctx, str)) <= 0) {
+			const int ret_code = SSL_CTX_set_cipher_list(m_ctx, str);
+			if (ret_code <= 0) {
 				throw general::SecureSocketException(ret_code, "Error setting the cipher list.");
 			}
 		}
