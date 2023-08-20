@@ -129,7 +129,8 @@ namespace sdk {
 			if (err == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
 			}
-			else if (err == 0) {
+
+			if (err == 0) {
 				throw general::SocketException("IP address is not valid IPv4 dotted-decimal string or a valid IPv6 address string.");
 			}
 
