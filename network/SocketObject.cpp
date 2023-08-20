@@ -32,7 +32,7 @@ namespace sdk {
 			const int buf_len = (max_size > 0 && max_size < MAX_MESSAGE_SIZE) ? max_size : MAX_MESSAGE_SIZE - 1;
 
 			std::string str_message;
-			std::unique_ptr<char[]> rec_ptr{ std::make_unique<char[]>(buf_len) };
+			const std::unique_ptr<char[]> rec_ptr{ std::make_unique<char[]>(buf_len) };
 
 			int receive_byte{};
 			int iResult;
