@@ -110,7 +110,7 @@ namespace sdk {
 
 			X509* peer = SSL_get_peer_certificate(m_ssl);
 			if (peer) {
-				long ret_code = SSL_get_verify_result(m_ssl);
+				const long ret_code = SSL_get_verify_result(m_ssl);
 				if (ret_code != X509_V_OK) {
 					throw general::SecureSocketException(ret_code);
 				}
@@ -118,7 +118,7 @@ namespace sdk {
 				// check host
 				// if our server has valid certificate such an google.com uncomment this if block
 				if (!m_hostname.empty()) {
-					int check_result = X509_check_host(peer, m_hostname.c_str(), m_hostname.size(), 0, nullptr);
+					const int check_result = X509_check_host(peer, m_hostname.c_str(), m_hostname.size(), 0, nullptr);
 					if (check_result != 1) {
 						throw general::SecureSocketException(check_result);
 					}
@@ -131,7 +131,7 @@ namespace sdk {
 
 		size_t SecureSocketObj::read(char& msgByte) const
 		{
-			int numBytes = SSL_read(m_ssl, &msgByte, 1);
+			const int numBytes = SSL_read(m_ssl, &msgByte, 1);
 			if (numBytes < 0) {
 				throw general::SecureSocketException(numBytes);
 			}
@@ -143,7 +143,7 @@ namespace sdk {
 			const int buf_len = (max_size > 0 && max_size < MAX_MESSAGE_SIZE) ? max_size : MAX_MESSAGE_SIZE - 1;
 
 			std::string str_message;
-			std::unique_ptr<char[]> rec_ptr{ std::make_unique<char[]>(buf_len) };
+			const std::unique_ptr<char[]> rec_ptr{ std::make_unique<char[]>(buf_len) };
 
 			int receive_byte = 0;
 
