@@ -43,7 +43,7 @@ namespace sdk {
 
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
-			SocketOption<SocketObject> socketOpt{ *this };
+			const SocketOption<SocketObject> socketOpt{ *this };
 
 			/*if (socketOpt.getBytesAvailable() == 0)
 				return str_message;*/
