@@ -18,7 +18,7 @@ namespace sdk {
 			if (!m_wsa_init) {
 #ifdef _WIN32
 				WSADATA wsaData;
-				if (WSAStartup(versionReq, &wsaData)) {
+				if (WSAStartup(versionReq, &wsaData) != 0) {
 					return false;
 				}
 #endif
