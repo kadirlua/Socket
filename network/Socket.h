@@ -30,7 +30,7 @@ namespace sdk {
 		};
 
 		namespace {
-			static constexpr auto const INTERRUPT_MSG = "I/O interrupt callback is called by user.";
+			constexpr auto const INTERRUPT_MSG = "I/O interrupt callback is called by user.";
 		}
 
 		//	socket interrupt callback
