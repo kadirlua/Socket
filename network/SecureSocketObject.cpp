@@ -29,7 +29,7 @@ namespace sdk {
 			/*int err = SSL_get_error(m_ssl, -1);
 			if (err != SSL_ERROR_SYSCALL && err != SSL_ERROR_SSL)
 			{*/
-			int err;
+			int err = 0;
 			bool bDone = false;
 			while ((err = SSL_shutdown(m_ssl)) <= 0 && !bDone) {
 				switch (int ret_code = SSL_get_error(m_ssl, err)) {
