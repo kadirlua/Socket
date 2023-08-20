@@ -35,7 +35,7 @@ namespace sdk {
 			const std::unique_ptr<char[]> rec_ptr{ std::make_unique<char[]>(buf_len) };
 
 			int receive_byte{};
-			int iResult;
+			int iResult = 0;
 			struct timeval tv = { 0, 0 };
 
 			fd_set readFds{};
