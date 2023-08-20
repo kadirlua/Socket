@@ -113,7 +113,7 @@ namespace sdk {
 				m_ip_address = std::move(ip_);
 			}
 			/*
-			 *	This function is useful for all socket applications to set an port numner.
+			 *	This function is useful for all socket applications to set a port number.
 			 *	param: Port number.
 			 *	returns: nothing.
 			 *	exception: This function never throws an exception.
