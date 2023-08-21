@@ -8,7 +8,7 @@ namespace sdk {
 
 		static inline bool callbackInterrupt(void* userdata_ptr)
 		{
-			Client* client = reinterpret_cast<Client*>(userdata_ptr);
+			auto* client = static_cast<Client*>(userdata_ptr);
 			return client->isInterrupted();
 		}
 

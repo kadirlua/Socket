@@ -10,7 +10,7 @@ namespace sdk {
 
 		static inline bool callbackInterrupt(void* userdata_ptr)
 		{
-			SecureClient* client = reinterpret_cast<SecureClient*>(userdata_ptr);
+			auto* client = static_cast<SecureClient*>(userdata_ptr);
 			return client->isInterrupted();
 		}
 
