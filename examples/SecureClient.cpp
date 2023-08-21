@@ -8,10 +8,12 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
-		static inline bool callbackInterrupt(void* userdata_ptr)
-		{
-			auto* client = static_cast<SecureClient*>(userdata_ptr);
-			return client->isInterrupted();
+		namespace {
+			bool callbackInterrupt(void* userdata_ptr)
+			{
+				auto* client = static_cast<SecureClient*>(userdata_ptr);
+				return client->isInterrupted();
+			}
 		}
 
 		SecureClient::SecureClient(const std::string& ip, int port, network::protocol_type type /*= network::protocol_type::tcp*/, network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
@@ -19,7 +21,7 @@ namespace sdk {
 
 		{
 			m_socket_ptr->setIpAddress(ip);
-			SocketOption<SecureSocket> socketOpt{ *m_socket_ptr };
+			const SocketOption<SecureSocket> socketOpt{ *m_socket_ptr };
 			socketOpt.setBlockingMode(1); // non-blocking mode
 			m_socket_ptr->setInterruptCallback(&callbackInterrupt, this);
 			m_socket_ptr->connect();

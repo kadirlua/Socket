@@ -12,65 +12,67 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
-		static inline int verify_callback(int preverify_ok, X509_STORE_CTX* x509_ctx)
-		{
-			X509* cert = X509_STORE_CTX_get_current_cert(x509_ctx);
-			if (!cert) {
-				return 0;
+		namespace {
+			int verify_callback(int preverify_ok, X509_STORE_CTX* x509_ctx)
+			{
+				X509* cert = X509_STORE_CTX_get_current_cert(x509_ctx);
+				if (cert == nullptr) {
+					return 0;
+				}
+
+				int const err_code = X509_STORE_CTX_get_error(x509_ctx);
+				int check = 0;
+				if (err_code != X509_V_OK) {
+					return err_code;
+				}
+
+				auto *subject_name = X509_get_subject_name(cert);
+				if (subject_name == nullptr) {
+					return 0;
+				}
+
+				char buf[6][256]{};
+				printf("Certificate subject:\n");
+				check = X509_NAME_get_text_by_NID(subject_name, NID_commonName, buf[0], sizeof(buf[0]));
+				if (check > 0) {
+					printf(" - Common name: %s\n", buf[0]);
+				}
+				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationName, buf[1], sizeof(buf[1]));
+				if (check > 0) {
+					printf(" - Organization name: %s\n", buf[1]);
+				}
+				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationalUnitName, buf[2], sizeof(buf[2]));
+				if (check > 0) {
+					printf(" - Organizational unit name: %s\n", buf[2]);
+				}
+				printf("Certificate issuer:\n");
+				check = X509_NAME_get_text_by_NID(subject_name, NID_commonName, buf[3], sizeof(buf[3]));
+				if (check > 0) {
+					printf(" - Common name: %s\n", buf[3]);
+				}
+				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationName, buf[4], sizeof(buf[4]));
+				if (check > 0) {
+					printf(" - Organization name: %s\n", buf[4]);
+				}
+				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationalUnitName, buf[5], sizeof(buf[5]));
+				if (check > 0) {
+					printf(" - Organizational unit name: %s\n", buf[5]);
+				}
+
+				return preverify_ok;
 			}
 
-			int err_code = X509_STORE_CTX_get_error(x509_ctx);
-			int check;
-			if (err_code != X509_V_OK) {
-				return err_code;
-			}
-
-			auto subject_name = X509_get_subject_name(cert);
-			if (!subject_name) {
-				return 0;	
-			}
-
-			char buf[6][256]{};
-			printf("Certificate subject:\n");
-			check = X509_NAME_get_text_by_NID(subject_name, NID_commonName, buf[0], sizeof(buf[0]));
-			if (check > 0) {
-				printf(" - Common name: %s\n", buf[0]);
-			}
-			check = X509_NAME_get_text_by_NID(subject_name, NID_organizationName, buf[1], sizeof(buf[1]));
-			if (check > 0) {
-				printf(" - Organization name: %s\n", buf[1]);
-			}
-			check = X509_NAME_get_text_by_NID(subject_name, NID_organizationalUnitName, buf[2], sizeof(buf[2]));
-			if (check > 0) {
-				printf(" - Organizational unit name: %s\n", buf[2]);
-			}
-			printf("Certificate issuer:\n");
-			check = X509_NAME_get_text_by_NID(subject_name, NID_commonName, buf[3], sizeof(buf[3]));
-			if (check > 0) {
-				printf(" - Common name: %s\n", buf[3]);
-			}
-			check = X509_NAME_get_text_by_NID(subject_name, NID_organizationName, buf[4], sizeof(buf[4]));
-			if (check > 0) {
-				printf(" - Organization name: %s\n", buf[4]);
-			}
-			check = X509_NAME_get_text_by_NID(subject_name, NID_organizationalUnitName, buf[5], sizeof(buf[5]));
-			if (check > 0) {
-				printf(" - Organizational unit name: %s\n", buf[5]);
-			}
-
-			return preverify_ok;
-		}
-
-		static void thread_purging()
-		{
-			while (!purging_flag_) {
-				std::unique_lock<std::mutex> lock_(vec_mutex_);
-				vec_cv_.wait(lock_, []() { return !thread_vec_.empty() || purging_flag; });
-				thread_vec_.erase(std::remove_if(thread_vec_.begin(), thread_vec_.end(),
-									  [](const auto& socketObj) {
-										  return socketObj->isClosed();
-									  }),
-					thread_vec_.end());
+			void thread_purging()
+			{
+				while (!purging_flag_) {
+					std::unique_lock<std::mutex> lock_(vec_mutex_);
+					vec_cv_.wait(lock_, []() { return !thread_vec_.empty() || purging_flag; });
+					thread_vec_.erase(std::remove_if(thread_vec_.begin(), thread_vec_.end(),
+										  [](const auto& socketObj) {
+											  return socketObj->isClosed();
+										  }),
+						thread_vec_.end());
+				}
 			}
 		}
 
@@ -92,7 +94,7 @@ namespace sdk {
 		{
 			try {
 				m_socket_ptr = std::make_unique<SecureSocket>(port_, connection_method::server, type, ipVer);
-				SocketOption<SecureSocket> socketOpt{ *m_socket_ptr };
+				const SocketOption<SecureSocket> socketOpt{ *m_socket_ptr };
 				socketOpt.setBlockingMode(1); // non-blocking mode
 				const char* cert_file = "C:\\Program Files\\OpenSSL\\bin\\certificate.pem";
 				const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\key.key";
@@ -118,7 +120,7 @@ namespace sdk {
 				while (true) {
 
 					try {
-						SOCKET new_socket_id = m_socket_ptr->accept();
+						SOCKET const new_socket_id = m_socket_ptr->accept();
 
 						auto ssl_obj = m_socket_ptr->createNewSocket(new_socket_id);
 						ssl_obj->accept();
@@ -145,7 +147,7 @@ namespace sdk {
 			if (sharedSocketPtr) {
 				try {
 					std::string request_message;
-					std::string response = "I hear You";
+					std::string const response = "I hear You";
 
 					while (true) {
 						try {
