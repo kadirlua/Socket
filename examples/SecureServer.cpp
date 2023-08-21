@@ -13,6 +13,10 @@ namespace sdk {
 #if OPENSSL_SUPPORTED
 
 		namespace {
+			// only for testing
+			const char* cert_file = R"(C:\Program Files\OpenSSL\bin\certificate.pem)";
+			const char* key_file = R"(C:\Program Files\OpenSSL\bin\key.key)";
+
 			int verify_callback(int preverify_ok, X509_STORE_CTX* x509_ctx)
 			{
 				X509* cert = X509_STORE_CTX_get_current_cert(x509_ctx);
@@ -96,8 +100,7 @@ namespace sdk {
 				m_socket_ptr = std::make_unique<SecureSocket>(port_, connection_method::server, type, ipVer);
 				const SocketOption<SecureSocket> socketOpt{ *m_socket_ptr };
 				socketOpt.setBlockingMode(1); // non-blocking mode
-				const char* cert_file = "C:\\Program Files\\OpenSSL\\bin\\certificate.pem";
-				const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\key.key";
+
 				// set certificate properties
 				m_socket_ptr->loadVerifyLocations(cert_file, nullptr);
 				/* Load the client's CA file location as well */
