@@ -6,10 +6,12 @@ namespace sdk {
 
 		using namespace network;
 
-		static inline bool callbackInterrupt(void* userdata_ptr)
-		{
-			auto* client = static_cast<Client*>(userdata_ptr);
-			return client->isInterrupted();
+		namespace {
+			bool callbackInterrupt(void* userdata_ptr)
+			{
+				auto* client = static_cast<Client*>(userdata_ptr);
+				return client->isInterrupted();
+			}
 		}
 
 		Client::Client(const std::string& ip, int port,

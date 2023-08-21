@@ -10,16 +10,18 @@ namespace sdk {
 
 		using namespace network;
 
-		static void thread_purging()
-		{
-			while (!purging_flag) {
-				std::unique_lock<std::mutex> lock_(vec_mutex);
-				vec_cv.wait(lock_, []() { return !thread_vec.empty() || purging_flag; });
-				thread_vec.erase(std::remove_if(thread_vec.begin(), thread_vec.end(),
-									 [](const auto& socketObj) {
-										 return socketObj->isClosed();
-									 }),
-					thread_vec.end());
+		namespace {
+			void thread_purging()
+			{
+				while (!purging_flag) {
+					std::unique_lock<std::mutex> lock_(vec_mutex);
+					vec_cv.wait(lock_, []() { return !thread_vec.empty() || purging_flag; });
+					thread_vec.erase(std::remove_if(thread_vec.begin(), thread_vec.end(),
+										 [](const auto& socketObj) {
+											 return socketObj->isClosed();
+										 }),
+						thread_vec.end());
+				}
 			}
 		}
 
