@@ -42,7 +42,7 @@ namespace sdk {
 		struct thread_deleter {
 			inline void operator()(std::thread* ptr) const
 			{
-				if (ptr) {
+				if (ptr != nullptr) {
 					if (ptr->joinable())
 						ptr->join();
 					delete ptr;
