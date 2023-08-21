@@ -42,7 +42,7 @@ namespace sdk {
 			try {
 				m_socket_ptr = std::make_unique<Socket>(port_, type, ipVer);
 				//	set socket options
-				SocketOption<Socket> socketOpt{ *m_socket_ptr };
+				const SocketOption<Socket> socketOpt{ *m_socket_ptr };
 				socketOpt.setBlockingMode(1);
 				// initialize server
 				m_socket_ptr->bind();
@@ -50,7 +50,7 @@ namespace sdk {
 
 				while (true) {
 					try {
-						SOCKET new_socket_id = m_socket_ptr->accept();
+						const SOCKET new_socket_id = m_socket_ptr->accept();
 						auto socket_obj = m_socket_ptr->createNewSocket(new_socket_id);
 						std::unique_lock<std::mutex> lock_(vec_mutex);
 						thread_vec.emplace_back(new WorkerThread<SocketObject>(socket_obj));
@@ -73,7 +73,7 @@ namespace sdk {
 			auto sharedSocketPtr = socket_obj.lock();
 			if (sharedSocketPtr) {
 				std::string request_message;
-				std::string response = "I hear You";
+				const std::string response = "I hear You";
 
 				while (true) {
 					try {

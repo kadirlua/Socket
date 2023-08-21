@@ -24,7 +24,7 @@ namespace sdk {
 		void Client::connectServer()
 		{
 			m_socket->connect();
-			SocketOption<Socket> socketOpt{ *m_socket };
+			const SocketOption<Socket> socketOpt{ *m_socket };
 			socketOpt.setBlockingMode(1);
 			m_socket_obj = m_socket->createNewSocket(m_socket->getSocketId());
 		}
