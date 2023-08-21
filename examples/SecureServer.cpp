@@ -32,31 +32,31 @@ namespace sdk {
 				}
 
 				char buf[6][256]{};
-				printf("Certificate subject:\n");
+				std::cout << "Certificate subject:\n";
 				check = X509_NAME_get_text_by_NID(subject_name, NID_commonName, buf[0], sizeof(buf[0]));
 				if (check > 0) {
-					printf(" - Common name: %s\n", buf[0]);
+					std::cout << " - Common name: " << buf[0] << "\n";
 				}
 				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationName, buf[1], sizeof(buf[1]));
 				if (check > 0) {
-					printf(" - Organization name: %s\n", buf[1]);
+					std::cout << " - Organization name: " << buf[1] << "\n";
 				}
 				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationalUnitName, buf[2], sizeof(buf[2]));
 				if (check > 0) {
-					printf(" - Organizational unit name: %s\n", buf[2]);
+					std::cout << " - Organizational unit name: " << buf[2] << "\n";
 				}
-				printf("Certificate issuer:\n");
+				std::cout << "Certificate issuer:\n";
 				check = X509_NAME_get_text_by_NID(subject_name, NID_commonName, buf[3], sizeof(buf[3]));
 				if (check > 0) {
-					printf(" - Common name: %s\n", buf[3]);
+					std::cout << " - Common name: " << buf[3] << "\n";
 				}
 				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationName, buf[4], sizeof(buf[4]));
 				if (check > 0) {
-					printf(" - Organization name: %s\n", buf[4]);
+					std::cout << " - Organization name: " << buf[4] << "\n";
 				}
 				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationalUnitName, buf[5], sizeof(buf[5]));
 				if (check > 0) {
-					printf(" - Organizational unit name: %s\n", buf[5]);
+					std::cout << " - Organizational unit name: " << buf[5] << "\n";
 				}
 
 				return preverify_ok;
