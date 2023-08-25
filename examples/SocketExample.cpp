@@ -32,6 +32,9 @@ namespace {
 	constexpr const auto WSA_VERSION = 0x202;
 	constexpr const auto DEFAULT_PORT_NUMBER = 8086;
 	constexpr const auto DEFAULT_SLEEP_TIME = 500;
+
+	std::condition_variable server_cv;
+	std::mutex server_mutex;
 }
 
 //  basic example of inherited from Socket class
@@ -100,9 +103,6 @@ static void th_handler(std::string msg)
 		pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
 	}
 }
-
-static std::condition_variable server_cv;
-static std::mutex server_mutex;
 
 void serverfunc()
 {
