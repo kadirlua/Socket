@@ -28,6 +28,12 @@ static const char* cert_file = "C:\\Program Files\\OpenSSL\\bin\\certificate.pem
 static const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\key.key";
 #endif
 
+namespace {
+	constexpr const auto WSA_VERSION = 0x202;
+	constexpr const auto DEFAULT_PORT_NUMBER = 8086;
+	constexpr const auto DEFAULT_SLEEP_TIME = 500;
+}
+
 //  basic example of inherited from Socket class
 class MySocket : public Socket {
 public:
@@ -53,9 +59,9 @@ static void th_handler(std::string msg)
 
 #if TEST_SECURE_SERVER
 #if TEST_IPv6
-		SecureClient sclient("::1", 8086, protocol_type::tcp, IpVersion::IPv6);
+		SecureClient sclient("::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6);
 #else
-		SecureClient sclient("127.0.0.1", 8086);
+		SecureClient sclient("127.0.0.1", DEFAULT_PORT_NUMBER);
 #endif
 
 		sclient.setCertificateAtr(cert_file, key_file);
@@ -67,9 +73,9 @@ static void th_handler(std::string msg)
 		sclient.read(response);
 #else
 #if TEST_IPv6
-		Client client("::1", 8086, protocol_type::tcp, IpVersion::IPv6);
+		Client client("::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6);
 #else
-		Client client("127.0.0.1", 8086);
+		Client client("127.0.0.1", DEFAULT_PORT_NUMBER);
 #endif
 
 		client.connectServer();
@@ -104,21 +110,21 @@ void serverfunc()
 	try {
 #if TEST_SECURE_SERVER
 #if TEST_IPv6
-		SecureServer server(8086, protocol_type::tcp, IpVersion::IPv6);
+		SecureServer server(DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6);
 #else
-		SecureServer server(8086);
+		SecureServer server(DEFAULT_PORT_NUMBER);
 #endif
 #else
 #if TEST_IPv6
-		Server server(8086, protocol_type::tcp, IpVersion::IPv6);
+		Server server(DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6);
 #else
-		Server server(8086);
+		Server server(DEFAULT_PORT_NUMBER);
 #endif
 #endif
 
 		server_cv.notify_one();
 		while (true) {
-			std::this_thread::sleep_for(std::chrono::microseconds(500));
+			std::this_thread::sleep_for(std::chrono::microseconds(DEFAULT_SLEEP_TIME));
 		}
 	}
 	catch (const SocketException& ex) {
@@ -128,7 +134,7 @@ void serverfunc()
 
 int main()
 {
-	if (Socket::WSA_startup_init(0x202)) {
+	if (Socket::WSA_startup_init(WSA_VERSION)) {
 		/*  start server    */
 #if TEST_SECURE_SERVER
 		SecureSocket::SSLLibraryInit();
