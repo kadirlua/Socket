@@ -87,7 +87,7 @@ static void th_handler(std::string msg)
 		client.read(response);
 #endif // TEST_SECURE_SERVER
 
-		if (response.size() == 0) {
+		if (response.empty()) {
 			pcout{} << "empty response"
 					<< "\n";
 		}
