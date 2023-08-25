@@ -59,9 +59,9 @@ static void th_handler(std::string msg)
 
 #if TEST_SECURE_SERVER
 #if TEST_IPv6
-		SecureClient sclient("::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6);
+		SecureClient sclient{ "::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
 #else
-		SecureClient sclient("127.0.0.1", DEFAULT_PORT_NUMBER);
+		SecureClient sclient{ "127.0.0.1", DEFAULT_PORT_NUMBER };
 #endif
 
 		sclient.setCertificateAtr(cert_file, key_file);
@@ -73,9 +73,9 @@ static void th_handler(std::string msg)
 		sclient.read(response);
 #else
 #if TEST_IPv6
-		Client client("::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6);
+		Client client{ "::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
 #else
-		Client client("127.0.0.1", DEFAULT_PORT_NUMBER);
+		Client client{ "127.0.0.1", DEFAULT_PORT_NUMBER };
 #endif
 
 		client.connectServer();
@@ -92,7 +92,7 @@ static void th_handler(std::string msg)
 					<< "\n";
 		}
 		else {
-			std::string str(response.begin(), response.end());
+			const std::string str{ response.begin(), response.end() };
 			pcout{} << str << "\n";
 		}
 	}
@@ -104,21 +104,20 @@ static void th_handler(std::string msg)
 static std::condition_variable server_cv;
 static std::mutex server_mutex;
 
-
 void serverfunc()
 {
 	try {
 #if TEST_SECURE_SERVER
 #if TEST_IPv6
-		SecureServer server(DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6);
+		const SecureServer server{ DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
 #else
-		SecureServer server(DEFAULT_PORT_NUMBER);
+		const SecureServer server{ DEFAULT_PORT_NUMBER };
 #endif
 #else
 #if TEST_IPv6
-		Server server(DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6);
+		const Server server{ DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
 #else
-		Server server(DEFAULT_PORT_NUMBER);
+		const Server server{ DEFAULT_PORT_NUMBER };
 #endif
 #endif
 
