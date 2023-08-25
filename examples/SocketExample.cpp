@@ -14,16 +14,16 @@
 #include <algorithm>
 
 #if OPENSSL_SUPPORTED
-#define _TEST_SECURE_SERVER 0
+#define TEST_SECURE_SERVER 0
 #endif // OPENSSL_SUPPORTED
 
-#define _TEST_IPv6 1
+#define TEST_IPv6 1
 
 using namespace sdk::network;
 using namespace sdk::application;
 using namespace sdk::general;
 
-#if _TEST_SECURE_SERVER
+#if TEST_SECURE_SERVER
 static const char* cert_file = "C:\\Program Files\\OpenSSL\\bin\\certificate.pem";
 static const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\key.key";
 #endif
@@ -51,8 +51,8 @@ static void th_handler(std::string msg)
 
 	try {
 
-#if _TEST_SECURE_SERVER
-#if _TEST_IPv6
+#if TEST_SECURE_SERVER
+#if TEST_IPv6
 		SecureClient sclient("::1", 8086, protocol_type::tcp, IpVersion::IPv6);
 #else
 		SecureClient sclient("127.0.0.1", 8086);
@@ -66,7 +66,7 @@ static void th_handler(std::string msg)
 		sclient.write({ 'a', 'b', 'c' }); // initializer_list support!
 		sclient.read(response);
 #else
-#if _TEST_IPv6
+#if TEST_IPv6
 		Client client("::1", 8086, protocol_type::tcp, IpVersion::IPv6);
 #else
 		Client client("127.0.0.1", 8086);
@@ -79,7 +79,7 @@ static void th_handler(std::string msg)
 
 		client.write({ 'a', 'b', 'c' }); // initializer_list support!
 		client.read(response);
-#endif // _TEST_SECURE_SERVER
+#endif // TEST_SECURE_SERVER
 
 		if (response.size() == 0) {
 			pcout{} << "empty response"
@@ -102,14 +102,14 @@ static std::mutex server_mutex;
 void serverfunc()
 {
 	try {
-#if _TEST_SECURE_SERVER
-#if _TEST_IPv6
+#if TEST_SECURE_SERVER
+#if TEST_IPv6
 		SecureServer server(8086, protocol_type::tcp, IpVersion::IPv6);
 #else
 		SecureServer server(8086);
 #endif
 #else
-#if _TEST_IPv6
+#if TEST_IPv6
 		Server server(8086, protocol_type::tcp, IpVersion::IPv6);
 #else
 		Server server(8086);
@@ -130,7 +130,7 @@ int main()
 {
 	if (Socket::WSA_startup_init(0x202)) {
 		/*  start server    */
-#if _TEST_SECURE_SERVER
+#if TEST_SECURE_SERVER
 		SecureSocket::SSLLibraryInit();
 
 		// print openssl library version number
