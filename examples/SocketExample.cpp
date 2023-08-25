@@ -35,6 +35,56 @@ namespace {
 
 	std::condition_variable server_cv;
 	std::mutex server_mutex;
+
+	void th_handler(std::string msg)
+	{
+		std::vector<unsigned char> response;
+
+		try {
+
+#if TEST_SECURE_SERVER
+#if TEST_IPv6
+			SecureClient sclient{ "::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
+#else
+			SecureClient sclient{ "127.0.0.1", DEFAULT_PORT_NUMBER };
+#endif
+
+			sclient.setCertificateAtr(cert_file, key_file);
+			sclient.connectServer();
+			/*sclient.write(msg);
+			sclient.read(response);*/
+
+			sclient.write({ 'a', 'b', 'c' }); // initializer_list support!
+			sclient.read(response);
+#else
+#if TEST_IPv6
+			Client client{ "::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
+#else
+			Client client{ "127.0.0.1", DEFAULT_PORT_NUMBER };
+#endif
+
+			client.connectServer();
+
+			///*client.write(msg);
+			// client.read(response);*/
+
+			client.write({ 'a', 'b', 'c' }); // initializer_list support!
+			client.read(response);
+#endif // TEST_SECURE_SERVER
+
+			if (response.empty()) {
+				pcout{} << "empty response"
+						<< "\n";
+			}
+			else {
+				const std::string str{ response.begin(), response.end() };
+				pcout{} << str << "\n";
+			}
+		}
+		catch (const sdk::general::SocketException& ex) {
+			pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
+		}
+	}
 }
 
 //  basic example of inherited from Socket class
@@ -53,56 +103,6 @@ public:
 				  << "\n";
 	}
 };
-
-static void th_handler(std::string msg)
-{
-	std::vector<unsigned char> response;
-
-	try {
-
-#if TEST_SECURE_SERVER
-#if TEST_IPv6
-		SecureClient sclient{ "::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
-#else
-		SecureClient sclient{ "127.0.0.1", DEFAULT_PORT_NUMBER };
-#endif
-
-		sclient.setCertificateAtr(cert_file, key_file);
-		sclient.connectServer();
-		/*sclient.write(msg);
-		sclient.read(response);*/
-
-		sclient.write({ 'a', 'b', 'c' }); // initializer_list support!
-		sclient.read(response);
-#else
-#if TEST_IPv6
-		Client client{ "::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
-#else
-		Client client{ "127.0.0.1", DEFAULT_PORT_NUMBER };
-#endif
-
-		client.connectServer();
-
-		///*client.write(msg);
-		// client.read(response);*/
-
-		client.write({ 'a', 'b', 'c' }); // initializer_list support!
-		client.read(response);
-#endif // TEST_SECURE_SERVER
-
-		if (response.empty()) {
-			pcout{} << "empty response"
-					<< "\n";
-		}
-		else {
-			const std::string str{ response.begin(), response.end() };
-			pcout{} << str << "\n";
-		}
-	}
-	catch (const sdk::general::SocketException& ex) {
-		pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
-	}
-}
 
 void serverfunc()
 {
