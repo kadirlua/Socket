@@ -9,15 +9,15 @@ namespace sdk {
 		/*
 		*	This class is common interface for exceptions.
 		*	You can inherit your own exception classes.
-		*	class myexception : public BaseException{}.
+		*	class myException : public BaseException{}.
 		*/
 		class EXCEPTION_API BaseException
 		{
 		public:
-			BaseException() noexcept;
+			BaseException() noexcept = default;
 			BaseException(const std::string& err_msg) noexcept;
 			BaseException(std::string&& err_msg) noexcept;
-			virtual ~BaseException();
+			virtual ~BaseException() = default;
 			BaseException(const BaseException&);				//copy constructor
 			BaseException& operator=(const BaseException&);		//copy assignment operator
 			BaseException(BaseException&&) noexcept;						//move constructor

@@ -3,10 +3,6 @@
 namespace sdk {
 	namespace general {
 
-		BaseException::BaseException() noexcept {
-
-		}
-
 		BaseException::BaseException(std::string&& err_msg) noexcept : 
 			m_error_msg{ std::move(err_msg) }
 		{
@@ -19,17 +15,12 @@ namespace sdk {
 		
 		}
 
-		BaseException::~BaseException()
-		{
-		}
-
 		BaseException::BaseException(const BaseException& other)
 		{
 			if (this != &other)
 			{
 				m_error_msg = other.m_error_msg;
 			}
-
 		}
 
 		BaseException& BaseException::operator=(const BaseException& other)
@@ -39,7 +30,6 @@ namespace sdk {
 				m_error_msg = other.m_error_msg;
 			}
 			return *this;
-
 		}
 
 		BaseException::BaseException(BaseException&& other) noexcept
@@ -48,7 +38,6 @@ namespace sdk {
 			{
 				m_error_msg = std::move(other.m_error_msg);
 			}
-
 		}
 
 		BaseException& BaseException::operator=(BaseException&& other) noexcept
