@@ -23,7 +23,7 @@ using namespace sdk::network;
 using namespace sdk::application;
 using namespace sdk::general;
 
-#if TEST_SECURE_SERVER
+#if (TEST_SECURE_SERVER == 1)
 static const char* cert_file = "C:\\Program Files\\OpenSSL\\bin\\certificate.pem";
 static const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\key.key";
 #endif
@@ -42,8 +42,8 @@ namespace {
 
 		try {
 
-#if TEST_SECURE_SERVER
-#if TEST_IPv6
+#if (TEST_SECURE_SERVER == 1)
+#if (TEST_IPv6 == 1)
 			SecureClient sclient{ "::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
 #else
 			SecureClient sclient{ "127.0.0.1", DEFAULT_PORT_NUMBER };
@@ -57,7 +57,7 @@ namespace {
 			sclient.write({ 'a', 'b', 'c' }); // initializer_list support!
 			sclient.read(response);
 #else
-#if TEST_IPv6
+#if (TEST_IPv6 == 1)
 			Client client{ "::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
 #else
 			Client client{ "127.0.0.1", DEFAULT_PORT_NUMBER };
@@ -107,14 +107,14 @@ public:
 void serverfunc()
 {
 	try {
-#if TEST_SECURE_SERVER
-#if TEST_IPv6
+#if (TEST_SECURE_SERVER == 1)
+#if (TEST_IPv6 == 1)
 		const SecureServer server{ DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
 #else
 		const SecureServer server{ DEFAULT_PORT_NUMBER };
 #endif
 #else
-#if TEST_IPv6
+#if (TEST_IPv6 == 1)
 		const Server server{ DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
 #else
 		const Server server{ DEFAULT_PORT_NUMBER };
@@ -135,7 +135,7 @@ int main()
 {
 	if (Socket::WSA_startup_init(WSA_VERSION)) {
 		/*  start server    */
-#if TEST_SECURE_SERVER
+#if (TEST_SECURE_SERVER == 1)
 		SecureSocket::SSLLibraryInit();
 
 		// print openssl library version number
