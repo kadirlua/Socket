@@ -156,7 +156,6 @@ namespace sdk {
 		private:
 			static bool m_wsa_init;
 
-		protected:
 			socket_interrupt_callback_t m_callback_interrupt;
 			void* m_userdata_ptr{};
 			int m_port_number{};
