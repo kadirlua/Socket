@@ -96,7 +96,7 @@ namespace sdk {
 			 */
 			NODISCARD int write(const std::string& message) const override;
 			/*
-			 *	Gets an socket id from related socket.
+			 *	Gets a socket id from related socket.
 			 *	returns: The id of socket.
 			 *	exception: This function never throws an exception.
 			 */
@@ -105,7 +105,7 @@ namespace sdk {
 		protected:
 			std::string read(int max_size = 0) const override;
 
-		protected:
+		private:
 			std::string m_hostname;
 			SSL* m_ssl{};
 		};
