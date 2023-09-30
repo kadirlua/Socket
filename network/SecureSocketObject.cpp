@@ -73,7 +73,7 @@ namespace sdk {
 					break;
 				case SSL_ERROR_ZERO_RETURN:
 					SSL_shutdown(m_ssl);
-#if __cplusplus >= 201703L
+#if (__cplusplus >= 201703L)
 					[[fallthrough]];
 #endif
 				default:
@@ -99,7 +99,7 @@ namespace sdk {
 					break;
 				case SSL_ERROR_ZERO_RETURN:
 					SSL_shutdown(m_ssl);
-#if __cplusplus >= 201703L
+#if (__cplusplus >= 201703L)
 					[[fallthrough]];
 #endif
 				default:
@@ -160,7 +160,7 @@ namespace sdk {
 						break;
 					case SSL_ERROR_ZERO_RETURN:
 						SSL_shutdown(m_ssl);
-#if __cplusplus >= 201703L
+#if (__cplusplus >= 201703L)
 						[[fallthrough]];
 #endif
 					default:
@@ -224,7 +224,7 @@ namespace sdk {
 					break;
 				case SSL_ERROR_ZERO_RETURN:
 					SSL_shutdown(m_ssl);
-#if __cplusplus >= 201703L
+#if (__cplusplus >= 201703L)
 					[[fallthrough]];
 #endif
 				default:
