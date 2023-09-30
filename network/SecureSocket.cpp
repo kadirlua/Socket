@@ -45,7 +45,7 @@ namespace sdk {
 				 *	itself automatically.
 				 *	https://wiki.openssl.org/index.php/Library_Initialization
 				 */
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
+#if (OPENSSL_VERSION_NUMBER < 0x10100000L)
 				SSL_library_init();
 				SSL_load_error_strings();
 #endif
