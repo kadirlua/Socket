@@ -45,14 +45,15 @@ namespace sdk{
             std::string strErrMsg;
 #ifdef _WIN32
             char* err_msg = nullptr;
-            if (!FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+            if (FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
                 nullptr,
                 m_error_code,
                 0,
                 (LPSTR)&err_msg,
                 0,
-                nullptr))
-                return strErrMsg;
+                nullptr) == 0U) {
+				return strErrMsg;
+			}
 
             strErrMsg = err_msg;
             LocalFree(err_msg);
