@@ -23,7 +23,7 @@ namespace sdk {
 		 */
 		class SOCKET_API SecureSocketObj : public SocketObject {
 		public:
-			explicit SecureSocketObj(SOCKET socketId, const SecureSocket& ss);
+			explicit SecureSocketObj(SOCKET socketId, const SecureSocket& sSocket);
 			~SecureSocketObj() override;
 			/*
 			 *	This method used for validating hostname for certificate verification.
@@ -33,7 +33,7 @@ namespace sdk {
 			 */
 			void setHostname(const char* hostname);
 			/*
-			 *	Duty of connect method is connect to server for client applications using SSL.
+			 *	Duty of connect method is connected to server for client applications using SSL.
 			 *	returns: nothing
 			 *	exception: This method throws an SecureSocketException if an error occurs.
 			 */
