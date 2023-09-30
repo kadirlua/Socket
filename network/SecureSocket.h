@@ -42,9 +42,9 @@ namespace sdk {
 			NODISCARD std::shared_ptr<SecureSocketObj> createNewSocket(SOCKET socket_id) const;
 			/*
 			 *	This function sets the list of available ciphers for ctx using the control string str.
-			 *	If this function not use, the default ciphelist is "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256".
-			 *	param1:	Use this url https://www.openssl.org/docs/manmaster/man3/SSL_CTX_set_cipher_list.html
-			 *	and you can see useable list of chipher list.
+			 *	If this function not use, the default cipher list is "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256".
+			 *	param1:	Use this url https://www.openssl.org/docs/manmaster/man3/SSL_CTX_set_cipher_list.html,
+			 *	and you can see usable list of cipher list.
 			 *	returns: nothing.
 			 *	exception: This function throws an SecureSocketException if an error occurs.
 			 */
@@ -109,8 +109,6 @@ namespace sdk {
 
 		private:
 			static bool m_bSSLLibraryInit;
-
-		protected:
 			SSL_CTX* m_ctx{};
 		};
 #endif // OPENSSL_SUPPORTED
