@@ -52,7 +52,7 @@ typedef UINT_PTR SOCKET;
 #include <vector>
 #include <string>
 
-#if __cplusplus >= 201703L
+#if (__cplusplus >= 201703L)
 #define NODISCARD [[nodiscard]]
 #else
 #define NODISCARD
