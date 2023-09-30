@@ -13,7 +13,6 @@ namespace sdk{
     namespace general
     {
         SocketException::SocketException(int err_code) noexcept :
-            BaseException(),
             m_error_code{ err_code }
         {
             m_error_msg = GetWSALastErrorMessage();
