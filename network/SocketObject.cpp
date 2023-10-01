@@ -97,7 +97,7 @@ namespace sdk {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
-				if (max_size > 0 && str_message.size() >= (size_t)max_size) {
+				if (max_size > 0 && str_message.size() >= (std::size_t)max_size) {
 					break;
 				}
 
@@ -123,23 +123,23 @@ namespace sdk {
 		}
 
 
-		size_t SocketObject::read(char& msgByte) const
+		std::size_t SocketObject::read(char& msgByte) const
 		{
 			int const numBytes = recv(m_socket_id, &msgByte, 1, 0);
 			if (numBytes < 0) {
 				throw general::SocketException(WSAGetLastError());
 			}
-			return static_cast<size_t>(numBytes);
+			return static_cast<std::size_t>(numBytes);
 		}
 
-		size_t SocketObject::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
+		std::size_t SocketObject::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
 		{
 			const auto received_str = read(max_size);
 			std::move(received_str.begin(), received_str.end(), std::back_inserter(message));
 			return message.size();
 		}
 
-		size_t SocketObject::read(std::string& message, int max_size /*= 0*/) const
+		std::size_t SocketObject::read(std::string& message, int max_size /*= 0*/) const
 		{
 			message = read(max_size);
 			return message.size();

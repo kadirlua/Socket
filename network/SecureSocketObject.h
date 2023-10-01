@@ -45,7 +45,7 @@ namespace sdk {
 			 *	returns: Return byte count that read.
 			 *	exception: This method throws an SecureSocketException if an error occurs.
 			 */
-			NODISCARD size_t read(char& msgByte) const override;
+			NODISCARD std::size_t read(char& msgByte) const override;
 			/*
 			 *	This method used for reading operations from related secure socket layer.
 			 *	param1: Bytes of vector.
@@ -53,7 +53,7 @@ namespace sdk {
 			 *	returns: Return byte count that read.
 			 *	exception: This method throws an SecureSocketException if an error occurs.
 			 */
-			NODISCARD size_t read(std::vector<unsigned char>& message, int max_size = 0) const override;
+			NODISCARD std::size_t read(std::vector<unsigned char>& message, int max_size = 0) const override;
 			/*
 			 *	This method used for reading operations from related secure socket layer.
 			 *	param1: String.
@@ -61,7 +61,7 @@ namespace sdk {
 			 *	returns: Return byte count that read.
 			 *	exception: This method throws an SecureSocketException if an error occurs.
 			 */
-			NODISCARD size_t read(std::string& message, int max_size = 0) const override;
+			NODISCARD std::size_t read(std::string& message, int max_size = 0) const override;
 
 			/*
 			 *	This method used for writing operations from related secure socket layer.

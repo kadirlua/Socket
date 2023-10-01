@@ -79,7 +79,7 @@ namespace sdk {
 			 *	returns: Return byte count that read.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual size_t read(char& msgByte) const;
+			NODISCARD virtual std::size_t read(char& msgByte) const;
 
 			/*
 			 *	This function used for reading operations from related socket.
@@ -88,7 +88,7 @@ namespace sdk {
 			 *	returns: Return byte count that read.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual size_t read(std::vector<unsigned char>& message, int max_size = 0) const;
+			NODISCARD virtual std::size_t read(std::vector<unsigned char>& message, int max_size = 0) const;
 			/*
 			 *	This function used for reading operations from related socket.
 			 *	param1: Bytes.
@@ -96,7 +96,7 @@ namespace sdk {
 			 *	returns: Return byte count that read.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual size_t read(std::string& message, int max_size = 0) const;
+			NODISCARD virtual std::size_t read(std::string& message, int max_size = 0) const;
 
 			/*
 			 *	This function used for writing operations from related socket.

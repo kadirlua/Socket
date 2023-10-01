@@ -128,13 +128,13 @@ namespace sdk {
 			}
 		}
 
-		size_t SecureSocketObj::read(char& msgByte) const
+		std::size_t SecureSocketObj::read(char& msgByte) const
 		{
 			const int numBytes = SSL_read(m_ssl, &msgByte, 1);
 			if (numBytes < 0) {
 				throw general::SecureSocketException(numBytes);
 			}
-			return (size_t)numBytes;
+			return (std::size_t)numBytes;
 		}
 
 		std::string SecureSocketObj::read(int max_size /*= 0*/) const
@@ -183,7 +183,7 @@ namespace sdk {
 					throw general::SecureSocketException(INTERRUPT_MSG);
 				}
 
-				if (max_size > 0 && str_message.size() >= (size_t)max_size) {
+				if (max_size > 0 && str_message.size() >= (std::size_t)max_size) {
 					break;
 				}
 
@@ -192,14 +192,14 @@ namespace sdk {
 			return str_message;
 		}
 
-		size_t SecureSocketObj::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
+		std::size_t SecureSocketObj::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
 		{
 			const auto received_str = read(max_size);
 			std::move(received_str.begin(), received_str.end(), std::back_inserter(message));
 			return message.size();
 		}
 
-		size_t SecureSocketObj::read(std::string& message, int max_size /*= 0*/) const
+		std::size_t SecureSocketObj::read(std::string& message, int max_size /*= 0*/) const
 		{
 			message = read(max_size);
 			return message.size();
