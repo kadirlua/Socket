@@ -32,7 +32,8 @@ namespace sdk {
 			const int buf_len = (max_size > 0 && max_size < MAX_MESSAGE_SIZE) ? max_size : MAX_MESSAGE_SIZE - 1;
 
 			std::string str_message;
-			const std::unique_ptr<char[]> rec_ptr{ std::make_unique<char[]>(buf_len) };
+			std::vector<char> dataVec;
+			dataVec.reserve(buf_len);
 
 			int receive_byte{};
 			int iResult = 0;
@@ -49,7 +50,7 @@ namespace sdk {
 				return str_message;*/
 
 			do {
-				while ((receive_byte = recv(m_socket_id, rec_ptr.get(), buf_len, 0)) == SOCKET_ERROR) {
+				while ((receive_byte = recv(m_socket_id, dataVec.data(), buf_len, 0)) == SOCKET_ERROR) {
 					if (callback_interrupt &&
 						callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 						throw general::SocketException(INTERRUPT_MSG);
@@ -87,7 +88,8 @@ namespace sdk {
 				}
 
 				if (receive_byte > 0) {
-					std::move(rec_ptr.get(), rec_ptr.get() + receive_byte, std::back_inserter(str_message));
+					std::move(dataVec.begin(), dataVec.begin() + receive_byte,
+						std::back_inserter(str_message));
 				}
 
 				if (callback_interrupt &&

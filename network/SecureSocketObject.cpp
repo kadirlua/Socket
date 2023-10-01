@@ -142,14 +142,15 @@ namespace sdk {
 			const int buf_len = (max_size > 0 && max_size < MAX_MESSAGE_SIZE) ? max_size : MAX_MESSAGE_SIZE - 1;
 
 			std::string str_message;
-			const std::unique_ptr<char[]> rec_ptr{ std::make_unique<char[]>(buf_len) };
+			std::vector<char> dataVec;
+			dataVec.reserve(buf_len);
 
 			int receive_byte = 0;
 
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			do {
-				while ((receive_byte = SSL_read(m_ssl, rec_ptr.get(), buf_len)) == -1) {
+				while ((receive_byte = SSL_read(m_ssl, dataVec.data(), buf_len)) == -1) {
 					if (callback_interrupt &&
 						callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 						throw general::SecureSocketException(INTERRUPT_MSG);
@@ -169,7 +170,8 @@ namespace sdk {
 				}
 
 				if (receive_byte > 0) {
-					std::move(rec_ptr.get(), rec_ptr.get() + receive_byte, std::back_inserter(str_message));
+					std::move(dataVec.begin(), dataVec.begin() + receive_byte,
+						std::back_inserter(str_message));
 				}
 
 				if (SSL_pending(m_ssl) == 0) {
