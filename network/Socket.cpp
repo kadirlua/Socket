@@ -7,6 +7,11 @@
 #endif
 
 namespace sdk {
+
+	namespace {
+		constexpr auto const DEFAULT_TIMEOUT = 1000L;
+	}
+
 	namespace network {
 
 		bool Socket::m_wsa_init = false;
@@ -111,7 +116,7 @@ namespace sdk {
 
 		void Socket::connect()
 		{
-			timeval timeout{ 0, 1000 };
+			timeval timeout{ 0, DEFAULT_TIMEOUT };
 
 			int err{};
 			auto strIpAddr = getIpAddress();
@@ -203,7 +208,7 @@ namespace sdk {
 		SOCKET Socket::accept()
 		{
 			if (m_protocol_type != protocol_type::udp) {
-				timeval timeout{ 0, 1000 };
+				timeval timeout{ 0, DEFAULT_TIMEOUT };
 
 				socklen_t addrLen = m_ipVersion == IpVersion::IPv4 ? sizeof(m_st_address_t) : sizeof(m_st_address6_t);
 				SOCKET new_sock_id{};
