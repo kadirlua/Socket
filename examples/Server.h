@@ -33,7 +33,7 @@ namespace sdk {
 				close_flag = flag;
 			}
 
-			void handle_thread_proc(std::weak_ptr<T> socket_obj);
+			void handle_thread_proc(const std::weak_ptr<T>& socket_obj);
 
 		private:
 			bool close_flag{};
@@ -43,8 +43,9 @@ namespace sdk {
 			inline void operator()(std::thread* ptr) const
 			{
 				if (ptr != nullptr) {
-					if (ptr->joinable())
+					if (ptr->joinable()) {
 						ptr->join();
+					}
 					delete ptr;
 				}
 			}

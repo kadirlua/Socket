@@ -73,7 +73,7 @@ namespace sdk {
 		}
 
 		template <>
-		void WorkerThread<SocketObject>::handle_thread_proc(std::weak_ptr<SocketObject> socket_obj)
+		void WorkerThread<SocketObject>::handle_thread_proc(const std::weak_ptr<SocketObject>& socket_obj)
 		{
 			auto sharedSocketPtr = socket_obj.lock();
 			if (sharedSocketPtr) {
