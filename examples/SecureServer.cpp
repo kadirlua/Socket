@@ -144,7 +144,7 @@ namespace sdk {
 		}
 
 		template <>
-		void WorkerThread<SecureSocketObj>::handle_thread_proc(std::weak_ptr<SecureSocketObj> ssl_obj)
+		void WorkerThread<SecureSocketObj>::handle_thread_proc(const std::weak_ptr<SecureSocketObj>& ssl_obj)
 		{
 			auto sharedSocketPtr = ssl_obj.lock();
 			if (sharedSocketPtr) {
