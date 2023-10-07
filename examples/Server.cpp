@@ -11,6 +11,9 @@ namespace sdk {
 		using namespace network;
 
 		namespace {
+
+			constexpr const auto MAX_CLIENTS = 10;
+
 			void thread_purging()
 			{
 				while (!purging_flag) {
@@ -48,7 +51,7 @@ namespace sdk {
 				socketOpt.setBlockingMode(1);
 				// initialize server
 				m_socket_ptr->bind();
-				m_socket_ptr->listen(10);
+				m_socket_ptr->listen(MAX_CLIENTS);
 
 				while (true) {
 					try {
