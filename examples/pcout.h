@@ -4,9 +4,9 @@
 #include <mutex>
 
 struct pcout : std::stringstream {
-	~pcout()
+	~pcout() override
 	{
-		std::lock_guard<std::mutex> lock_(mtx_);
+		const std::lock_guard<std::mutex> lock_(mtx_);
 		std::cout << rdbuf();
 		std::cout.flush();
 	}
