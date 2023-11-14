@@ -25,7 +25,9 @@ jobs:
     - name: Restore vcpkg packages
       run: vcpkg integrate install
 
+      # no need to install OpenSSL library if ssl feature is disabled
     - name: Install OpenSSL
+      if: matrix.ssl == true
       run: vcpkg install openssl 
 
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
