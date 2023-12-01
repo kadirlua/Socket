@@ -29,4 +29,4 @@ if (WIN32 AND BUILD_SHARED_LIBS)
   )
 endif()
 
-#add_test(SocketTest ${PROJECT_NAME})
+add_test(SocketTest ${PROJECT_NAME})
