@@ -163,7 +163,7 @@ namespace sdk {
 
 			std::string str_message;
 			std::vector<char> dataVec;
-			dataVec.reserve(buf_len);
+			dataVec.resize(buf_len);
 
 			int receive_byte = 0;
 
