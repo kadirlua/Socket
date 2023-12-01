@@ -45,11 +45,13 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
+		using SSLCtx_unique_ptr = std::unique_ptr<SSL_CTX, decltype(&SSL_CTX_free)>;
+
 		class SOCKET_API SecureSocket : public Socket {
 		public:
 			explicit SecureSocket(int port, connection_method meth,
 				protocol_type type = protocol_type::tcp, IpVersion IpVer = IpVersion::IPv4);
-			~SecureSocket() override;
+			~SecureSocket() override = default;
 
 			// non copyable
 			SecureSocket(const SecureSocket&) = delete;
@@ -111,7 +113,7 @@ namespace sdk {
 			 */
 			NODISCARD SSL_CTX* get_ctx() const noexcept
 			{
-				return m_ctx;
+				return m_ctx.get();
 			}
 
 			/*
@@ -131,7 +133,7 @@ namespace sdk {
 
 		private:
 			static bool m_bSSLLibraryInit;
-			SSL_CTX* m_ctx{};
+			SSLCtx_unique_ptr m_ctx;
 		};
 #endif // OPENSSL_SUPPORTED
 	}
