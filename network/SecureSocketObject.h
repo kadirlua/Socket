@@ -32,11 +32,14 @@
 #endif // OPENSSL_SUPPORTED
 
 #include <string>
+#include <memory>
 
 namespace sdk {
 	namespace network {
 
 #if OPENSSL_SUPPORTED
+
+		using SSL_unique_ptr = std::unique_ptr<SSL, decltype(&SSL_free)>;
 
 		class SecureSocket; // incomplete type declaration
 		/*
@@ -129,7 +132,7 @@ namespace sdk {
 
 		private:
 			std::string m_hostname;
-			SSL* m_ssl{};
+			SSL_unique_ptr m_ssl;
 		};
 #endif // OPENSSL_SUPPORTED
 	}

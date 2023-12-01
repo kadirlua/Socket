@@ -37,11 +37,11 @@ namespace sdk {
 		/**************************Secure Object Part**************************/
 		SecureSocketObj::SecureSocketObj(SOCKET socketId, const SecureSocket& sSocket) :
 			SocketObject{ socketId, sSocket },
-			m_ssl{ SSL_new(sSocket.get_ctx()) }
+			m_ssl{ SSL_new(sSocket.get_ctx()), SSL_free }
 		{
 			if (m_ssl != nullptr) {
-				if (SSL_set_fd(m_ssl, (int)socketId) == 0) {
-					throw general::SecureSocketException(SSL_get_error(m_ssl, 0));
+				if (SSL_set_fd(m_ssl.get(), (int)socketId) == 0) {
+					throw general::SecureSocketException(SSL_get_error(m_ssl.get(), 0));
 				}
 			}
 		}
@@ -53,8 +53,8 @@ namespace sdk {
 			{*/
 			int err = 0;
 			bool bDone = false;
-			while ((err = SSL_shutdown(m_ssl)) <= 0 && !bDone) {
-				switch (const int ret_code = SSL_get_error(m_ssl, err)) {
+			while ((err = SSL_shutdown(m_ssl.get())) <= 0 && !bDone) {
+				switch (const int ret_code = SSL_get_error(m_ssl.get(), err)) {
 				case SSL_ERROR_WANT_READ:
 				case SSL_ERROR_WANT_WRITE:
 					break;
@@ -64,13 +64,11 @@ namespace sdk {
 				}
 			}
 			//}
-
-			SSL_free(m_ssl);
 		}
 
 		void SecureSocketObj::setHostname(const char* hostname)
 		{
-			if (SSL_set_tlsext_host_name(m_ssl, hostname) != 1) {
+			if (SSL_set_tlsext_host_name(m_ssl.get(), hostname) != 1) {
 				throw general::SecureSocketException("set host name failed!");
 			}
 
@@ -82,19 +80,19 @@ namespace sdk {
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			int err_code{};
-			while ((err_code = SSL_connect(m_ssl)) == -1) {
+			while ((err_code = SSL_connect(m_ssl.get())) == -1) {
 				if (callback_interrupt &&
 					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
 				}
 
-				switch (const int ret_code = SSL_get_error(m_ssl, err_code)) {
+				switch (const int ret_code = SSL_get_error(m_ssl.get(), err_code)) {
 				case SSL_ERROR_WANT_READ:
 				case SSL_ERROR_WANT_WRITE:
 				case SSL_ERROR_WANT_CONNECT:
 					break;
 				case SSL_ERROR_ZERO_RETURN:
-					SSL_shutdown(m_ssl);
+					SSL_shutdown(m_ssl.get());
 #if (__cplusplus >= 201703L)
 					[[fallthrough]];
 #endif
@@ -109,18 +107,18 @@ namespace sdk {
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			int err_code{};
-			while ((err_code = SSL_accept(m_ssl)) != 1) {
+			while ((err_code = SSL_accept(m_ssl.get())) != 1) {
 				if (callback_interrupt &&
 					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
 				}
 
-				switch (const int ret_code = SSL_get_error(m_ssl, err_code)) {
+				switch (const int ret_code = SSL_get_error(m_ssl.get(), err_code)) {
 				case SSL_ERROR_WANT_READ:
 				case SSL_ERROR_WANT_ACCEPT:
 					break;
 				case SSL_ERROR_ZERO_RETURN:
-					SSL_shutdown(m_ssl);
+					SSL_shutdown(m_ssl.get());
 #if (__cplusplus >= 201703L)
 					[[fallthrough]];
 #endif
@@ -129,9 +127,9 @@ namespace sdk {
 				}
 			}
 
-			X509* peer = SSL_get_peer_certificate(m_ssl);
+			X509* peer = SSL_get_peer_certificate(m_ssl.get());
 			if (peer != nullptr) {
-				const long ret_code = SSL_get_verify_result(m_ssl);
+				const long ret_code = SSL_get_verify_result(m_ssl.get());
 				if (ret_code != X509_V_OK) {
 					throw general::SecureSocketException(ret_code);
 				}
@@ -152,7 +150,7 @@ namespace sdk {
 
 		std::size_t SecureSocketObj::read(char& msgByte) const
 		{
-			const int numBytes = SSL_read(m_ssl, &msgByte, 1);
+			const int numBytes = SSL_read(m_ssl.get(), &msgByte, 1);
 			if (numBytes < 0) {
 				throw general::SecureSocketException(numBytes);
 			}
@@ -172,17 +170,17 @@ namespace sdk {
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			do {
-				while ((receive_byte = SSL_read(m_ssl, dataVec.data(), buf_len)) == -1) {
+				while ((receive_byte = SSL_read(m_ssl.get(), dataVec.data(), buf_len)) == -1) {
 					if (callback_interrupt &&
 						callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 						throw general::SecureSocketException(INTERRUPT_MSG);
 					}
 
-					switch (auto err_code = SSL_get_error(m_ssl, receive_byte)) {
+					switch (auto err_code = SSL_get_error(m_ssl.get(), receive_byte)) {
 					case SSL_ERROR_WANT_READ:
 						break;
 					case SSL_ERROR_ZERO_RETURN:
-						SSL_shutdown(m_ssl);
+						SSL_shutdown(m_ssl.get());
 #if (__cplusplus >= 201703L)
 						[[fallthrough]];
 #endif
@@ -196,7 +194,7 @@ namespace sdk {
 						std::back_inserter(str_message));
 				}
 
-				if (SSL_pending(m_ssl) == 0) {
+				if (SSL_pending(m_ssl.get()) == 0) {
 					break;
 				}
 
@@ -237,17 +235,17 @@ namespace sdk {
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
 			int sendBytes{};
-			while ((sendBytes = SSL_write(m_ssl, data, data_size)) == -1) {
+			while ((sendBytes = SSL_write(m_ssl.get(), data, data_size)) == -1) {
 				if (callback_interrupt &&
 					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
 					throw general::SecureSocketException(INTERRUPT_MSG);
 				}
 
-				switch (auto err_code = SSL_get_error(m_ssl, sendBytes)) {
+				switch (auto err_code = SSL_get_error(m_ssl.get(), sendBytes)) {
 				case SSL_ERROR_WANT_WRITE:
 					break;
 				case SSL_ERROR_ZERO_RETURN:
-					SSL_shutdown(m_ssl);
+					SSL_shutdown(m_ssl.get());
 #if (__cplusplus >= 201703L)
 					[[fallthrough]];
 #endif
