@@ -73,12 +73,12 @@ namespace sdk {
 			return m_socket_obj->write(msg);
 		}
 
-		size_t Client::read(std::vector<unsigned char>& response_msg, int max_size /*= 0*/) const
+		std::size_t Client::read(std::vector<unsigned char>& response_msg, int max_size /*= 0*/) const
 		{
 			return m_socket_obj->read(response_msg, max_size);
 		}
 
-		size_t Client::read(std::string& message, int max_size /*= 0*/) const
+		std::size_t Client::read(std::string& message, int max_size /*= 0*/) const
 		{
 			return m_socket_obj->read(message, max_size);
 		}
