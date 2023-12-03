@@ -81,12 +81,12 @@ namespace sdk {
 			return m_secure_obj->write(msg);
 		}
 
-		size_t SecureClient::read(std::vector<unsigned char>& response_msg, int max_size /*= 0*/) const
+		std::size_t SecureClient::read(std::vector<unsigned char>& response_msg, int max_size /*= 0*/) const
 		{
 			return m_secure_obj->read(response_msg, max_size);
 		}
 
-		size_t SecureClient::read(std::string& message, int max_size /*= 0*/) const
+		std::size_t SecureClient::read(std::string& message, int max_size /*= 0*/) const
 		{
 			return m_secure_obj->read(message);
 		}
