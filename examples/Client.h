@@ -40,7 +40,7 @@ namespace sdk {
 			int write(std::initializer_list<char> msg) const;
 			int write(const char* msg, int msg_size) const;
 			int write(const std::string& msg) const;
-			int write(const std::vector<unsigned char>& message) const;
+			int write(const std::vector<unsigned char>& msg) const;
 			std::size_t read(std::vector<unsigned char>& response_msg, int max_size = 0) const;
 			std::size_t read(std::string& message, int max_size = 0) const;
 			bool isInterrupted() const noexcept
