@@ -23,6 +23,7 @@
 #include "Socket.h"
 #include "general/SocketException.h"
 #include <cstring>
+#include <array>
 
 #ifdef _WIN32
 #pragma comment(lib, "Ws2_32.lib")
@@ -102,7 +103,7 @@ namespace sdk {
 			struct addrinfo *res = nullptr;
 			struct addrinfo *ptr = nullptr;
 
-			char ipStr[INET6_ADDRSTRLEN]{};
+			std::array<char, INET6_ADDRSTRLEN> ipStr{};
 
 			memset(&hints, 0, sizeof(hints));
 			hints.ai_family = AF_UNSPEC; // AF_INET or AF_INET6 to force version
@@ -129,11 +130,11 @@ namespace sdk {
 				}
 
 				// convert the IP to a string
-				if (inet_ntop(ptr->ai_family, pAddr, ipStr, sizeof(ipStr)) == nullptr) {
+				if (inet_ntop(ptr->ai_family, pAddr, ipStr.data(), sizeof(ipStr)) == nullptr) {
 					throw general::SocketException(WSAGetLastError());
 				}
 			}
-			return ipStr;
+			return std::string{ std::begin(ipStr), std::end(ipStr) };
 		}
 
 		void Socket::connect()
