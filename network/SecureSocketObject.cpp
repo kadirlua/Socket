@@ -154,7 +154,7 @@ namespace sdk {
 			if (numBytes < 0) {
 				throw general::SecureSocketException(numBytes);
 			}
-			return (std::size_t)numBytes;
+			return static_cast<std::size_t>(numBytes);
 		}
 
 		std::string SecureSocketObj::read(int max_size /*= 0*/) const
