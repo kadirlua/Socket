@@ -40,6 +40,7 @@ namespace sdk {
 #if OPENSSL_SUPPORTED
 
 		using SSL_unique_ptr = std::unique_ptr<SSL, decltype(&SSL_free)>;
+		using X509_unique_ptr = std::unique_ptr<X509, decltype(&X509_free)>;
 
 		class SecureSocket; // incomplete type declaration
 		/*

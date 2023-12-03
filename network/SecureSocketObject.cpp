@@ -127,8 +127,8 @@ namespace sdk {
 				}
 			}
 
-			X509* peer = SSL_get_peer_certificate(m_ssl.get());
-			if (peer != nullptr) {
+ 			auto peer = X509_unique_ptr{ SSL_get_peer_certificate(m_ssl.get()), X509_free };
+			if (peer) {
 				const long ret_code = SSL_get_verify_result(m_ssl.get());
 				if (ret_code != X509_V_OK) {
 					throw general::SecureSocketException(ret_code);
@@ -137,7 +137,7 @@ namespace sdk {
 				// check host
 				// if our server has valid certificate such an google.com uncomment this if block
 				if (!m_hostname.empty()) {
-					const int check_result = X509_check_host(peer, m_hostname.c_str(), m_hostname.size(), 0, nullptr);
+					const int check_result = X509_check_host(peer.get(), m_hostname.c_str(), m_hostname.size(), 0, nullptr);
 					if (check_result != 1) {
 						throw general::SecureSocketException(check_result);
 					}
