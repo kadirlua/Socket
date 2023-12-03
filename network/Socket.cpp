@@ -112,7 +112,9 @@ namespace sdk {
 				throw general::SocketException(WSAGetLastError());
 			}
 
-			for (ptr = res; ptr != nullptr; ptr = ptr->ai_next) {
+			const std::unique_ptr<addrinfo, decltype(&freeaddrinfo)> pResPtr{ res, freeaddrinfo }; 
+
+			for (ptr = pResPtr.get(); ptr != nullptr; ptr = ptr->ai_next) {
 				void* pAddr = nullptr;
 
 				// get the pointer to the address itself,
@@ -131,8 +133,6 @@ namespace sdk {
 					throw general::SocketException(WSAGetLastError());
 				}
 			}
-
-			freeaddrinfo(res); // free the linked list
 			return ipStr;
 		}
 
