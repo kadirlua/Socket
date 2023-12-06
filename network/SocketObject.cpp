@@ -59,8 +59,11 @@ namespace sdk {
 
 			int receive_byte{};
 			int iResult = 0;
-			struct timeval tv = { 0, 0 };
-
+#ifdef _WIN32
+			const struct timeval tVal = { 0, 0 };
+#else
+			struct timeval tVal = { 0, 0 };
+#endif
 			fd_set readFds{};
 			fd_set exceptFds{};
 
@@ -132,7 +135,7 @@ namespace sdk {
 				FD_SET(m_socket_id, &readFds);
 				FD_ZERO(&exceptFds);
 				FD_SET(m_socket_id, &exceptFds);
-				iResult = select((int)m_socket_id + 1, &readFds, nullptr, &exceptFds, &tv);
+				iResult = select((int)m_socket_id + 1, &readFds, nullptr, &exceptFds, &tVal);
 				if (iResult < 0) {
 					throw general::SocketException(WSAGetLastError());
 				}
