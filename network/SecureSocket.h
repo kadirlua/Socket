@@ -108,7 +108,7 @@ namespace sdk {
 			void setVerifyDepth(int depth) const noexcept;
 			/*
 			 *	Gets a context object.
-			 *	returns: Error message.
+			 *	returns: The pointer address of SSL_CTX object created, otherwise nullptr.
 			 *	exception : This function never throws an exception.
 			 */
 			NODISCARD SSL_CTX* get_ctx() const noexcept
