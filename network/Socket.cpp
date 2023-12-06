@@ -139,8 +139,11 @@ namespace sdk {
 
 		void Socket::connect()
 		{
-			timeval timeout{ 0, DEFAULT_TIMEOUT };
-
+#ifdef _WIN32
+			const struct timeval timeout{ 0, DEFAULT_TIMEOUT };
+#else
+			struct timeval timeout{ 0, DEFAULT_TIMEOUT };
+#endif
 			int err{};
 			auto strIpAddr = getIpAddress();
 
@@ -167,7 +170,8 @@ namespace sdk {
 
 			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_st_address_t) : sizeof(m_st_address6_t));
 
-			const sockaddr* st_address = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_st_address_t) : reinterpret_cast<const sockaddr*>(&m_st_address6_t));
+			const sockaddr* st_address = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_st_address_t) : 
+				reinterpret_cast<const sockaddr*>(&m_st_address6_t));
 
 			while (::connect(m_socket_id, st_address, addressSize) == SOCKET_ERROR) {
 				//	check if any interrupt happened by user
