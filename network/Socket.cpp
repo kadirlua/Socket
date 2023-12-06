@@ -235,8 +235,11 @@ namespace sdk {
 		SOCKET Socket::accept()
 		{
 			if (m_protocol_type != protocol_type::udp) {
-				timeval timeout{ 0, DEFAULT_TIMEOUT };
-
+#ifdef _WIN32
+				const struct timeval timeout{ 0, DEFAULT_TIMEOUT };
+#else
+				struct timeval timeout{ 0, DEFAULT_TIMEOUT };
+#endif
 				socklen_t addrLen = m_ipVersion == IpVersion::IPv4 ? sizeof(m_st_address_t) : sizeof(m_st_address6_t);
 				SOCKET new_sock_id{};
 
