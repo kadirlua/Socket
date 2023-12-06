@@ -66,9 +66,9 @@ namespace sdk {
 		template <typename T>
 		void SocketOption<T>::setLingerOpt(unsigned short mode, unsigned short second) const
 		{
-			const linger sl{ mode, second };
+			const linger opt{ mode, second };
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_LINGER,
-					reinterpret_cast<const char*>(&sl), sizeof(sl)) == SOCKET_ERROR) {
+					reinterpret_cast<const char*>(&opt), sizeof(opt)) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
 			}
 		}
@@ -77,12 +77,12 @@ namespace sdk {
 		void SocketOption<T>::setRecvTimeout(long seconds, long microseconds) const
 		{
 #if defined(__APPLE__)
-			const timeval sl{ seconds, static_cast<__darwin_suseconds_t>(microseconds) };
+			const timeval tVal{ seconds, static_cast<__darwin_suseconds_t>(microseconds) };
 #else
-			const timeval sl{ seconds, microseconds };
+			const timeval tVal{ seconds, microseconds };
 #endif
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_RCVTIMEO,
-					reinterpret_cast<const char*>(&sl), sizeof(sl)) == SOCKET_ERROR) {
+					reinterpret_cast<const char*>(&tVal), sizeof(tVal)) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
 			}
 		}
