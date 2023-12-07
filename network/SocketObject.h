@@ -88,7 +88,7 @@ namespace sdk {
 		 *	to use independent connection operations.
 		 */
 
-		class Socket; // incomplete type
+		class Socket; // forward declaration
 
 		class SOCKET_API SocketObject {
 		public:
