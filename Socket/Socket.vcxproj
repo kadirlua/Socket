@@ -285,11 +285,11 @@
     <ClCompile Include="..\examples\SocketExample.cpp" />
     <ClCompile Include="..\general\BaseException.cpp" />
     <ClCompile Include="..\general\SocketException.cpp" />
-    <ClCompile Include="..\network\SecureSocket.cpp" />
-    <ClCompile Include="..\network\SecureSocketObject.cpp" />
     <ClCompile Include="..\network\Socket.cpp" />
-    <ClCompile Include="..\network\SocketObject.cpp" />
+    <ClCompile Include="..\network\SocketDescriptor.cpp" />
     <ClCompile Include="..\network\SocketOption.cpp" />
+    <ClCompile Include="..\network\SSLSocket.cpp" />
+    <ClCompile Include="..\network\SSLSocketDescriptor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\examples\Client.h" />
@@ -299,11 +299,12 @@
     <ClInclude Include="..\examples\Server.h" />
     <ClInclude Include="..\general\BaseException.h" />
     <ClInclude Include="..\general\SocketException.h" />
-    <ClInclude Include="..\network\SecureSocket.h" />
-    <ClInclude Include="..\network\SecureSocketObject.h" />
     <ClInclude Include="..\network\Socket.h" />
-    <ClInclude Include="..\network\SocketObject.h" />
+    <ClInclude Include="..\network\SocketDescriptor.h" />
+    <ClInclude Include="..\network\SocketExport.h" />
     <ClInclude Include="..\network\SocketOption.h" />
+    <ClInclude Include="..\network\SSLSocket.h" />
+    <ClInclude Include="..\network\SSLSocketDescriptor.h" />
     <ClInclude Include="..\network\version.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -45,16 +45,7 @@
     <ClCompile Include="..\examples\SocketExample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\network\SecureSocket.cpp">
-      <Filter>Source Files\network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\network\SecureSocketObject.cpp">
-      <Filter>Source Files\network</Filter>
-    </ClCompile>
     <ClCompile Include="..\network\Socket.cpp">
-      <Filter>Source Files\network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\network\SocketObject.cpp">
       <Filter>Source Files\network</Filter>
     </ClCompile>
     <ClCompile Include="..\network\SocketOption.cpp">
@@ -66,18 +57,18 @@
     <ClCompile Include="..\general\SocketException.cpp">
       <Filter>Source Files\general</Filter>
     </ClCompile>
+    <ClCompile Include="..\network\SocketDescriptor.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\network\SSLSocket.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\network\SSLSocketDescriptor.cpp">
+      <Filter>Source Files\network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\network\SecureSocket.h">
-      <Filter>Header Files\network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\network\SecureSocketObject.h">
-      <Filter>Header Files\network</Filter>
-    </ClInclude>
     <ClInclude Include="..\network\Socket.h">
-      <Filter>Header Files\network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\network\SocketObject.h">
       <Filter>Header Files\network</Filter>
     </ClInclude>
     <ClInclude Include="..\network\SocketOption.h">
@@ -106,6 +97,18 @@
     </ClInclude>
     <ClInclude Include="..\general\SocketException.h">
       <Filter>Header Files\general</Filter>
+    </ClInclude>
+    <ClInclude Include="..\network\SocketDescriptor.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\network\SocketExport.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\network\SSLSocket.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\network\SSLSocketDescriptor.h">
+      <Filter>Header Files\network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
