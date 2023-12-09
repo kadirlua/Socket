@@ -65,8 +65,8 @@ namespace sdk {
 #endif
 		}
 
-		Socket::Socket(int port_, ProtocolType type /*= protocol_type::tcp*/, IpVersion ipVer /*= IpVersion::IPv4*/) :
-			m_port_number{ port_ },
+		Socket::Socket(int portNumber, ProtocolType type /*= protocol_type::tcp*/, IpVersion ipVer /*= IpVersion::IPv4*/) :
+			m_port_number{ portNumber },
 			m_protocol_type{ type },
 			m_ipVersion{ ipVer }
 		{

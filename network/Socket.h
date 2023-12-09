@@ -70,7 +70,7 @@ namespace sdk {
 			friend class SSLSocketDescriptor;
 
 		public:
-			explicit Socket(int port_, ProtocolType type = ProtocolType::tcp,
+			explicit Socket(int portNumber, ProtocolType type = ProtocolType::tcp,
 				IpVersion ipVer = IpVersion::IPv4);
 
 			virtual ~Socket();
@@ -140,9 +140,9 @@ namespace sdk {
 			 *	returns: nothing.
 			 *	exception: This function never throws an exception.
 			 */
-			void setPortNumber(int port_) noexcept
+			void setPortNumber(int portNumber) noexcept
 			{
-				m_port_number = port_;
+				m_port_number = portNumber;
 			}
 			/*
 			 *	This function returns socket id if you need.
