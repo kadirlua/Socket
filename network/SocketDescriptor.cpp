@@ -67,7 +67,7 @@ namespace sdk {
 			fd_set readFds{};
 			fd_set exceptFds{};
 
-			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
+			const auto& callback_interrupt = m_socket_ref.m_callbackInterrupt;
 
 			const SocketOption<SocketDescriptor> socketOpt{ *this };
 
@@ -77,7 +77,7 @@ namespace sdk {
 			do {
 				while ((receive_byte = recv(m_socket_id, dataVec.data(), buf_len, 0)) == SOCKET_ERROR) {
 					if (callback_interrupt &&
-						callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+						callback_interrupt(m_socket_ref.m_userdataPtr)) {
 						throw general::SocketException(INTERRUPT_MSG);
 					}
 
@@ -118,7 +118,7 @@ namespace sdk {
 				}
 
 				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+					callback_interrupt(m_socket_ref.m_userdataPtr)) {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
@@ -179,11 +179,11 @@ namespace sdk {
 		{
 			int sendBytes = 0;
 
-			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
+			const auto& callback_interrupt = m_socket_ref.m_callbackInterrupt;
 
 			while ((sendBytes = send(m_socket_id, data, data_size, 0)) == SOCKET_ERROR) {
 				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+					callback_interrupt(m_socket_ref.m_userdataPtr)) {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
