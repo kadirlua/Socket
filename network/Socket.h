@@ -123,7 +123,7 @@ namespace sdk {
 			 *	param1: The id of socket.
 			 *	returns: A shared pointer of socket object.
 			 */
-			NODISCARD std::shared_ptr<SocketDescriptor> createNewSocket(SOCKET) const;
+			NODISCARD std::shared_ptr<SocketDescriptor> createNewSocket(SOCKET socketId) const;
 			/*
 			 *	This function is useful for client applications to set an ip address.
 			 *	param: Ip address.

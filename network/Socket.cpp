@@ -170,10 +170,10 @@ namespace sdk {
 
 			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6));
 
-			const sockaddr* st_address = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) : 
+			const sockaddr* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) : 
 				reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
 
-			while (::connect(m_socketId, st_address, addressSize) == SOCKET_ERROR) {
+			while (::connect(m_socketId, stAddress, addressSize) == SOCKET_ERROR) {
 				//	check if any interrupt happened by user
 				if (m_callbackInterrupt && m_callbackInterrupt(m_userdataPtr)) {
 					throw general::SocketException(INTERRUPT_MSG);
@@ -217,8 +217,9 @@ namespace sdk {
 		void Socket::bind()
 		{
 			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6));
-			const sockaddr* st_address = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) : reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
-			if (::bind(m_socketId, st_address, addressSize) == SOCKET_ERROR) {
+			const sockaddr* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) : 
+				reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
+			if (::bind(m_socketId, stAddress, addressSize) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
 			}
 		}
@@ -241,11 +242,12 @@ namespace sdk {
 				struct timeval timeout{ 0, DEFAULT_TIMEOUT };
 #endif
 				socklen_t addrLen = m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6);
-				SOCKET new_sock_id{};
+				SOCKET newSockId{};
 
-				sockaddr* st_address = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<sockaddr*>(&m_sockAddressIpv4) : reinterpret_cast<sockaddr*>(&m_sockAddressIpv6));
+				sockaddr* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<sockaddr*>(&m_sockAddressIpv4) : 
+					reinterpret_cast<sockaddr*>(&m_sockAddressIpv6));
 
-				while ((new_sock_id = ::accept(m_socketId, st_address, &addrLen)) == INVALID_SOCKET) {
+				while ((newSockId = ::accept(m_socketId, stAddress, &addrLen)) == INVALID_SOCKET) {
 					//	check if any interrupt happened by user
 					if (m_callbackInterrupt && m_callbackInterrupt(m_userdataPtr)) {
 						throw general::SocketException(INTERRUPT_MSG);
@@ -279,15 +281,15 @@ namespace sdk {
 					}
 				}
 
-				return new_sock_id;
+				return newSockId;
 			}
 
 			return 0;
 		}
 
-		std::shared_ptr<SocketDescriptor> Socket::createNewSocket(SOCKET socket_id) const
+		std::shared_ptr<SocketDescriptor> Socket::createNewSocket(SOCKET socketId) const
 		{
-			return std::make_shared<SocketDescriptor>(socket_id, *this);
+			return std::make_shared<SocketDescriptor>(socketId, *this);
 		}
 
 		void Socket::setInterruptCallback(const socket_interrupt_callback_t& callback, void* userdata) noexcept
