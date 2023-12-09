@@ -79,7 +79,7 @@ namespace sdk {
 			 *	returns: Return byte count that read.
 			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
-			NODISCARD std::size_t read(std::vector<unsigned char>& message, int max_size = 0) const override;
+			NODISCARD std::size_t read(std::vector<unsigned char>& message, int maxSize = 0) const override;
 			/*
 			 *	This method used for reading operations from related secure socket layer.
 			 *	param1: String.
@@ -87,7 +87,7 @@ namespace sdk {
 			 *	returns: Return byte count that read.
 			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
-			NODISCARD std::size_t read(std::string& message, int max_size = 0) const override;
+			NODISCARD std::size_t read(std::string& message, int maxSize = 0) const override;
 
 			/*
 			 *	This method used for writing operations from related secure socket layer.
@@ -95,7 +95,7 @@ namespace sdk {
 			 *	returns: Return byte count that write.
 			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
-			NODISCARD int write(std::initializer_list<char> data_list) const override;
+			NODISCARD int write(std::initializer_list<char> dataList) const override;
 
 			/*
 			 *	This method used for writing operations from related secure socket layer.
@@ -104,7 +104,7 @@ namespace sdk {
 			 *	returns: Return byte count that write.
 			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
-			NODISCARD int write(const char* data, int data_size) const override;
+			NODISCARD int write(const char* data, int dataSize) const override;
 			/*
 			 *	This method used for writing operations from related secure socket layer.
 			 *	param1: Bytes of vector message.
@@ -129,7 +129,7 @@ namespace sdk {
 			void accept();
 
 		protected:
-			std::string read(int max_size = 0) const override;
+			std::string read(int maxSize = 0) const override;
 
 		private:
 			std::string m_hostname;
