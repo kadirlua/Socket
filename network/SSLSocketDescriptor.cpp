@@ -77,12 +77,12 @@ namespace sdk {
 
 		void SSLSocketDescriptor::connect()
 		{
-			const auto& callback_interrupt = m_socket_ref.m_callbackInterrupt;
+			const auto& callback_interrupt = m_socketRef.m_callbackInterrupt;
 
 			int err_code{};
 			while ((err_code = SSL_connect(m_ssl.get())) == -1) {
 				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdataPtr)) {
+					callback_interrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
@@ -104,12 +104,12 @@ namespace sdk {
 
 		void SSLSocketDescriptor::accept() // this function used for handshake
 		{
-			const auto& callback_interrupt = m_socket_ref.m_callbackInterrupt;
+			const auto& callback_interrupt = m_socketRef.m_callbackInterrupt;
 
 			int err_code{};
 			while ((err_code = SSL_accept(m_ssl.get())) != 1) {
 				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdataPtr)) {
+					callback_interrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
@@ -167,12 +167,12 @@ namespace sdk {
 
 			int receive_byte = 0;
 
-			const auto& callback_interrupt = m_socket_ref.m_callbackInterrupt;
+			const auto& callback_interrupt = m_socketRef.m_callbackInterrupt;
 
 			do {
 				while ((receive_byte = SSL_read(m_ssl.get(), dataVec.data(), buf_len)) == -1) {
 					if (callback_interrupt &&
-						callback_interrupt(m_socket_ref.m_userdataPtr)) {
+						callback_interrupt(m_socketRef.m_userdataPtr)) {
 						throw general::SSLSocketException(INTERRUPT_MSG);
 					}
 
@@ -199,7 +199,7 @@ namespace sdk {
 				}
 
 				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdataPtr)) {
+					callback_interrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
@@ -232,12 +232,12 @@ namespace sdk {
 
 		int SSLSocketDescriptor::write(const char* data, int data_size) const
 		{
-			const auto& callback_interrupt = m_socket_ref.m_callbackInterrupt;
+			const auto& callback_interrupt = m_socketRef.m_callbackInterrupt;
 
 			int sendBytes{};
 			while ((sendBytes = SSL_write(m_ssl.get(), data, data_size)) == -1) {
 				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdataPtr)) {
+					callback_interrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
