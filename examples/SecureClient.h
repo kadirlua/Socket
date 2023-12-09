@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #pragma once
-#include "network/SecureSocket.h"
+#include "network/SSLSocket.h"
 #include <string>
 
 namespace sdk {
@@ -55,8 +55,8 @@ namespace sdk {
 
 		private:
 			bool m_bInterrupt{};
-			std::unique_ptr<network::SecureSocket> m_socket_ptr;
-			std::shared_ptr<network::SecureSocketObj> m_secure_obj;
+			std::unique_ptr<network::SSLSocket> m_socket_ptr;
+			std::shared_ptr<network::SSLSocketDescriptor> m_secure_obj;
 		};
 #endif // OPENSSL_SUPPORTED
 	}

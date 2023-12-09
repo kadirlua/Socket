@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SOCKET_OPTION_H_
-#define SOCKET_OPTION_H_
+#ifndef SOCKET_OPTION_H
+#define SOCKET_OPTION_H
 
 #include "SocketExport.h"
 
@@ -130,4 +130,4 @@ namespace sdk {
 	}
 }
 
-#endif
+#endif	// SOCKET_OPTION_H

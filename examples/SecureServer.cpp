@@ -119,8 +119,8 @@ namespace sdk {
 		void SecureServer::listener_thread_proc(int port_, network::protocol_type type, network::IpVersion ipVer)
 		{
 			try {
-				m_socket_ptr = std::make_unique<SecureSocket>(port_, connection_method::server, type, ipVer);
-				const SocketOption<SecureSocket> socketOpt{ *m_socket_ptr };
+				m_socket_ptr = std::make_unique<SSLSocket>(port_, connection_method::server, type, ipVer);
+				const SocketOption<SSLSocket> socketOpt{ *m_socket_ptr };
 				socketOpt.setBlockingMode(1); // non-blocking mode
 
 				// set certificate properties
@@ -151,7 +151,7 @@ namespace sdk {
 						ssl_obj->accept();
 
 						std::unique_lock<std::mutex> lock_(vec_mutex_);
-						thread_vec_.emplace_back(new WorkerThread<SecureSocketObj>(ssl_obj));
+						thread_vec_.emplace_back(new WorkerThread<SSLSocketDescriptor>(ssl_obj));
 						lock_.unlock();
 						vec_cv_.notify_one();
 					}
@@ -160,13 +160,13 @@ namespace sdk {
 					}
 				}
 			}
-			catch (const general::SecureSocketException& ex) {
+			catch (const general::SSLSocketException& ex) {
 				pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
 			}
 		}
 
 		template <>
-		void WorkerThread<SecureSocketObj>::handle_thread_proc(const std::weak_ptr<SecureSocketObj>& ssl_obj)
+		void WorkerThread<SSLSocketDescriptor>::handle_thread_proc(const std::weak_ptr<SSLSocketDescriptor>& ssl_obj)
 		{
 			auto sharedSocketPtr = ssl_obj.lock();
 			if (sharedSocketPtr) {
@@ -180,13 +180,13 @@ namespace sdk {
 							pcout{} << request_message << "\n";
 							sharedSocketPtr->write(response);
 						}
-						catch (const general::SecureSocketException& ex) {
+						catch (const general::SSLSocketException& ex) {
 							pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
 							break;
 						}
 					}
 				}
-				catch (const general::SecureSocketException& ex) {
+				catch (const general::SSLSocketException& ex) {
 					pcout{} << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
 				}
 			}

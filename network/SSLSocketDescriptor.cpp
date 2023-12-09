@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SecureSocketObject.h"
+#include "SSLSocketDescriptor.h"
 #include "general/SocketException.h"
-#include "SecureSocket.h"
+#include "SSLSocket.h"
 #include <iterator>
 
 #if OPENSSL_SUPPORTED
@@ -35,18 +35,18 @@ namespace sdk {
 #if OPENSSL_SUPPORTED
 
 		/**************************Secure Object Part**************************/
-		SecureSocketObj::SecureSocketObj(SOCKET socketId, const SecureSocket& sSocket) :
-			SocketObject{ socketId, sSocket },
+		SSLSocketDescriptor::SSLSocketDescriptor(SOCKET socketId, const SSLSocket& sSocket) :
+			SocketDescriptor{ socketId, sSocket },
 			m_ssl{ SSL_new(sSocket.get_ctx()), SSL_free }
 		{
 			if (m_ssl != nullptr) {
 				if (SSL_set_fd(m_ssl.get(), (int)socketId) == 0) {
-					throw general::SecureSocketException(SSL_get_error(m_ssl.get(), 0));
+					throw general::SSLSocketException(SSL_get_error(m_ssl.get(), 0));
 				}
 			}
 		}
 
-		SecureSocketObj::~SecureSocketObj()
+		SSLSocketDescriptor::~SSLSocketDescriptor()
 		{
 			/*int err = SSL_get_error(m_ssl, -1);
 			if (err != SSL_ERROR_SYSCALL && err != SSL_ERROR_SSL)
@@ -66,16 +66,16 @@ namespace sdk {
 			//}
 		}
 
-		void SecureSocketObj::setHostname(const char* hostname)
+		void SSLSocketDescriptor::setHostname(const char* hostname)
 		{
 			if (SSL_set_tlsext_host_name(m_ssl.get(), hostname) != 1) {
-				throw general::SecureSocketException("set host name failed!");
+				throw general::SSLSocketException("set host name failed!");
 			}
 
 			m_hostname = hostname;
 		}
 
-		void SecureSocketObj::connect()
+		void SSLSocketDescriptor::connect()
 		{
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
@@ -83,7 +83,7 @@ namespace sdk {
 			while ((err_code = SSL_connect(m_ssl.get())) == -1) {
 				if (callback_interrupt &&
 					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
-					throw general::SecureSocketException(INTERRUPT_MSG);
+					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
 				switch (const int ret_code = SSL_get_error(m_ssl.get(), err_code)) {
@@ -97,12 +97,12 @@ namespace sdk {
 					[[fallthrough]];
 #endif
 				default:
-					throw general::SecureSocketException(ret_code);
+					throw general::SSLSocketException(ret_code);
 				}
 			}
 		}
 
-		void SecureSocketObj::accept() // this function used for handshake
+		void SSLSocketDescriptor::accept() // this function used for handshake
 		{
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
@@ -110,7 +110,7 @@ namespace sdk {
 			while ((err_code = SSL_accept(m_ssl.get())) != 1) {
 				if (callback_interrupt &&
 					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
-					throw general::SecureSocketException(INTERRUPT_MSG);
+					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
 				switch (const int ret_code = SSL_get_error(m_ssl.get(), err_code)) {
@@ -123,7 +123,7 @@ namespace sdk {
 					[[fallthrough]];
 #endif
 				default:
-					throw general::SecureSocketException(ret_code);
+					throw general::SSLSocketException(ret_code);
 				}
 			}
 
@@ -131,7 +131,7 @@ namespace sdk {
 			if (peer) {
 				const long ret_code = SSL_get_verify_result(m_ssl.get());
 				if (ret_code != X509_V_OK) {
-					throw general::SecureSocketException(ret_code);
+					throw general::SSLSocketException(ret_code);
 				}
 
 				// check host
@@ -139,25 +139,25 @@ namespace sdk {
 				if (!m_hostname.empty()) {
 					const int check_result = X509_check_host(peer.get(), m_hostname.c_str(), m_hostname.size(), 0, nullptr);
 					if (check_result != 1) {
-						throw general::SecureSocketException(check_result);
+						throw general::SSLSocketException(check_result);
 					}
 				}
 			}
 			else {
-				throw general::SecureSocketException("client did not give a certificate");	
+				throw general::SSLSocketException("client did not give a certificate");	
 			}
 		}
 
-		std::size_t SecureSocketObj::read(char& msgByte) const
+		std::size_t SSLSocketDescriptor::read(char& msgByte) const
 		{
 			const int numBytes = SSL_read(m_ssl.get(), &msgByte, 1);
 			if (numBytes < 0) {
-				throw general::SecureSocketException(numBytes);
+				throw general::SSLSocketException(numBytes);
 			}
 			return static_cast<std::size_t>(numBytes);
 		}
 
-		std::string SecureSocketObj::read(int max_size /*= 0*/) const
+		std::string SSLSocketDescriptor::read(int max_size /*= 0*/) const
 		{
 			const int buf_len = (max_size > 0 && max_size < MAX_MESSAGE_SIZE) ? max_size : MAX_MESSAGE_SIZE - 1;
 
@@ -173,7 +173,7 @@ namespace sdk {
 				while ((receive_byte = SSL_read(m_ssl.get(), dataVec.data(), buf_len)) == -1) {
 					if (callback_interrupt &&
 						callback_interrupt(m_socket_ref.m_userdata_ptr)) {
-						throw general::SecureSocketException(INTERRUPT_MSG);
+						throw general::SSLSocketException(INTERRUPT_MSG);
 					}
 
 					switch (auto err_code = SSL_get_error(m_ssl.get(), receive_byte)) {
@@ -185,7 +185,7 @@ namespace sdk {
 						[[fallthrough]];
 #endif
 					default:
-						throw general::SecureSocketException(err_code);
+						throw general::SSLSocketException(err_code);
 					}
 				}
 
@@ -200,7 +200,7 @@ namespace sdk {
 
 				if (callback_interrupt &&
 					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
-					throw general::SecureSocketException(INTERRUPT_MSG);
+					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
 				if (max_size > 0 && str_message.size() >= (std::size_t)max_size) {
@@ -212,25 +212,25 @@ namespace sdk {
 			return str_message;
 		}
 
-		std::size_t SecureSocketObj::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
+		std::size_t SSLSocketDescriptor::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
 		{
 			const auto received_str = read(max_size);
 			std::move(received_str.begin(), received_str.end(), std::back_inserter(message));
 			return message.size();
 		}
 
-		std::size_t SecureSocketObj::read(std::string& message, int max_size /*= 0*/) const
+		std::size_t SSLSocketDescriptor::read(std::string& message, int max_size /*= 0*/) const
 		{
 			message = read(max_size);
 			return message.size();
 		}
 
-		int SecureSocketObj::write(std::initializer_list<char> data_list) const
+		int SSLSocketDescriptor::write(std::initializer_list<char> data_list) const
 		{
 			return write(data_list.begin(), (int)data_list.size());
 		}
 
-		int SecureSocketObj::write(const char* data, int data_size) const
+		int SSLSocketDescriptor::write(const char* data, int data_size) const
 		{
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
@@ -238,7 +238,7 @@ namespace sdk {
 			while ((sendBytes = SSL_write(m_ssl.get(), data, data_size)) == -1) {
 				if (callback_interrupt &&
 					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
-					throw general::SecureSocketException(INTERRUPT_MSG);
+					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
 				switch (auto err_code = SSL_get_error(m_ssl.get(), sendBytes)) {
@@ -250,19 +250,19 @@ namespace sdk {
 					[[fallthrough]];
 #endif
 				default:
-					throw general::SecureSocketException(err_code);
+					throw general::SSLSocketException(err_code);
 				}
 			}
 			return sendBytes;
 		}
 
-		int SecureSocketObj::write(const std::vector<unsigned char>& message) const
+		int SSLSocketDescriptor::write(const std::vector<unsigned char>& message) const
 		{
 			const std::string strBuf(message.begin(), message.end());
 			return write(strBuf.c_str(), (int)strBuf.size());
 		}
 
-		int SecureSocketObj::write(const std::string& message) const
+		int SSLSocketDescriptor::write(const std::string& message) const
 		{
 			return write(message.c_str(),
 				static_cast<int>(message.size()));

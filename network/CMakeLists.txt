@@ -8,9 +8,9 @@ endif()
 
 set(PROJECT_NETWORK_SOURCES
     ${PROJECT_NETWORK_DIR}/Socket.cpp
-    ${PROJECT_NETWORK_DIR}/SecureSocket.cpp
-    ${PROJECT_NETWORK_DIR}/SocketObject.cpp
-    ${PROJECT_NETWORK_DIR}/SecureSocketObject.cpp
+    ${PROJECT_NETWORK_DIR}/SSLSocket.cpp
+    ${PROJECT_NETWORK_DIR}/SocketDescriptor.cpp
+    ${PROJECT_NETWORK_DIR}/SSLSocketDescriptor.cpp
     ${PROJECT_NETWORK_DIR}/SocketOption.cpp
 )
 

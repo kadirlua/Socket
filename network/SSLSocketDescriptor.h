@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SECURE_SOCKET_OBJECT_H_
-#define SECURE_SOCKET_OBJECT_H_
+#ifndef SSL_SOCKET_DESCRIPTOR_H
+#define SSL_SOCKET_DESCRIPTOR_H
 
-#include "SocketObject.h"
+#include "SocketDescriptor.h"
 
 #if OPENSSL_SUPPORTED
 #include <openssl/ssl.h>
@@ -42,26 +42,26 @@ namespace sdk {
 		using SSL_unique_ptr = std::unique_ptr<SSL, decltype(&SSL_free)>;
 		using X509_unique_ptr = std::unique_ptr<X509, decltype(&X509_free)>;
 
-		class SecureSocket; // incomplete type declaration
+		class SSLSocket; // forward declaration
 		/*
 		 *	Creates an instance of secure socket layer object via socket id
 		 *	to use independent connection operations.
 		 */
-		class SOCKET_API SecureSocketObj : public SocketObject {
+		class SOCKET_API SSLSocketDescriptor : public SocketDescriptor {
 		public:
-			explicit SecureSocketObj(SOCKET socketId, const SecureSocket& sSocket);
-			~SecureSocketObj() override;
+			explicit SSLSocketDescriptor(SOCKET socketId, const SSLSocket& sSocket);
+			~SSLSocketDescriptor() override;
 			/*
 			 *	This method used for validating hostname for certificate verification.
 			 *	param1: Hostname such as www.sdk.com.
 			 *	returns: nothing.
-			 *	exception: This method throws an SecureSocketException if an error occurs.
+			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
 			void setHostname(const char* hostname);
 			/*
 			 *	Duty of connect method is connected to server for client applications using SSL.
 			 *	returns: nothing
-			 *	exception: This method throws an SecureSocketException if an error occurs.
+			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
 			void connect();
 
@@ -69,7 +69,7 @@ namespace sdk {
 			 *	This method used for reading operations from related secure socket layer.
 			 *	param1: One byte character to read.
 			 *	returns: Return byte count that read.
-			 *	exception: This method throws an SecureSocketException if an error occurs.
+			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD std::size_t read(char& msgByte) const override;
 			/*
@@ -77,7 +77,7 @@ namespace sdk {
 			 *	param1: Bytes of vector.
 			 *	param2: max read size.
 			 *	returns: Return byte count that read.
-			 *	exception: This method throws an SecureSocketException if an error occurs.
+			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD std::size_t read(std::vector<unsigned char>& message, int max_size = 0) const override;
 			/*
@@ -85,7 +85,7 @@ namespace sdk {
 			 *	param1: String.
 			 *	param2: max read size.
 			 *	returns: Return byte count that read.
-			 *	exception: This method throws an SecureSocketException if an error occurs.
+			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD std::size_t read(std::string& message, int max_size = 0) const override;
 
@@ -93,7 +93,7 @@ namespace sdk {
 			 *	This method used for writing operations from related secure socket layer.
 			 *	param1: initializer_list of data via modern c++.
 			 *	returns: Return byte count that write.
-			 *	exception: This method throws an SecureSocketException if an error occurs.
+			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD int write(std::initializer_list<char> data_list) const override;
 
@@ -102,7 +102,7 @@ namespace sdk {
 			 *	param1: Bytes of message.
 			 *	param2: Size of message.
 			 *	returns: Return byte count that write.
-			 *	exception: This method throws an SecureSocketException if an error occurs.
+			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD int write(const char* data, int data_size) const override;
 			/*
@@ -110,7 +110,7 @@ namespace sdk {
 			 *	param1: Bytes of vector message.
 			 *	param2: Size of message.
 			 *	returns: Return byte count that write.
-			 *	exception: This method throws an SecureSocketException if an error occurs.
+			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD int write(const std::vector<unsigned char>& message) const override;
 			/*
@@ -118,7 +118,7 @@ namespace sdk {
 			 *	param1: String of message.
 			 *	param2: Size of message.
 			 *	returns: Return byte count that write.
-			 *	exception: This method throws an SecureSocketException if an error occurs.
+			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD int write(const std::string& message) const override;
 			/*
@@ -139,4 +139,4 @@ namespace sdk {
 	}
 }
 
-#endif
+#endif	// SSL_SOCKET_DESCRIPTOR_H

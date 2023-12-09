@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SOCKET_OBJECT_H_
-#define SOCKET_OBJECT_H_
+#ifndef SOCKET_DESCRIPTOR_H
+#define SOCKET_DESCRIPTOR_H
 
 #ifdef _WIN32
 #include <winsock2.h>
@@ -90,10 +90,10 @@ namespace sdk {
 
 		class Socket; // forward declaration
 
-		class SOCKET_API SocketObject {
+		class SOCKET_API SocketDescriptor {
 		public:
-			explicit SocketObject(SOCKET socketId, const Socket& socket_ref) noexcept;
-			virtual ~SocketObject();
+			explicit SocketDescriptor(SOCKET socketId, const Socket& socket_ref) noexcept;
+			virtual ~SocketDescriptor();
 
 			/*
 			 *	This function used for reading operations from related socket.
@@ -170,4 +170,4 @@ namespace sdk {
 	}
 }
 
-#endif
+#endif	// SOCKET_DESCRIPTOR_H

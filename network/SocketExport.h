@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SOCKET_EXPORT_H_
-#define SOCKET_EXPORT_H_
+#ifndef SOCKET_EXPORT_H
+#define SOCKET_EXPORT_H
 
 /* Windows DLL export/import */
 #if defined(_WIN32) && !defined(__GNUC__) && defined(SOCKET_COMPILE_DLL)
@@ -38,4 +38,4 @@
     #endif
 #endif
 
-#endif
+#endif  // SOCKET_EXPORT_H

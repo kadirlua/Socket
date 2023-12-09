@@ -22,7 +22,7 @@
 
 #pragma once
 #include "network/Socket.h"
-#include "network/SocketObject.h"
+#include "network/SocketDescriptor.h"
 #include <mutex>
 #include <condition_variable>
 #include <thread>
@@ -91,7 +91,7 @@ namespace sdk {
 			workerThread_t purging_thread;
 		};
 
-		static std::vector<std::unique_ptr<WorkerThread<network::SocketObject>>> thread_vec;
+		static std::vector<std::unique_ptr<WorkerThread<network::SocketDescriptor>>> thread_vec;
 		static std::mutex vec_mutex;
 		static std::condition_variable vec_cv;
 		static bool purging_flag{};

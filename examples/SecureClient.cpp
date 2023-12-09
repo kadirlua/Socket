@@ -39,11 +39,11 @@ namespace sdk {
 		}
 
 		SecureClient::SecureClient(const std::string& ip, int port, network::protocol_type type /*= network::protocol_type::tcp*/, network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
-			m_socket_ptr{ std::make_unique<SecureSocket>(port, connection_method::client, type, ipVer) }
+			m_socket_ptr{ std::make_unique<SSLSocket>(port, connection_method::client, type, ipVer) }
 
 		{
 			m_socket_ptr->setIpAddress(ip);
-			const SocketOption<SecureSocket> socketOpt{ *m_socket_ptr };
+			const SocketOption<SSLSocket> socketOpt{ *m_socket_ptr };
 			socketOpt.setBlockingMode(1); // non-blocking mode
 			m_socket_ptr->setInterruptCallback(&callbackInterrupt, this);
 			m_socket_ptr->connect();
