@@ -37,7 +37,7 @@ namespace sdk {
 		}
 
 		Client::Client(const std::string& ip, int port,
-			network::protocol_type type /*= protocol_type::tcp*/,
+			network::ProtocolType type /*= ProtocolType::tcp*/,
 			network::IpVersion ipVer /*= IpVersion::IPv4*/) :
 			m_socket{ std::make_unique<Socket>(port, type, ipVer) }
 		{

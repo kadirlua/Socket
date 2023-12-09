@@ -66,7 +66,7 @@ namespace {
 
 #if (TEST_SECURE_SERVER == 1)
 #if (TEST_IPv6 == 1)
-			SecureClient sclient{ "::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
+			SecureClient sclient{ "::1", DEFAULT_PORT_NUMBER, ProtocolType::tcp, IpVersion::IPv6 };
 #else
 			SecureClient sclient{ "127.0.0.1", DEFAULT_PORT_NUMBER };
 #endif
@@ -80,7 +80,7 @@ namespace {
 			sclient.read(response);
 #else
 #if (TEST_IPv6 == 1)
-			Client client{ "::1", DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
+			Client client{ "::1", DEFAULT_PORT_NUMBER, ProtocolType::tcp, IpVersion::IPv6 };
 #else
 			Client client{ "127.0.0.1", DEFAULT_PORT_NUMBER };
 #endif
@@ -131,13 +131,13 @@ void serverfunc()
 	try {
 #if (TEST_SECURE_SERVER == 1)
 #if (TEST_IPv6 == 1)
-		const SecureServer server{ DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
+		const SecureServer server{ DEFAULT_PORT_NUMBER, ProtocolType::tcp, IpVersion::IPv6 };
 #else
 		const SecureServer server{ DEFAULT_PORT_NUMBER };
 #endif
 #else
 #if (TEST_IPv6 == 1)
-		const Server server{ DEFAULT_PORT_NUMBER, protocol_type::tcp, IpVersion::IPv6 };
+		const Server server{ DEFAULT_PORT_NUMBER, ProtocolType::tcp, IpVersion::IPv6 };
 #else
 		const Server server{ DEFAULT_PORT_NUMBER };
 #endif

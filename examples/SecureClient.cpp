@@ -38,8 +38,8 @@ namespace sdk {
 			}
 		}
 
-		SecureClient::SecureClient(const std::string& ip, int port, network::protocol_type type /*= network::protocol_type::tcp*/, network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
-			m_socket_ptr{ std::make_unique<SSLSocket>(port, connection_method::client, type, ipVer) }
+		SecureClient::SecureClient(const std::string& ip, int port, network::ProtocolType type /*= network::ProtocolType::tcp*/, network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
+			m_socket_ptr{ std::make_unique<SSLSocket>(port, ConnMethod::client, type, ipVer) }
 
 		{
 			m_socket_ptr->setIpAddress(ip);

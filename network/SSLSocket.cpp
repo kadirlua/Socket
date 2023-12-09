@@ -30,11 +30,11 @@ namespace sdk {
 
 		bool SSLSocket::m_bSSLLibraryInit = false;
 
-		SSLSocket::SSLSocket(int port, connection_method meth, protocol_type type, IpVersion IpVer) :
+		SSLSocket::SSLSocket(int port, ConnMethod meth, ProtocolType type, IpVersion IpVer) :
 			Socket{ port, type, IpVer },
 			m_ctx{ SSL_CTX_new(SSLv23_client_method()), SSL_CTX_free }
 		{
-			if (meth == connection_method::server) {
+			if (meth == ConnMethod::server) {
 				m_ctx = SSLCtx_unique_ptr{ SSL_CTX_new(SSLv23_server_method()), SSL_CTX_free };
 			}
 

@@ -49,8 +49,8 @@ namespace sdk {
 
 		class SOCKET_API SSLSocket : public Socket {
 		public:
-			explicit SSLSocket(int port, connection_method meth,
-				protocol_type type = protocol_type::tcp, IpVersion IpVer = IpVersion::IPv4);
+			explicit SSLSocket(int port, ConnMethod meth,
+				ProtocolType type = ProtocolType::tcp, IpVersion IpVer = IpVersion::IPv4);
 			~SSLSocket() override = default;
 
 			// non copyable

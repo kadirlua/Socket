@@ -36,12 +36,12 @@ namespace sdk {
 #define SOKCET_VERSION_MINOR 0
 #define SOCKET_VERSION_PATCH 0
 
-		enum class connection_method {
+		enum class ConnMethod {
 			client = 1,
 			server
 		};
 
-		enum class protocol_type {
+		enum class ProtocolType {
 			tcp = SOCK_STREAM,
 			udp = SOCK_DGRAM
 		};
@@ -70,7 +70,7 @@ namespace sdk {
 			friend class SSLSocketDescriptor;
 
 		public:
-			explicit Socket(int port_, protocol_type type = protocol_type::tcp,
+			explicit Socket(int port_, ProtocolType type = ProtocolType::tcp,
 				IpVersion ipVer = IpVersion::IPv4);
 
 			virtual ~Socket();
@@ -181,7 +181,7 @@ namespace sdk {
 			socket_interrupt_callback_t m_callback_interrupt;
 			void* m_userdata_ptr{};
 			int m_port_number{};
-			protocol_type m_protocol_type{ protocol_type::tcp };
+			ProtocolType m_protocol_type{ ProtocolType::tcp };
 			SOCKET m_socket_id{};
 			struct sockaddr_in m_st_address_t{}; // Stores address information.
 			struct sockaddr_in6 m_st_address6_t{};

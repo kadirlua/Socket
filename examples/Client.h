@@ -28,7 +28,7 @@ namespace sdk {
 		class Client {
 		public:
 			Client(const std::string& ip, int port,
-				network::protocol_type type = network::protocol_type::tcp,
+				network::ProtocolType type = network::ProtocolType::tcp,
 				network::IpVersion ipVer = network::IpVersion::IPv4);
 			virtual ~Client() = default;
 

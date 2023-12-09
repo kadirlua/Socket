@@ -37,7 +37,7 @@ namespace sdk {
 
 		class SecureServer {
 		public:
-			SecureServer(int port, network::protocol_type type = network::protocol_type::tcp, network::IpVersion ipVer = network::IpVersion::IPv4);
+			SecureServer(int port, network::ProtocolType type = network::ProtocolType::tcp, network::IpVersion ipVer = network::IpVersion::IPv4);
 			virtual ~SecureServer();
 
 			// non copyable
@@ -47,7 +47,7 @@ namespace sdk {
 		private:
 			std::unique_ptr<network::SSLSocket> m_socket_ptr;
 
-			void listener_thread_proc(int port_, network::protocol_type type, network::IpVersion ipVer);
+			void listener_thread_proc(int port_, network::ProtocolType type, network::IpVersion ipVer);
 			workerThread_t listener_thread;
 			workerThread_t purging_thread;
 		};

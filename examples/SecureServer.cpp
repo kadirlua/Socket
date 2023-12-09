@@ -102,7 +102,7 @@ namespace sdk {
 			}
 		}
 
-		SecureServer::SecureServer(int port, network::protocol_type type, network::IpVersion ipVer) :
+		SecureServer::SecureServer(int port, network::ProtocolType type, network::IpVersion ipVer) :
 			listener_thread{ new std::thread{ &SecureServer::listener_thread_proc, this, port, type, ipVer } },
 			purging_thread{ new std::thread{ &thread_purging } }
 		{
@@ -116,10 +116,10 @@ namespace sdk {
 			vec_cv_.notify_all();
 		}
 
-		void SecureServer::listener_thread_proc(int port_, network::protocol_type type, network::IpVersion ipVer)
+		void SecureServer::listener_thread_proc(int port_, network::ProtocolType type, network::IpVersion ipVer)
 		{
 			try {
-				m_socket_ptr = std::make_unique<SSLSocket>(port_, connection_method::server, type, ipVer);
+				m_socket_ptr = std::make_unique<SSLSocket>(port_, ConnMethod::server, type, ipVer);
 				const SocketOption<SSLSocket> socketOpt{ *m_socket_ptr };
 				socketOpt.setBlockingMode(1); // non-blocking mode
 

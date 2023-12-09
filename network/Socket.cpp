@@ -65,7 +65,7 @@ namespace sdk {
 #endif
 		}
 
-		Socket::Socket(int port_, protocol_type type /*= protocol_type::tcp*/, IpVersion ipVer /*= IpVersion::IPv4*/) :
+		Socket::Socket(int port_, ProtocolType type /*= protocol_type::tcp*/, IpVersion ipVer /*= IpVersion::IPv4*/) :
 			m_port_number{ port_ },
 			m_protocol_type{ type },
 			m_ipVersion{ ipVer }
@@ -225,7 +225,7 @@ namespace sdk {
 
 		void Socket::listen(int listen_count) const
 		{
-			if (m_protocol_type != protocol_type::udp) {
+			if (m_protocol_type != ProtocolType::udp) {
 				if (::listen(m_socket_id, listen_count) == SOCKET_ERROR) {
 					throw general::SocketException(WSAGetLastError());
 				}
@@ -234,7 +234,7 @@ namespace sdk {
 
 		SOCKET Socket::accept()
 		{
-			if (m_protocol_type != protocol_type::udp) {
+			if (m_protocol_type != ProtocolType::udp) {
 #ifdef _WIN32
 				const struct timeval timeout{ 0, DEFAULT_TIMEOUT };
 #else

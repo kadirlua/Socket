@@ -50,7 +50,7 @@ namespace sdk {
 			}
 		}
 
-		Server::Server(int port, protocol_type type /*= protocol_type::tcp*/, IpVersion ipVer /*= IpVersion::IPv4*/) :
+		Server::Server(int port, ProtocolType type /*= ProtocolType::tcp*/, IpVersion ipVer /*= IpVersion::IPv4*/) :
 			listener_thread{ new std::thread{ &Server::listener_thread_proc, this, port, type, ipVer } },
 			purging_thread{ new std::thread{ &thread_purging } }
 		{
@@ -64,7 +64,7 @@ namespace sdk {
 			vec_cv.notify_all();
 		}
 
-		void Server::listener_thread_proc(int port_, network::protocol_type type, network::IpVersion ipVer)
+		void Server::listener_thread_proc(int port_, network::ProtocolType type, network::IpVersion ipVer)
 		{
 			try {
 				m_socket_ptr = std::make_unique<Socket>(port_, type, ipVer);
