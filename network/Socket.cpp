@@ -285,9 +285,9 @@ namespace sdk {
 			return 0;
 		}
 
-		std::shared_ptr<SocketObject> Socket::createNewSocket(SOCKET socket_id) const
+		std::shared_ptr<SocketDescriptor> Socket::createNewSocket(SOCKET socket_id) const
 		{
-			return std::make_shared<SocketObject>(socket_id, *this);
+			return std::make_shared<SocketDescriptor>(socket_id, *this);
 		}
 
 		void Socket::setInterruptCallback(const socket_interrupt_callback_t& callback, void* userdata) noexcept

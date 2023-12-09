@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SocketObject.h"
+#include "SocketDescriptor.h"
 #include "Socket.h"
 #include "general/SocketException.h"
 #include "SocketOption.h"
@@ -31,13 +31,13 @@
 namespace sdk {
 	namespace network {
 
-		SocketObject::SocketObject(SOCKET socketId, const Socket& socket_ref) noexcept :
+		SocketDescriptor::SocketDescriptor(SOCKET socketId, const Socket& socket_ref) noexcept :
 			m_socket_id{ socketId },
 			m_socket_ref{ socket_ref }
 		{
 		}
 
-		SocketObject::~SocketObject()
+		SocketDescriptor::~SocketDescriptor()
 		{
 			shutdown(m_socket_id, SD_SEND);
 
@@ -49,7 +49,7 @@ namespace sdk {
 			}
 		}
 
-		std::string SocketObject::read(int max_size /*= 0*/) const
+		std::string SocketDescriptor::read(int max_size /*= 0*/) const
 		{
 			const int buf_len = (max_size > 0 && max_size < MAX_MESSAGE_SIZE) ? max_size : MAX_MESSAGE_SIZE - 1;
 
@@ -69,7 +69,7 @@ namespace sdk {
 
 			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
 
-			const SocketOption<SocketObject> socketOpt{ *this };
+			const SocketOption<SocketDescriptor> socketOpt{ *this };
 
 			/*if (socketOpt.getBytesAvailable() == 0)
 				return str_message;*/
@@ -148,7 +148,7 @@ namespace sdk {
 		}
 
 
-		std::size_t SocketObject::read(char& msgByte) const
+		std::size_t SocketDescriptor::read(char& msgByte) const
 		{
 			int const numBytes = recv(m_socket_id, &msgByte, 1, 0);
 			if (numBytes < 0) {
@@ -157,25 +157,25 @@ namespace sdk {
 			return static_cast<std::size_t>(numBytes);
 		}
 
-		std::size_t SocketObject::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
+		std::size_t SocketDescriptor::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
 		{
 			const auto received_str = read(max_size);
 			std::move(received_str.begin(), received_str.end(), std::back_inserter(message));
 			return message.size();
 		}
 
-		std::size_t SocketObject::read(std::string& message, int max_size /*= 0*/) const
+		std::size_t SocketDescriptor::read(std::string& message, int max_size /*= 0*/) const
 		{
 			message = read(max_size);
 			return message.size();
 		}
 
-		int SocketObject::write(std::initializer_list<char> data_list) const
+		int SocketDescriptor::write(std::initializer_list<char> data_list) const
 		{
 			return write(data_list.begin(), (int)data_list.size());
 		}
 
-		int SocketObject::write(const char* data, int data_size) const
+		int SocketDescriptor::write(const char* data, int data_size) const
 		{
 			int sendBytes = 0;
 
@@ -198,13 +198,13 @@ namespace sdk {
 			return sendBytes;
 		}
 
-		int SocketObject::write(const std::vector<unsigned char>& message) const
+		int SocketDescriptor::write(const std::vector<unsigned char>& message) const
 		{
 			const std::string strBuf(message.begin(), message.end());
 			return write(strBuf.c_str(), (int)strBuf.size());
 		}
 
-		int SocketObject::write(const std::string& message) const
+		int SocketDescriptor::write(const std::string& message) const
 		{
 			return write(message.c_str(),
 				static_cast<int>(message.size()));

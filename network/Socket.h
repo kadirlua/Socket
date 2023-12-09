@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef SOCKET_H_
-#define SOCKET_H_
+#ifndef SOCKET_H
+#define SOCKET_H
 
 #include <string>
 #include <memory>
 #include <functional>
-#include "SocketObject.h"
+#include "SocketDescriptor.h"
 #include "version.h"
 
 namespace sdk {
@@ -66,8 +66,8 @@ namespace sdk {
 		//	After all operations done, do not forget to call WSA_Cleanup to clean memory properly.
 
 		class SOCKET_API Socket {
-			friend class SocketObject;
-			friend class SecureSocketObj;
+			friend class SocketDescriptor;
+			friend class SSLSocketDescriptor;
 
 		public:
 			explicit Socket(int port_, protocol_type type = protocol_type::tcp,
@@ -123,7 +123,7 @@ namespace sdk {
 			 *	param1: The id of socket.
 			 *	returns: A shared pointer of socket object.
 			 */
-			NODISCARD std::shared_ptr<SocketObject> createNewSocket(SOCKET) const;
+			NODISCARD std::shared_ptr<SocketDescriptor> createNewSocket(SOCKET) const;
 			/*
 			 *	This function is useful for client applications to set an ip address.
 			 *	param: Ip address.
@@ -191,4 +191,4 @@ namespace sdk {
 	}
 }
 
-#endif
+#endif	// SOCKET_H

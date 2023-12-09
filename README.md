@@ -1,7 +1,7 @@
 # Socket
 Secure and non-secure version of Socket classes. You need OpenSSL for secure version. If you want to use these classes, do not forget to include SocketException and SecureSocketException which inherited from BaseException in the organization directory.
 
-# Very basic example of usage non-secure version:
+# Basic example of usage non-secure version:
 
 ```c++
 try {
@@ -11,11 +11,11 @@ try {
   socketOpt.setBlockingMode(1);	//set non-blocking mode is active
   clientSocket->connect();  //connect to the server
   
-  auto socketObj = clientSocket->createNewSocket(clientSocket->getSocketId());
+  auto socketDesc = clientSocket->createNewSocket(clientSocket->getSocketId());
   
   std::string response;
-  socketObj->write("Some important messages from client!");
-  socketObj->read(response);
+  socketDesc->write("Some important messages from client!");
+  socketDesc->read(response);
   std::cout << "response from the server: " << response << "\n";
 }
 catch (const sdk::general::SocketException& ex)
@@ -24,27 +24,27 @@ catch (const sdk::general::SocketException& ex)
 }
 ```
 
-# Very basic example of usage secure version:
+# Basic example of usage secure version:
 
 ```c++
 try {
   static const char* cert_file = "C:\\Program Files\\OpenSSL\\bin\\mycert.pem";
   static const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\privateKey.key";
-  auto clientSecureSocket = std::make_unique<sdk::network::SecureSocket>(portNumber, connection_method::client);
-  clientSecureSocket->setIpAddress("127.0.0.1");
-  SocketOption<SecureSocket> socketOpt{ *clientSecureSocket };
+  auto clientSSLSocket = std::make_unique<sdk::network::SSLSocket>(portNumber, connection_method::client);
+  clientSSLSocket->setIpAddress("127.0.0.1");
+  SocketOption<SSLSocket> socketOpt{ *clientSSLSocket };
   socketOpt.setBlockingMode(1);	//set non-blocking mode is active
-  clientSecureSocket->connect();  //connect to the server
+  clientSSLSocket->connect();  //connect to the server
   
-  clientSecureSocket->loadCertificateFile(cert_file);
-  clientSecureSocket->loadPrivateKeyFile(key_file);
+  clientSSLSocket->loadCertificateFile(cert_file);
+  clientSSLSocket->loadPrivateKeyFile(key_file);
   
-  auto socketSecureObj = clientSecureSocket->createNewSocket(clientSecureSocket->getSocketId());
-  socketSecureObj->connect();
+  auto socketSSLDesc = clientSSLSocket->createNewSocket(clientSSLSocket->getSocketId());
+  socketSSLDesc->connect();
   
   std::string response;
-  socketSecureObj->write("Some important messages from client!");
-  socketSecureObj->read(response);
+  socketSSLDesc->write("Some important messages from client!");
+  socketSSLDesc->read(response);
   std::cout << "response from the server: " << response << "\n";
 }
 catch (const sdk::general::SecureSocketException& ex)

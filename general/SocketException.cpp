@@ -91,7 +91,7 @@ namespace sdk{
             return strErrMsg;
         }
 
-        SecureSocketException::SecureSocketException(int err_code) noexcept :
+        SSLSocketException::SSLSocketException(int err_code) noexcept :
             SocketException(err_code)
         {
 #if OPENSSL_SUPPORTED
@@ -102,22 +102,22 @@ namespace sdk{
 #endif // OPENSSL_SUPPORTED
         }
 
-        SecureSocketException::SecureSocketException(int err_code, std::string&& err_msg) noexcept :
+        SSLSocketException::SSLSocketException(int err_code, std::string&& err_msg) noexcept :
             SocketException(err_code, std::move(err_msg))
         {
         }
 
-        SecureSocketException::SecureSocketException(int err_code, const std::string& err_msg) noexcept :
+        SSLSocketException::SSLSocketException(int err_code, const std::string& err_msg) noexcept :
             SocketException(err_code, err_msg)
         {
         }
 
-        SecureSocketException::SecureSocketException(std::string&& err_msg) noexcept :
+        SSLSocketException::SSLSocketException(std::string&& err_msg) noexcept :
             SocketException(std::move(err_msg))
         {
         }
 
-        SecureSocketException::SecureSocketException(const std::string& err_msg) noexcept :
+        SSLSocketException::SSLSocketException(const std::string& err_msg) noexcept :
             SocketException(err_msg)
         {
         }

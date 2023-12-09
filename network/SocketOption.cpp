@@ -22,7 +22,7 @@
 
 #include "SocketOption.h"
 #include "Socket.h"
-#include "SecureSocket.h"
+#include "SSLSocket.h"
 #include "general/SocketException.h"
 
 namespace sdk {
@@ -166,10 +166,10 @@ namespace sdk {
 
 		// Explicit template specialization
 		template class SocketOption<Socket>;
-		template class SocketOption<SocketObject>;
+		template class SocketOption<SocketDescriptor>;
 #if OPENSSL_SUPPORTED
-		template class SocketOption<SecureSocket>;
-		template class SocketOption<SecureSocketObj>;
+		template class SocketOption<SSLSocket>;
+		template class SocketOption<SSLSocketDescriptor>;
 #endif // OPENSSL_SUPPORTED
 	}
 }

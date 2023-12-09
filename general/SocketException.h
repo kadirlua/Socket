@@ -53,14 +53,14 @@ namespace sdk {
             std::string GetWSALastErrorMessage() const noexcept;
         };
 
-        class EXCEPTION_API SecureSocketException : public SocketException
+        class EXCEPTION_API SSLSocketException : public SocketException
         {
         public:
-            SecureSocketException(int err_code) noexcept;
-            SecureSocketException(int err_code, std::string&& err_msg) noexcept;
-            SecureSocketException(int err_code, const std::string& err_msg) noexcept;
-            SecureSocketException(const std::string& err_msg) noexcept;
-            SecureSocketException(std::string&& err_msg) noexcept;
+            SSLSocketException(int err_code) noexcept;
+            SSLSocketException(int err_code, std::string&& err_msg) noexcept;
+            SSLSocketException(int err_code, const std::string& err_msg) noexcept;
+            SSLSocketException(const std::string& err_msg) noexcept;
+            SSLSocketException(std::string&& err_msg) noexcept;
         };
     }
 }
