@@ -130,9 +130,9 @@ namespace sdk {
 			 *	returns: nothing.
 			 *	exception: This function never throws an exception.
 			 */
-			void setIpAddress(std::string ip_) noexcept
+			void setIpAddress(std::string ipAddress) noexcept
 			{
-				m_ip_address = std::move(ip_);
+				m_ip_address = std::move(ipAddress);
 			}
 			/*
 			 *	This function is useful for all socket applications to set a port number.
