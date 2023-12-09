@@ -64,30 +64,30 @@ namespace sdk {
 
 		void SSLSocket::setCipherList(const char* str) const
 		{
-			const int ret_code = SSL_CTX_set_cipher_list(m_ctx.get(), str);
-			if (ret_code <= 0) {
-				throw general::SSLSocketException(ret_code, "Error setting the cipher list.");
+			const int retCode = SSL_CTX_set_cipher_list(m_ctx.get(), str);
+			if (retCode <= 0) {
+				throw general::SSLSocketException(retCode, "Error setting the cipher list.");
 			}
 		}
 
-		void SSLSocket::loadCertificateFile(const char* cert_file, int type /*= SSL_FILETYPE_PEM*/) const
+		void SSLSocket::loadCertificateFile(const char* certFile, int type /*= SSL_FILETYPE_PEM*/) const
 		{
-			const int ret_code = SSL_CTX_use_certificate_file(m_ctx.get(), cert_file, type);
-			if (ret_code <= 0) {
-				throw general::SSLSocketException(ret_code, "Error setting the certificate file");
+			const int retCode = SSL_CTX_use_certificate_file(m_ctx.get(), certFile, type);
+			if (retCode <= 0) {
+				throw general::SSLSocketException(retCode, "Error setting the certificate file");
 			}
 		}
 
-		void SSLSocket::loadPrivateKeyFile(const char* key_file, int type /*= SSL_FILETYPE_PEM*/) const
+		void SSLSocket::loadPrivateKeyFile(const char* keyFile, int type /*= SSL_FILETYPE_PEM*/) const
 		{
-			int ret_code = SSL_CTX_use_PrivateKey_file(m_ctx.get(), key_file, type);
-			if (ret_code <= 0) {
-				throw general::SSLSocketException(ret_code, "Error setting the key file.");
+			int retCode = SSL_CTX_use_PrivateKey_file(m_ctx.get(), keyFile, type);
+			if (retCode <= 0) {
+				throw general::SSLSocketException(retCode, "Error setting the key file.");
 			}
 
-			ret_code = SSL_CTX_check_private_key(m_ctx.get());
-			if (ret_code == 0) {
-				throw general::SSLSocketException(ret_code, "Private key does not match the certificate public key.");
+			retCode = SSL_CTX_check_private_key(m_ctx.get());
+			if (retCode == 0) {
+				throw general::SSLSocketException(retCode, "Private key does not match the certificate public key.");
 			}
 		}
 
@@ -97,22 +97,22 @@ namespace sdk {
 			SSL_CTX_set_verify(m_ctx.get(), mode, callback);
 		}
 
-		void SSLSocket::loadVerifyLocations(const char* ca_file, const char* ca_path) const
+		void SSLSocket::loadVerifyLocations(const char* caFile, const char* caPath) const
 		{
-			const int ret_code = SSL_CTX_load_verify_locations(m_ctx.get(), ca_file, ca_path);
-			if (ret_code < 1) {
-				throw general::SSLSocketException(ret_code, "Error setting the verify locations.");
+			const int retCode = SSL_CTX_load_verify_locations(m_ctx.get(), caFile, caPath);
+			if (retCode < 1) {
+				throw general::SSLSocketException(retCode, "Error setting the verify locations.");
 			}
 		}
 
 		void SSLSocket::loadClientCertificateList(const char* path) const
 		{
-			auto* stack_ptr = SSL_load_client_CA_file(path);
-			if (stack_ptr == nullptr) {
+			auto* stackPtr = SSL_load_client_CA_file(path);
+			if (stackPtr == nullptr) {
 				throw general::SSLSocketException(-1, "can not load client CA file");
 			}
 
-			SSL_CTX_set_client_CA_list(m_ctx.get(), stack_ptr);
+			SSL_CTX_set_client_CA_list(m_ctx.get(), stackPtr);
 		}
 
 		void SSLSocket::setVerifyDepth(int depth) const noexcept
@@ -120,9 +120,9 @@ namespace sdk {
 			SSL_CTX_set_verify_depth(m_ctx.get(), depth);
 		}
 
-		std::shared_ptr<SSLSocketDescriptor> SSLSocket::createNewSocket(SOCKET socket_id) const
+		std::shared_ptr<SSLSocketDescriptor> SSLSocket::createNewSocket(SOCKET socketId) const
 		{
-			return std::make_shared<SSLSocketDescriptor>(socket_id, *this);
+			return std::make_shared<SSLSocketDescriptor>(socketId, *this);
 		}
 #endif // OPENSSL_SUPPORTED
 	}

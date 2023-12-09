@@ -37,7 +37,7 @@ namespace sdk {
 		/**************************Secure Object Part**************************/
 		SSLSocketDescriptor::SSLSocketDescriptor(SOCKET socketId, const SSLSocket& sSocket) :
 			SocketDescriptor{ socketId, sSocket },
-			m_ssl{ SSL_new(sSocket.get_ctx()), SSL_free }
+			m_ssl{ SSL_new(sSocket.getSSLCtx()), SSL_free }
 		{
 			if (m_ssl != nullptr) {
 				if (SSL_set_fd(m_ssl.get(), (int)socketId) == 0) {

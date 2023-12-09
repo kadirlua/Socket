@@ -63,7 +63,7 @@ namespace sdk {
 			 *	param1: The id of socket.
 			 *	returns: A shared pointer of secure socket layer object.
 			 */
-			NODISCARD std::shared_ptr<SSLSocketDescriptor> createNewSocket(SOCKET socket_id) const;
+			NODISCARD std::shared_ptr<SSLSocketDescriptor> createNewSocket(SOCKET socketId) const;
 			/*
 			 *	This function sets the list of available ciphers for ctx using the control string str.
 			 *	If this function not use, the default cipher list is "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256".
@@ -79,14 +79,14 @@ namespace sdk {
 			 *	returns: nothing.
 			 *	exception: This function throws an SSLSocketException if an error occurs.
 			 */
-			void loadCertificateFile(const char* cert_file, int type = SSL_FILETYPE_PEM) const;
+			void loadCertificateFile(const char* certFile, int type = SSL_FILETYPE_PEM) const;
 			/*
 			 *	This function load the key in the given file path.
 			 *	param1: File path.
 			 *	returns: nothing.
 			 *	exception: This function throws an SSLSocketException if an error occurs.
 			 */
-			void loadPrivateKeyFile(const char* key_file, int type = SSL_FILETYPE_PEM) const;
+			void loadPrivateKeyFile(const char* keyFile, int type = SSL_FILETYPE_PEM) const;
 			/*
 			 *	This function sets the verification flags for ctx to be mode and specifies the verify_callback function to be used.
 			 *	param1: Exactly one of the mode flags SSL_VERIFY_NONE and SSL_VERIFY_PEER must be set at any time.
@@ -103,7 +103,7 @@ namespace sdk {
 			 *	returns: nothing.
 			 *	exception: This function throws an SSLSocketException if an error occurs.
 			 */
-			void loadVerifyLocations(const char* ca_file, const char* ca_path) const;
+			void loadVerifyLocations(const char* caFile, const char* caPath) const;
 			void loadClientCertificateList(const char* path) const;
 			void setVerifyDepth(int depth) const noexcept;
 			/*
@@ -111,7 +111,7 @@ namespace sdk {
 			 *	returns: The pointer address of SSL_CTX object created, otherwise nullptr.
 			 *	exception : This function never throws an exception.
 			 */
-			NODISCARD SSL_CTX* get_ctx() const noexcept
+			NODISCARD SSL_CTX* getSSLCtx() const noexcept
 			{
 				return m_ctx.get();
 			}
