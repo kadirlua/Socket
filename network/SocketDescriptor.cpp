@@ -31,6 +31,10 @@
 namespace sdk {
 	namespace network {
 
+		namespace {
+			constexpr const auto DEFAULT_RECV_TIMEOUT = 5L;
+		}
+
 		SocketDescriptor::SocketDescriptor(SOCKET socketId, const Socket& socketRef) noexcept :
 			m_socketId{ socketId },
 			m_socketRef{ socketRef }
@@ -89,7 +93,7 @@ namespace sdk {
 						//	Otherwise, set the default value to an acceptable timeout value.
 						if (recvTimeout.tv_sec == 0 &&
 							recvTimeout.tv_usec == 0) {
-							recvTimeout.tv_sec = 5;
+							recvTimeout.tv_sec = DEFAULT_RECV_TIMEOUT;
 						}
 
 						FD_ZERO(&readFds);
