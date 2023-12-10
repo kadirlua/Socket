@@ -14,4 +14,6 @@ Checks: >
   -readability-braces-around-statements,
   -readability-magic-numbers,
   -misc-include-cleaner,
-  -modernize-concat-nested-namespaces
+  -modernize-concat-nested-namespaces,
+  clang-analyzer-*,
+  concurrency-*
