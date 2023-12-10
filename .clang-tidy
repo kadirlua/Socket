@@ -13,4 +13,5 @@ Checks: >
   -readability-named-parameter,
   -readability-braces-around-statements,
   -readability-magic-numbers,
-  -misc-include-cleaner
+  -misc-include-cleaner,
+  -modernize-concat-nested-namespaces
