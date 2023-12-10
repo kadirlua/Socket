@@ -62,8 +62,8 @@ namespace sdk {
 		//	This class has methods that works blocking or non-blocking mode.
 		//	Default mode is blocking mode, if you want to work on non-blocking mode
 		//	call setBlockingMode(1) instead.
-		//	Before call these methods you must call WSA_startup_init() once.
-		//	After all operations done, do not forget to call WSA_Cleanup to clean memory properly.
+		//	Before call these methods you must call WSAInit() once.
+		//	After all operations done, do not forget to call WSADeinit to clean memory properly.
 
 		class SOCKET_API Socket {
 			friend class SocketDescriptor;
@@ -86,12 +86,12 @@ namespace sdk {
 			 *	param1: version number
 			 *	returns: true if successfully, false otherwise.
 			 */
-			static bool WSA_startup_init(unsigned short versionReq) noexcept;
+			static bool WSAInit(unsigned short versionReq) noexcept;
 			/*
 			 *	This function terminates use of the Winsock DLL.
 			 *	returns: nothing.
 			 */
-			static void WSA_Cleanup() noexcept;
+			static void WSADeinit() noexcept;
 			/*
 			 *	Duty of connect method is connected to server for client applications.
 			 *	returns: nothing
@@ -110,7 +110,7 @@ namespace sdk {
 			 *	returns: nothing
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			virtual void listen(int listen_count) const;
+			virtual void listen(int listenCount) const;
 			/*
 			 *	The accept function permits an incoming connection attempt on a socket.
 			 *	This function is useless for udp connections.
@@ -123,7 +123,7 @@ namespace sdk {
 			 *	param1: The id of socket.
 			 *	returns: A shared pointer of socket object.
 			 */
-			NODISCARD std::shared_ptr<SocketDescriptor> createNewSocket(SOCKET) const;
+			NODISCARD std::shared_ptr<SocketDescriptor> createNewSocket(SOCKET socketId) const;
 			/*
 			 *	This function is useful for client applications to set an ip address.
 			 *	param: Ip address.
@@ -132,7 +132,7 @@ namespace sdk {
 			 */
 			void setIpAddress(std::string ipAddress) noexcept
 			{
-				m_ip_address = std::move(ipAddress);
+				m_ipAddress = std::move(ipAddress);
 			}
 			/*
 			 *	This function is useful for all socket applications to set a port number.
@@ -142,7 +142,7 @@ namespace sdk {
 			 */
 			void setPortNumber(int portNumber) noexcept
 			{
-				m_port_number = portNumber;
+				m_portNumber = portNumber;
 			}
 			/*
 			 *	This function returns socket id if you need.
@@ -151,7 +151,7 @@ namespace sdk {
 			 */
 			NODISCARD SOCKET getSocketId() const noexcept
 			{
-				return m_socket_id;
+				return m_socketId;
 			}
 			/*
 			 *	This function returns port number if you need.
@@ -160,7 +160,7 @@ namespace sdk {
 			 */
 			NODISCARD int getPort() const noexcept
 			{
-				return m_port_number;
+				return m_portNumber;
 			}
 
 			void setInterruptCallback(const socket_interrupt_callback_t& callback,
@@ -176,16 +176,16 @@ namespace sdk {
 			std::string getIpAddress() const;
 
 		private:
-			static bool m_wsa_init;
+			static bool m_wsaInit;
 
-			socket_interrupt_callback_t m_callback_interrupt;
-			void* m_userdata_ptr{};
-			int m_port_number{};
-			ProtocolType m_protocol_type{ ProtocolType::tcp };
-			SOCKET m_socket_id{};
-			struct sockaddr_in m_st_address_t{}; // Stores address information.
-			struct sockaddr_in6 m_st_address6_t{};
-			std::string m_ip_address{};
+			socket_interrupt_callback_t m_callbackInterrupt;
+			void* m_userdataPtr{};
+			int m_portNumber{};
+			ProtocolType m_protocolType{ ProtocolType::tcp };
+			SOCKET m_socketId{};
+			struct sockaddr_in m_sockAddressIpv4{}; // Stores address information.
+			struct sockaddr_in6 m_sockAddressIpv6{};
+			std::string m_ipAddress{};
 			IpVersion m_ipVersion;
 		};
 	}

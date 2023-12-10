@@ -31,17 +31,17 @@
 namespace sdk {
 	namespace network {
 
-		SocketDescriptor::SocketDescriptor(SOCKET socketId, const Socket& socket_ref) noexcept :
-			m_socket_id{ socketId },
-			m_socket_ref{ socket_ref }
+		SocketDescriptor::SocketDescriptor(SOCKET socketId, const Socket& socketRef) noexcept :
+			m_socketId{ socketId },
+			m_socketRef{ socketRef }
 		{
 		}
 
 		SocketDescriptor::~SocketDescriptor()
 		{
-			shutdown(m_socket_id, SD_SEND);
+			shutdown(m_socketId, SD_SEND);
 
-			while (closesocket(m_socket_id) == SOCKET_ERROR) {
+			while (closesocket(m_socketId) == SOCKET_ERROR) {
 				auto err = WSAGetLastError();
 				if (err != WSAEWOULDBLOCK) {
 					break;
@@ -49,15 +49,15 @@ namespace sdk {
 			}
 		}
 
-		std::string SocketDescriptor::read(int max_size /*= 0*/) const
+		std::string SocketDescriptor::read(int maxSize /*= 0*/) const
 		{
-			const int buf_len = (max_size > 0 && max_size < MAX_MESSAGE_SIZE) ? max_size : MAX_MESSAGE_SIZE - 1;
+			const int bufLen = (maxSize > 0 && maxSize < MAX_MESSAGE_SIZE) ? maxSize : MAX_MESSAGE_SIZE - 1;
 
-			std::string str_message;
+			std::string strMessage;
 			std::vector<char> dataVec;
-			dataVec.resize(buf_len);
+			dataVec.resize(bufLen);
 
-			int receive_byte{};
+			int receiveByte{};
 			int iResult = 0;
 #ifdef _WIN32
 			const struct timeval tVal = { 0, 0 };
@@ -67,17 +67,17 @@ namespace sdk {
 			fd_set readFds{};
 			fd_set exceptFds{};
 
-			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
+			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
 			const SocketOption<SocketDescriptor> socketOpt{ *this };
 
 			/*if (socketOpt.getBytesAvailable() == 0)
-				return str_message;*/
+				return strMessage;*/
 
 			do {
-				while ((receive_byte = recv(m_socket_id, dataVec.data(), buf_len, 0)) == SOCKET_ERROR) {
-					if (callback_interrupt &&
-						callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+				while ((receiveByte = recv(m_socketId, dataVec.data(), bufLen, 0)) == SOCKET_ERROR) {
+					if (callbackInterrupt &&
+						callbackInterrupt(m_socketRef.m_userdataPtr)) {
 						throw general::SocketException(INTERRUPT_MSG);
 					}
 
@@ -93,14 +93,14 @@ namespace sdk {
 						}
 
 						FD_ZERO(&readFds);
-						FD_SET(m_socket_id, &readFds);
+						FD_SET(m_socketId, &readFds);
 
-						iResult = select((int)m_socket_id + 1, &readFds, nullptr, nullptr, &recvTimeout);
+						iResult = select((int)m_socketId + 1, &readFds, nullptr, nullptr, &recvTimeout);
 						if (iResult < 0) {
 							throw general::SocketException(WSAGetLastError());
 						}
-						if (!FD_ISSET(m_socket_id, &readFds)) {
-							return str_message;
+						if (!FD_ISSET(m_socketId, &readFds)) {
+							return strMessage;
 						}
 					} break;
 					default:
@@ -108,21 +108,21 @@ namespace sdk {
 					}
 				}
 
-				if (receive_byte == 0) {
-					return str_message; // the connection is closed.
+				if (receiveByte == 0) {
+					return strMessage; // the connection is closed.
 				}
 
-				if (receive_byte > 0) {
-					std::move(dataVec.begin(), dataVec.begin() + receive_byte,
-						std::back_inserter(str_message));
+				if (receiveByte > 0) {
+					std::move(dataVec.begin(), dataVec.begin() + receiveByte,
+						std::back_inserter(strMessage));
 				}
 
-				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+				if (callbackInterrupt &&
+					callbackInterrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
-				if (max_size > 0 && str_message.size() >= (std::size_t)max_size) {
+				if (maxSize > 0 && strMessage.size() >= (std::size_t)maxSize) {
 					break;
 				}
 
@@ -132,58 +132,58 @@ namespace sdk {
 				 */
 
 				FD_ZERO(&readFds);
-				FD_SET(m_socket_id, &readFds);
+				FD_SET(m_socketId, &readFds);
 				FD_ZERO(&exceptFds);
-				FD_SET(m_socket_id, &exceptFds);
-				iResult = select((int)m_socket_id + 1, &readFds, nullptr, &exceptFds, &tVal);
+				FD_SET(m_socketId, &exceptFds);
+				iResult = select((int)m_socketId + 1, &readFds, nullptr, &exceptFds, &tVal);
 				if (iResult < 0) {
 					throw general::SocketException(WSAGetLastError());
 				}
-				if (!FD_ISSET(m_socket_id, &readFds) || FD_ISSET(m_socket_id, &exceptFds)) {
+				if (!FD_ISSET(m_socketId, &readFds) || FD_ISSET(m_socketId, &exceptFds)) {
 					break;
 				}
-			} while (receive_byte > 0);
+			} while (receiveByte > 0);
 
-			return str_message;
+			return strMessage;
 		}
 
 
 		std::size_t SocketDescriptor::read(char& msgByte) const
 		{
-			int const numBytes = recv(m_socket_id, &msgByte, 1, 0);
+			int const numBytes = recv(m_socketId, &msgByte, 1, 0);
 			if (numBytes < 0) {
 				throw general::SocketException(WSAGetLastError());
 			}
 			return static_cast<std::size_t>(numBytes);
 		}
 
-		std::size_t SocketDescriptor::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
+		std::size_t SocketDescriptor::read(std::vector<unsigned char>& message, int maxSize /*= 0*/) const
 		{
-			const auto received_str = read(max_size);
-			std::move(received_str.begin(), received_str.end(), std::back_inserter(message));
+			const auto receivedStr = read(maxSize);
+			std::move(receivedStr.begin(), receivedStr.end(), std::back_inserter(message));
 			return message.size();
 		}
 
-		std::size_t SocketDescriptor::read(std::string& message, int max_size /*= 0*/) const
+		std::size_t SocketDescriptor::read(std::string& message, int maxSize /*= 0*/) const
 		{
-			message = read(max_size);
+			message = read(maxSize);
 			return message.size();
 		}
 
-		int SocketDescriptor::write(std::initializer_list<char> data_list) const
+		int SocketDescriptor::write(std::initializer_list<char> dataList) const
 		{
-			return write(data_list.begin(), (int)data_list.size());
+			return write(dataList.begin(), (int)dataList.size());
 		}
 
-		int SocketDescriptor::write(const char* data, int data_size) const
+		int SocketDescriptor::write(const char* data, int dataSize) const
 		{
 			int sendBytes = 0;
 
-			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
+			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
-			while ((sendBytes = send(m_socket_id, data, data_size, 0)) == SOCKET_ERROR) {
-				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+			while ((sendBytes = send(m_socketId, data, dataSize, 0)) == SOCKET_ERROR) {
+				if (callbackInterrupt &&
+					callbackInterrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 

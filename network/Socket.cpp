@@ -37,59 +37,59 @@ namespace sdk {
 
 	namespace network {
 
-		bool Socket::m_wsa_init = false;
+		bool Socket::m_wsaInit = false;
 
-		bool Socket::WSA_startup_init(unsigned short versionReq) noexcept
+		bool Socket::WSAInit(unsigned short versionReq) noexcept
 		{
 			// There's no harm in calling WSAStartup() multiple times but no benefit
 			// either, we may as well skip it after the first.
-			if (!m_wsa_init) {
+			if (!m_wsaInit) {
 #ifdef _WIN32
 				WSADATA wsaData;
 				if (WSAStartup(versionReq, &wsaData) != 0) {
 					return false;
 				}
 #endif
-				m_wsa_init = true;
+				m_wsaInit = true;
 			}
 			return true;
 		}
 
-		void Socket::WSA_Cleanup() noexcept
+		void Socket::WSADeinit() noexcept
 		{
 #ifdef _WIN32
-			if (m_wsa_init) {
+			if (m_wsaInit) {
 				WSACleanup();
-				m_wsa_init = false;
+				m_wsaInit = false;
 			}
 #endif
 		}
 
 		Socket::Socket(int portNumber, ProtocolType type /*= protocol_type::tcp*/, IpVersion ipVer /*= IpVersion::IPv4*/) :
-			m_port_number{ portNumber },
-			m_protocol_type{ type },
+			m_portNumber{ portNumber },
+			m_protocolType{ type },
 			m_ipVersion{ ipVer }
 		{
-			m_socket_id = socket(static_cast<int>(m_ipVersion), static_cast<int>(type), 0);
-			if (m_socket_id == INVALID_SOCKET) {
+			m_socketId = socket(static_cast<int>(m_ipVersion), static_cast<int>(type), 0);
+			if (m_socketId == INVALID_SOCKET) {
 				throw general::SocketException(WSAGetLastError());
 			}
 
 			if (m_ipVersion == IpVersion::IPv4) {
-				m_st_address_t.sin_family = AF_INET;
-				m_st_address_t.sin_addr.s_addr = htonl(INADDR_ANY);
-				m_st_address_t.sin_port = htons(m_port_number);
+				m_sockAddressIpv4.sin_family = AF_INET;
+				m_sockAddressIpv4.sin_addr.s_addr = htonl(INADDR_ANY);
+				m_sockAddressIpv4.sin_port = htons(m_portNumber);
 			}
 			else if (m_ipVersion == IpVersion::IPv6) {
-				m_st_address6_t.sin6_family = AF_INET6;
-				m_st_address6_t.sin6_port = htons(m_port_number);
+				m_sockAddressIpv6.sin6_family = AF_INET6;
+				m_sockAddressIpv6.sin6_port = htons(m_portNumber);
 			}
 		}
 
 		Socket::~Socket()
 		{
-			shutdown(m_socket_id, SD_SEND);
-			while (closesocket(m_socket_id) == SOCKET_ERROR) {
+			shutdown(m_socketId, SD_SEND);
+			while (closesocket(m_socketId) == SOCKET_ERROR) {
 				auto err = WSAGetLastError();
 				if (err != WSAEWOULDBLOCK) {
 					break;
@@ -109,7 +109,7 @@ namespace sdk {
 			hints.ai_family = AF_UNSPEC; // AF_INET or AF_INET6 to force version
 			hints.ai_socktype = SOCK_STREAM;
 
-			if (getaddrinfo(m_ip_address.c_str(), nullptr, &hints, &res) != 0) {
+			if (getaddrinfo(m_ipAddress.c_str(), nullptr, &hints, &res) != 0) {
 				throw general::SocketException(WSAGetLastError());
 			}
 
@@ -153,11 +153,11 @@ namespace sdk {
 
 			if (m_ipVersion == IpVersion::IPv4) {
 				err = inet_pton(static_cast<int>(m_ipVersion),
-					strIpAddr.c_str(), &m_st_address_t.sin_addr);
+					strIpAddr.c_str(), &m_sockAddressIpv4.sin_addr);
 			}
 			else if (m_ipVersion == IpVersion::IPv6) {
 				err = inet_pton(static_cast<int>(m_ipVersion),
-					strIpAddr.c_str(), &m_st_address6_t.sin6_addr);
+					strIpAddr.c_str(), &m_sockAddressIpv6.sin6_addr);
 			}
 
 			if (err == SOCKET_ERROR) {
@@ -168,14 +168,14 @@ namespace sdk {
 				throw general::SocketException("IP address is not valid IPv4 dotted-decimal string or a valid IPv6 address string.");
 			}
 
-			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_st_address_t) : sizeof(m_st_address6_t));
+			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6));
 
-			const sockaddr* st_address = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_st_address_t) : 
-				reinterpret_cast<const sockaddr*>(&m_st_address6_t));
+			const sockaddr* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) : 
+				reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
 
-			while (::connect(m_socket_id, st_address, addressSize) == SOCKET_ERROR) {
+			while (::connect(m_socketId, stAddress, addressSize) == SOCKET_ERROR) {
 				//	check if any interrupt happened by user
-				if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr)) {
+				if (m_callbackInterrupt && m_callbackInterrupt(m_userdataPtr)) {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
@@ -187,22 +187,22 @@ namespace sdk {
 					fd_set exceptFds{};
 
 					do {
-						if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr)) {
+						if (m_callbackInterrupt && m_callbackInterrupt(m_userdataPtr)) {
 							throw general::SocketException(INTERRUPT_MSG);
 						}
 
 						FD_ZERO(&writeFds);
-						FD_SET(m_socket_id, &writeFds);
+						FD_SET(m_socketId, &writeFds);
 						FD_ZERO(&exceptFds);
-						FD_SET(m_socket_id, &exceptFds);
-						err = select((int)m_socket_id + 1, nullptr, &writeFds, &exceptFds, &timeout);
+						FD_SET(m_socketId, &exceptFds);
+						err = select((int)m_socketId + 1, nullptr, &writeFds, &exceptFds, &timeout);
 						if (err < 0) {
 							throw general::SocketException(WSAGetLastError());
 						}
-						if (FD_ISSET(m_socket_id, &exceptFds)) {
+						if (FD_ISSET(m_socketId, &exceptFds)) {
 							throw general::SocketException("Cannot connect to the server");
 						}
-					} while (!FD_ISSET(m_socket_id, &writeFds));
+					} while (!FD_ISSET(m_socketId, &writeFds));
 
 				} break;
 				case WSAEALREADY:
@@ -216,17 +216,18 @@ namespace sdk {
 
 		void Socket::bind()
 		{
-			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_st_address_t) : sizeof(m_st_address6_t));
-			const sockaddr* st_address = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_st_address_t) : reinterpret_cast<const sockaddr*>(&m_st_address6_t));
-			if (::bind(m_socket_id, st_address, addressSize) == SOCKET_ERROR) {
+			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6));
+			const sockaddr* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) : 
+				reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
+			if (::bind(m_socketId, stAddress, addressSize) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
 			}
 		}
 
-		void Socket::listen(int listen_count) const
+		void Socket::listen(int listenCount) const
 		{
-			if (m_protocol_type != ProtocolType::udp) {
-				if (::listen(m_socket_id, listen_count) == SOCKET_ERROR) {
+			if (m_protocolType != ProtocolType::udp) {
+				if (::listen(m_socketId, listenCount) == SOCKET_ERROR) {
 					throw general::SocketException(WSAGetLastError());
 				}
 			}
@@ -234,20 +235,21 @@ namespace sdk {
 
 		SOCKET Socket::accept()
 		{
-			if (m_protocol_type != ProtocolType::udp) {
+			if (m_protocolType != ProtocolType::udp) {
 #ifdef _WIN32
 				const struct timeval timeout{ 0, DEFAULT_TIMEOUT };
 #else
 				struct timeval timeout{ 0, DEFAULT_TIMEOUT };
 #endif
-				socklen_t addrLen = m_ipVersion == IpVersion::IPv4 ? sizeof(m_st_address_t) : sizeof(m_st_address6_t);
-				SOCKET new_sock_id{};
+				socklen_t addrLen = m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6);
+				SOCKET newSockId{};
 
-				sockaddr* st_address = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<sockaddr*>(&m_st_address_t) : reinterpret_cast<sockaddr*>(&m_st_address6_t));
+				sockaddr* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<sockaddr*>(&m_sockAddressIpv4) : 
+					reinterpret_cast<sockaddr*>(&m_sockAddressIpv6));
 
-				while ((new_sock_id = ::accept(m_socket_id, st_address, &addrLen)) == INVALID_SOCKET) {
+				while ((newSockId = ::accept(m_socketId, stAddress, &addrLen)) == INVALID_SOCKET) {
 					//	check if any interrupt happened by user
-					if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr)) {
+					if (m_callbackInterrupt && m_callbackInterrupt(m_userdataPtr)) {
 						throw general::SocketException(INTERRUPT_MSG);
 					}
 
@@ -257,43 +259,43 @@ namespace sdk {
 						fd_set exceptFds{};
 
 						do {
-							if (m_callback_interrupt && m_callback_interrupt(m_userdata_ptr)) {
+							if (m_callbackInterrupt && m_callbackInterrupt(m_userdataPtr)) {
 								throw general::SocketException(INTERRUPT_MSG);
 							}
 
 							FD_ZERO(&readFds);
-							FD_SET(m_socket_id, &readFds);
+							FD_SET(m_socketId, &readFds);
 							FD_ZERO(&exceptFds);
-							FD_SET(m_socket_id, &exceptFds);
-							auto err = select((int)m_socket_id + 1, &readFds, nullptr, &exceptFds, &timeout);
+							FD_SET(m_socketId, &exceptFds);
+							auto err = select((int)m_socketId + 1, &readFds, nullptr, &exceptFds, &timeout);
 							if (err < 0) {
 								throw general::SocketException(WSAGetLastError());
 							}
-							if (FD_ISSET(m_socket_id, &exceptFds)) {
+							if (FD_ISSET(m_socketId, &exceptFds)) {
 								throw general::SocketException("Cannot connect to the server");
 							}
-						} while (!FD_ISSET(m_socket_id, &readFds));
+						} while (!FD_ISSET(m_socketId, &readFds));
 					} break;
 					default:
 						throw general::SocketException(lasterror);
 					}
 				}
 
-				return new_sock_id;
+				return newSockId;
 			}
 
 			return 0;
 		}
 
-		std::shared_ptr<SocketDescriptor> Socket::createNewSocket(SOCKET socket_id) const
+		std::shared_ptr<SocketDescriptor> Socket::createNewSocket(SOCKET socketId) const
 		{
-			return std::make_shared<SocketDescriptor>(socket_id, *this);
+			return std::make_shared<SocketDescriptor>(socketId, *this);
 		}
 
 		void Socket::setInterruptCallback(const socket_interrupt_callback_t& callback, void* userdata) noexcept
 		{
-			m_callback_interrupt = callback;
-			m_userdata_ptr = userdata;
+			m_callbackInterrupt = callback;
+			m_userdataPtr = userdata;
 		}
 	}
 }

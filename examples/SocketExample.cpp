@@ -155,7 +155,7 @@ void serverfunc()
 
 int main()
 {
-	if (Socket::WSA_startup_init(WSA_VERSION)) {
+	if (Socket::WSAInit(WSA_VERSION)) {
 		/*  start server    */
 #if (TEST_SECURE_SERVER == 1)
 		SecureSocket::SSLLibraryInit();
@@ -188,6 +188,6 @@ int main()
 
 		server.join();
 
-		Socket::WSA_Cleanup();
+		Socket::WSADeinit();
 	}
 }

@@ -92,7 +92,7 @@ namespace sdk {
 
 		class SOCKET_API SocketDescriptor {
 		public:
-			explicit SocketDescriptor(SOCKET socketId, const Socket& socket_ref) noexcept;
+			explicit SocketDescriptor(SOCKET socketId, const Socket& socketRef) noexcept;
 			virtual ~SocketDescriptor();
 
 			/*
@@ -110,7 +110,7 @@ namespace sdk {
 			 *	returns: Return byte count that read.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual std::size_t read(std::vector<unsigned char>& message, int max_size = 0) const;
+			NODISCARD virtual std::size_t read(std::vector<unsigned char>& message, int maxSize = 0) const;
 			/*
 			 *	This function used for reading operations from related socket.
 			 *	param1: Bytes.
@@ -118,7 +118,7 @@ namespace sdk {
 			 *	returns: Return byte count that read.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual std::size_t read(std::string& message, int max_size = 0) const;
+			NODISCARD virtual std::size_t read(std::string& message, int maxSize = 0) const;
 
 			/*
 			 *	This function used for writing operations from related socket.
@@ -126,7 +126,7 @@ namespace sdk {
 			 *	returns: Return byte count that write.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual int write(std::initializer_list<char> data_list) const;
+			NODISCARD virtual int write(std::initializer_list<char> dataList) const;
 
 			/*
 			 *	This function used for writing operations from related socket.
@@ -135,7 +135,7 @@ namespace sdk {
 			 *	returns: Return byte count that write.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual int write(const char* data, int data_size) const;
+			NODISCARD virtual int write(const char* data, int dataSize) const;
 			/*
 			 *	This function used for writing operations from related socket.
 			 *	param1: Bytes of vector.
@@ -157,15 +157,15 @@ namespace sdk {
 			 */
 			NODISCARD SOCKET getSocketId() const noexcept
 			{
-				return m_socket_id;
+				return m_socketId;
 			}
 
 		protected:
-			virtual std::string read(int max_size = 0) const;
+			virtual std::string read(int maxSize = 0) const;
 
-			SOCKET m_socket_id{};
+			SOCKET m_socketId{};
 			static constexpr int MAX_MESSAGE_SIZE = 8096;
-			const Socket& m_socket_ref;
+			const Socket& m_socketRef;
 		};
 	}
 }

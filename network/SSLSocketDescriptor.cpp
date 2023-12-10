@@ -37,7 +37,7 @@ namespace sdk {
 		/**************************Secure Object Part**************************/
 		SSLSocketDescriptor::SSLSocketDescriptor(SOCKET socketId, const SSLSocket& sSocket) :
 			SocketDescriptor{ socketId, sSocket },
-			m_ssl{ SSL_new(sSocket.get_ctx()), SSL_free }
+			m_ssl{ SSL_new(sSocket.getSSLCtx()), SSL_free }
 		{
 			if (m_ssl != nullptr) {
 				if (SSL_set_fd(m_ssl.get(), (int)socketId) == 0) {
@@ -54,7 +54,7 @@ namespace sdk {
 			int err = 0;
 			bool bDone = false;
 			while ((err = SSL_shutdown(m_ssl.get())) <= 0 && !bDone) {
-				switch (const int ret_code = SSL_get_error(m_ssl.get(), err)) {
+				switch (const int retCode = SSL_get_error(m_ssl.get(), err)) {
 				case SSL_ERROR_WANT_READ:
 				case SSL_ERROR_WANT_WRITE:
 					break;
@@ -77,16 +77,16 @@ namespace sdk {
 
 		void SSLSocketDescriptor::connect()
 		{
-			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
+			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
-			int err_code{};
-			while ((err_code = SSL_connect(m_ssl.get())) == -1) {
-				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+			int errCode{};
+			while ((errCode = SSL_connect(m_ssl.get())) == -1) {
+				if (callbackInterrupt &&
+					callbackInterrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
-				switch (const int ret_code = SSL_get_error(m_ssl.get(), err_code)) {
+				switch (const int retCode = SSL_get_error(m_ssl.get(), errCode)) {
 				case SSL_ERROR_WANT_READ:
 				case SSL_ERROR_WANT_WRITE:
 				case SSL_ERROR_WANT_CONNECT:
@@ -97,23 +97,23 @@ namespace sdk {
 					[[fallthrough]];
 #endif
 				default:
-					throw general::SSLSocketException(ret_code);
+					throw general::SSLSocketException(retCode);
 				}
 			}
 		}
 
 		void SSLSocketDescriptor::accept() // this function used for handshake
 		{
-			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
+			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
-			int err_code{};
-			while ((err_code = SSL_accept(m_ssl.get())) != 1) {
-				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+			int errCode{};
+			while ((errCode = SSL_accept(m_ssl.get())) != 1) {
+				if (callbackInterrupt &&
+					callbackInterrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
-				switch (const int ret_code = SSL_get_error(m_ssl.get(), err_code)) {
+				switch (const int retCode = SSL_get_error(m_ssl.get(), errCode)) {
 				case SSL_ERROR_WANT_READ:
 				case SSL_ERROR_WANT_ACCEPT:
 					break;
@@ -123,23 +123,23 @@ namespace sdk {
 					[[fallthrough]];
 #endif
 				default:
-					throw general::SSLSocketException(ret_code);
+					throw general::SSLSocketException(retCode);
 				}
 			}
 
  			auto peer = X509_unique_ptr{ SSL_get_peer_certificate(m_ssl.get()), X509_free };
 			if (peer) {
-				const long ret_code = SSL_get_verify_result(m_ssl.get());
-				if (ret_code != X509_V_OK) {
-					throw general::SSLSocketException(ret_code);
+				const long retCode = SSL_get_verify_result(m_ssl.get());
+				if (retCode != X509_V_OK) {
+					throw general::SSLSocketException(retCode);
 				}
 
 				// check host
 				// if our server has valid certificate such an google.com uncomment this if block
 				if (!m_hostname.empty()) {
-					const int check_result = X509_check_host(peer.get(), m_hostname.c_str(), m_hostname.size(), 0, nullptr);
-					if (check_result != 1) {
-						throw general::SSLSocketException(check_result);
+					const int checkResult = X509_check_host(peer.get(), m_hostname.c_str(), m_hostname.size(), 0, nullptr);
+					if (checkResult != 1) {
+						throw general::SSLSocketException(checkResult);
 					}
 				}
 			}
@@ -157,26 +157,26 @@ namespace sdk {
 			return static_cast<std::size_t>(numBytes);
 		}
 
-		std::string SSLSocketDescriptor::read(int max_size /*= 0*/) const
+		std::string SSLSocketDescriptor::read(int maxSize /*= 0*/) const
 		{
-			const int buf_len = (max_size > 0 && max_size < MAX_MESSAGE_SIZE) ? max_size : MAX_MESSAGE_SIZE - 1;
+			const int bufLen = (maxSize > 0 && maxSize < MAX_MESSAGE_SIZE) ? maxSize : MAX_MESSAGE_SIZE - 1;
 
-			std::string str_message;
+			std::string strMessage;
 			std::vector<char> dataVec;
-			dataVec.resize(buf_len);
+			dataVec.resize(bufLen);
 
-			int receive_byte = 0;
+			int receiveByte = 0;
 
-			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
+			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
 			do {
-				while ((receive_byte = SSL_read(m_ssl.get(), dataVec.data(), buf_len)) == -1) {
-					if (callback_interrupt &&
-						callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+				while ((receiveByte = SSL_read(m_ssl.get(), dataVec.data(), bufLen)) == -1) {
+					if (callbackInterrupt &&
+						callbackInterrupt(m_socketRef.m_userdataPtr)) {
 						throw general::SSLSocketException(INTERRUPT_MSG);
 					}
 
-					switch (auto err_code = SSL_get_error(m_ssl.get(), receive_byte)) {
+					switch (auto errCode = SSL_get_error(m_ssl.get(), receiveByte)) {
 					case SSL_ERROR_WANT_READ:
 						break;
 					case SSL_ERROR_ZERO_RETURN:
@@ -185,59 +185,59 @@ namespace sdk {
 						[[fallthrough]];
 #endif
 					default:
-						throw general::SSLSocketException(err_code);
+						throw general::SSLSocketException(errCode);
 					}
 				}
 
-				if (receive_byte > 0) {
-					std::move(dataVec.begin(), dataVec.begin() + receive_byte,
-						std::back_inserter(str_message));
+				if (receiveByte > 0) {
+					std::move(dataVec.begin(), dataVec.begin() + receiveByte,
+						std::back_inserter(strMessage));
 				}
 
 				if (SSL_pending(m_ssl.get()) == 0) {
 					break;
 				}
 
-				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+				if (callbackInterrupt &&
+					callbackInterrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
-				if (max_size > 0 && str_message.size() >= (std::size_t)max_size) {
+				if (maxSize > 0 && strMessage.size() >= (std::size_t)maxSize) {
 					break;
 				}
 
-			} while (receive_byte > 0);
+			} while (receiveByte > 0);
 
-			return str_message;
+			return strMessage;
 		}
 
-		std::size_t SSLSocketDescriptor::read(std::vector<unsigned char>& message, int max_size /*= 0*/) const
+		std::size_t SSLSocketDescriptor::read(std::vector<unsigned char>& message, int maxSize /*= 0*/) const
 		{
-			const auto received_str = read(max_size);
-			std::move(received_str.begin(), received_str.end(), std::back_inserter(message));
+			const auto receivedStr = read(maxSize);
+			std::move(receivedStr.begin(), receivedStr.end(), std::back_inserter(message));
 			return message.size();
 		}
 
-		std::size_t SSLSocketDescriptor::read(std::string& message, int max_size /*= 0*/) const
+		std::size_t SSLSocketDescriptor::read(std::string& message, int maxSize /*= 0*/) const
 		{
-			message = read(max_size);
+			message = read(maxSize);
 			return message.size();
 		}
 
-		int SSLSocketDescriptor::write(std::initializer_list<char> data_list) const
+		int SSLSocketDescriptor::write(std::initializer_list<char> dataList) const
 		{
-			return write(data_list.begin(), (int)data_list.size());
+			return write(dataList.begin(), (int)dataList.size());
 		}
 
-		int SSLSocketDescriptor::write(const char* data, int data_size) const
+		int SSLSocketDescriptor::write(const char* data, int dataSize) const
 		{
-			const auto& callback_interrupt = m_socket_ref.m_callback_interrupt;
+			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
 			int sendBytes{};
-			while ((sendBytes = SSL_write(m_ssl.get(), data, data_size)) == -1) {
-				if (callback_interrupt &&
-					callback_interrupt(m_socket_ref.m_userdata_ptr)) {
+			while ((sendBytes = SSL_write(m_ssl.get(), data, dataSize)) == -1) {
+				if (callbackInterrupt &&
+					callbackInterrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
