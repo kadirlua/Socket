@@ -186,7 +186,7 @@ namespace sdk {
 			struct sockaddr_in m_sockAddressIpv4{}; // Stores address information.
 			struct sockaddr_in6 m_sockAddressIpv6{};
 			std::string m_ipAddress{};
-			IpVersion m_ipVersion;
+			IpVersion m_ipVersion{ IpVersion::IPv4 };
 		};
 	}
 }
