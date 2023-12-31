@@ -43,7 +43,7 @@ namespace sdk {
 
 		SocketDescriptor::~SocketDescriptor()
 		{
-			shutdown(m_socketId, SD_SEND);
+			shutdown(m_socketId, SD_BOTH);
 
 			while (closesocket(m_socketId) == SOCKET_ERROR) {
 				auto err = WSAGetLastError();
