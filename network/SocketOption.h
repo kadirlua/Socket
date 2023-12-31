@@ -39,8 +39,10 @@ namespace sdk {
 			const T& m_socket;
 
 		public:
-			explicit SocketOption(const T& t) :
-				m_socket{ t } {}
+			explicit SocketOption(const T& socket) :
+				m_socket{ socket }
+			{
+			}
 
 			//	non-copyable
 			SocketOption(const SocketOption&) = delete;
