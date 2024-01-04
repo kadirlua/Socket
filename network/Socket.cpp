@@ -166,7 +166,7 @@ namespace sdk {
 
 			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6));
 
-			const sockaddr* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) : 
+			const auto* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) :
 				reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
 
 			while (::connect(m_socketId, stAddress, addressSize) == SOCKET_ERROR) {
@@ -213,7 +213,7 @@ namespace sdk {
 		void Socket::bind()
 		{
 			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6));
-			const sockaddr* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) : 
+			const auto* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) :
 				reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
 			if (::bind(m_socketId, stAddress, addressSize) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
@@ -240,7 +240,7 @@ namespace sdk {
 				socklen_t addrLen = m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6);
 				SOCKET newSockId{};
 
-				sockaddr* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<sockaddr*>(&m_sockAddressIpv4) : 
+				auto* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<sockaddr*>(&m_sockAddressIpv4) :
 					reinterpret_cast<sockaddr*>(&m_sockAddressIpv6));
 
 				while ((newSockId = ::accept(m_socketId, stAddress, &addrLen)) == INVALID_SOCKET) {
