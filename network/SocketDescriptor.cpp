@@ -43,12 +43,13 @@ namespace sdk {
 
 		SocketDescriptor::~SocketDescriptor()
 		{
-			shutdown(m_socketId, SD_BOTH);
-
-			while (closesocket(m_socketId) == SOCKET_ERROR) {
-				auto err = WSAGetLastError();
-				if (err != WSAEWOULDBLOCK) {
-					break;
+			if (m_socketId != INVALID_SOCKET) {
+				shutdown(m_socketId, SD_BOTH);
+				while (closesocket(m_socketId) == SOCKET_ERROR) {
+					auto err = WSAGetLastError();
+					if (err != WSAEWOULDBLOCK) {
+						break;
+					}
 				}
 			}
 		}

@@ -182,7 +182,7 @@ namespace sdk {
 			void* m_userdataPtr{};
 			int m_portNumber{};
 			ProtocolType m_protocolType{ ProtocolType::tcp };
-			SOCKET m_socketId{};
+			SOCKET m_socketId{ INVALID_SOCKET };
 			struct sockaddr_in m_sockAddressIpv4{}; // Stores address information.
 			struct sockaddr_in6 m_sockAddressIpv6{};
 			std::string m_ipAddress{};

@@ -164,7 +164,7 @@ namespace sdk {
 		protected:
 			virtual std::string read(int maxSize = 0) const;
 
-			SOCKET m_socketId{};
+			SOCKET m_socketId{ INVALID_SOCKET };
 			static constexpr int MAX_MESSAGE_SIZE = 8096;
 			const Socket& m_socketRef;
 		};
