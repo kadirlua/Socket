@@ -79,6 +79,7 @@ namespace sdk {
 			else if (m_ipVersion == IpVersion::IPv6) {
 				m_sockAddressIpv6.sin6_family = AF_INET6;
 				m_sockAddressIpv6.sin6_port = htons(m_portNumber);
+				m_sockAddressIpv6.sin6_addr = in6addr_any;
 			}
 		}
 
@@ -106,8 +107,9 @@ namespace sdk {
 			memset(&hints, 0, sizeof(hints));
 			hints.ai_family = AF_UNSPEC; // AF_INET or AF_INET6 to force version
 			hints.ai_socktype = SOCK_STREAM;
+			hints.ai_flags = AI_NUMERICHOST;
 
-			if (getaddrinfo(m_ipAddress.c_str(), nullptr, &hints, &res) != 0) {
+			if (getaddrinfo(m_ipAddress.c_str(), std::to_string(m_portNumber).c_str(), &hints, &res) != 0) {
 				throw general::SocketException(WSAGetLastError());
 			}
 
