@@ -48,7 +48,7 @@ namespace sdk {
 			udp = SOCK_DGRAM
 		};
 
-		enum class IpVersion {
+		enum class IpVersion : std::uint8_t {
 			IPv4 = AF_INET,
 			IPv6 = AF_INET6
 		};
