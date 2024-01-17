@@ -122,6 +122,7 @@ namespace sdk {
 				m_socket_ptr = std::make_unique<SSLSocket>(port_, ConnMethod::server, type, ipVer);
 				const SocketOption<SSLSocket> socketOpt{ *m_socket_ptr };
 				socketOpt.setBlockingMode(1); // non-blocking mode
+				socketOpt.setReuseAddr(1);
 
 				// set certificate properties
 				m_socket_ptr->loadVerifyLocations(cert_file, nullptr);

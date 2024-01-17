@@ -71,6 +71,7 @@ namespace sdk {
 				//	set socket options
 				const SocketOption<Socket> socketOpt{ *m_socket_ptr };
 				socketOpt.setBlockingMode(1);
+				socketOpt.setReuseAddr(1);
 				// initialize server
 				m_socket_ptr->bind();
 				m_socket_ptr->listen(MAX_CLIENTS);
