@@ -43,7 +43,7 @@ namespace sdk {
 			server
 		};
 
-		enum class ProtocolType {
+		enum class ProtocolType : std::uint8_t {
 			tcp = SOCK_STREAM,
 			udp = SOCK_DGRAM
 		};
