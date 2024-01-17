@@ -96,15 +96,13 @@ namespace sdk {
 			}
 		}
 
-		std::string Socket::getIpAddress() const
+		void Socket::fillAddrInfo()
 		{
 			struct addrinfo hints{};
 			struct addrinfo *res = nullptr;
 			struct addrinfo *ptr = nullptr;
 
-			std::array<char, INET6_ADDRSTRLEN> ipStr{};
-
-			memset(&hints, 0, sizeof(hints));
+			std::memset(&hints, 0, sizeof(hints));
 			hints.ai_family = AF_UNSPEC; // AF_INET or AF_INET6 to force version
 			hints.ai_socktype = SOCK_STREAM;
 			hints.ai_flags = AI_NUMERICHOST;
@@ -116,25 +114,17 @@ namespace sdk {
 			const std::unique_ptr<addrinfo, decltype(&freeaddrinfo)> pResPtr{ res, freeaddrinfo }; 
 
 			for (ptr = pResPtr.get(); ptr != nullptr; ptr = ptr->ai_next) {
-				void* pAddr = nullptr;
-
 				// get the pointer to the address itself,
 				// different fields in IPv4 and IPv6:
 				if (ptr->ai_family == AF_INET) { // IPv4
-					auto* ipv4 = reinterpret_cast<struct sockaddr_in*>(ptr->ai_addr);
-					pAddr = &(ipv4->sin_addr);
+					const auto* ipv4 = reinterpret_cast<struct sockaddr_in*>(ptr->ai_addr);
+					std::memcpy(&m_sockAddressIpv4.sin_addr, &ipv4->sin_addr, ptr->ai_addrlen);
 				}
 				else { // IPv6
-					auto* ipv6 = reinterpret_cast<struct sockaddr_in6*>(ptr->ai_addr);
-					pAddr = &(ipv6->sin6_addr);
-				}
-
-				// convert the IP to a string
-				if (inet_ntop(ptr->ai_family, pAddr, ipStr.data(), sizeof(ipStr)) == nullptr) {
-					throw general::SocketException(WSAGetLastError());
+					const auto* ipv6 = reinterpret_cast<struct sockaddr_in6*>(ptr->ai_addr);
+					std::memcpy(&m_sockAddressIpv6.sin6_addr, &ipv6->sin6_addr, ptr->ai_addrlen);
 				}
 			}
-			return std::string{ std::begin(ipStr), std::end(ipStr) };
 		}
 
 		void Socket::connect()
@@ -145,28 +135,8 @@ namespace sdk {
 			struct timeval timeout{ 0, DEFAULT_TIMEOUT };
 #endif
 			int err{};
-			auto strIpAddr = getIpAddress();
 
-			if (strIpAddr.empty()) {
-				throw general::SocketException("IP address is not valid.");
-			}
-
-			if (m_ipVersion == IpVersion::IPv4) {
-				err = inet_pton(static_cast<int>(m_ipVersion),
-					strIpAddr.c_str(), &m_sockAddressIpv4.sin_addr);
-			}
-			else if (m_ipVersion == IpVersion::IPv6) {
-				err = inet_pton(static_cast<int>(m_ipVersion),
-					strIpAddr.c_str(), &m_sockAddressIpv6.sin6_addr);
-			}
-
-			if (err == SOCKET_ERROR) {
-				throw general::SocketException(WSAGetLastError());
-			}
-
-			if (err == 0) {
-				throw general::SocketException("IP address is not valid IPv4 dotted-decimal string or a valid IPv6 address string.");
-			}
+			fillAddrInfo();
 
 			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6));
 

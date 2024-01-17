@@ -173,7 +173,7 @@ namespace sdk {
 			}
 
 		protected:
-			std::string getIpAddress() const;
+			void fillAddrInfo();
 
 		private:
 			static bool m_wsaInit;
@@ -185,7 +185,7 @@ namespace sdk {
 			SOCKET m_socketId{ INVALID_SOCKET };
 			struct sockaddr_in m_sockAddressIpv4{}; // Stores address information.
 			struct sockaddr_in6 m_sockAddressIpv6{};
-			std::string m_ipAddress{};
+			std::string m_ipAddress;
 			IpVersion m_ipVersion{ IpVersion::IPv4 };
 		};
 	}
