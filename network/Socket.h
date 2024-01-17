@@ -29,6 +29,8 @@
 #include "SocketDescriptor.h"
 #include "version.h"
 
+#include <cstdint>
+
 namespace sdk {
 	namespace network {
 
@@ -36,7 +38,7 @@ namespace sdk {
 #define SOKCET_VERSION_MINOR 0
 #define SOCKET_VERSION_PATCH 0
 
-		enum class ConnMethod {
+		enum class ConnMethod : std::uint8_t {
 			client = 1,
 			server
 		};
