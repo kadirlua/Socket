@@ -127,7 +127,7 @@ namespace sdk {
 				}
 			}
 
- 			auto peer = X509_unique_ptr{ SSL_get_peer_certificate(m_ssl.get()), X509_free };
+ 			const auto peer = X509_unique_ptr{ SSL_get_peer_certificate(m_ssl.get()), X509_free };
 			if (peer) {
 				const long retCode = SSL_get_verify_result(m_ssl.get());
 				if (retCode != X509_V_OK) {
@@ -176,7 +176,7 @@ namespace sdk {
 						throw general::SSLSocketException(INTERRUPT_MSG);
 					}
 
-					switch (auto errCode = SSL_get_error(m_ssl.get(), receiveByte)) {
+					switch (const auto errCode = SSL_get_error(m_ssl.get(), receiveByte)) {
 					case SSL_ERROR_WANT_READ:
 						break;
 					case SSL_ERROR_ZERO_RETURN:
@@ -241,7 +241,7 @@ namespace sdk {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
-				switch (auto err_code = SSL_get_error(m_ssl.get(), sendBytes)) {
+				switch (const auto err_code = SSL_get_error(m_ssl.get(), sendBytes)) {
 				case SSL_ERROR_WANT_WRITE:
 					break;
 				case SSL_ERROR_ZERO_RETURN:
@@ -258,7 +258,7 @@ namespace sdk {
 
 		int SSLSocketDescriptor::write(const std::vector<unsigned char>& message) const
 		{
-			const std::string strBuf(message.begin(), message.end());
+			const std::string strBuf{ message.begin(), message.end() };
 			return write(strBuf.c_str(), (int)strBuf.size());
 		}
 

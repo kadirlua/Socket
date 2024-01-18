@@ -88,7 +88,7 @@ namespace sdk {
 			if (m_socketId != INVALID_SOCKET) {
 				shutdown(m_socketId, SD_BOTH);
 				while (closesocket(m_socketId) == SOCKET_ERROR) {
-					auto err = WSAGetLastError();
+					const auto err = WSAGetLastError();
 					if (err != WSAEWOULDBLOCK) {
 						break;
 					}
@@ -223,7 +223,7 @@ namespace sdk {
 						throw general::SocketException(INTERRUPT_MSG);
 					}
 
-					switch (auto lasterror = WSAGetLastError()) {
+					switch (const auto lasterror = WSAGetLastError()) {
 					case WSAEWOULDBLOCK: {
 						fd_set readFds{};
 						fd_set exceptFds{};
@@ -237,7 +237,7 @@ namespace sdk {
 							FD_SET(m_socketId, &readFds);
 							FD_ZERO(&exceptFds);
 							FD_SET(m_socketId, &exceptFds);
-							auto err = select((int)m_socketId + 1, &readFds, nullptr, &exceptFds, &timeout);
+							const auto err = select((int)m_socketId + 1, &readFds, nullptr, &exceptFds, &timeout);
 							if (err < 0) {
 								throw general::SocketException(WSAGetLastError());
 							}

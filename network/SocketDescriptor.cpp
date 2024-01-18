@@ -46,7 +46,7 @@ namespace sdk {
 			if (m_socketId != INVALID_SOCKET) {
 				shutdown(m_socketId, SD_BOTH);
 				while (closesocket(m_socketId) == SOCKET_ERROR) {
-					auto err = WSAGetLastError();
+					const auto err = WSAGetLastError();
 					if (err != WSAEWOULDBLOCK) {
 						break;
 					}
@@ -86,7 +86,7 @@ namespace sdk {
 						throw general::SocketException(INTERRUPT_MSG);
 					}
 
-					switch (auto lasterror = WSAGetLastError()) {
+					switch (const auto lasterror = WSAGetLastError()) {
 					case WSAEWOULDBLOCK: {
 						auto recvTimeout = socketOpt.getRecvTimeout();
 						//	The default value of recieve timeout is 0.
@@ -192,7 +192,7 @@ namespace sdk {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
-				switch (auto lasterror = WSAGetLastError()) {
+				switch (const auto lasterror = WSAGetLastError()) {
 				case WSAEWOULDBLOCK:
 					break;
 				default:
