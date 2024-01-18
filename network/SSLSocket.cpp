@@ -32,10 +32,10 @@ namespace sdk {
 
 		SSLSocket::SSLSocket(int port, ConnMethod meth, ProtocolType type, IpVersion IpVer) :
 			Socket{ port, type, IpVer },
-			m_ctx{ SSL_CTX_new(SSLv23_client_method()), SSL_CTX_free }
+			m_ctx{ SSL_CTX_new(TLS_client_method()), SSL_CTX_free }
 		{
 			if (meth == ConnMethod::server) {
-				m_ctx = SSLCtx_unique_ptr{ SSL_CTX_new(SSLv23_server_method()), SSL_CTX_free };
+				m_ctx = SSLCtx_unique_ptr{ SSL_CTX_new(TLS_server_method()), SSL_CTX_free };
 			}
 
 			// We want to support all versions of TLS >= 1.0, but not the deprecated
