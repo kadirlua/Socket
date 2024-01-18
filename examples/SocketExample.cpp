@@ -36,7 +36,7 @@
 #include <algorithm>
 
 #if OPENSSL_SUPPORTED
-#define TEST_SECURE_SERVER 1
+#define TEST_SECURE_SERVER 0
 #endif // OPENSSL_SUPPORTED
 
 #define TEST_IPv6 1
