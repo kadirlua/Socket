@@ -163,9 +163,9 @@ int main()
 		// print openssl library version number
 		std::cout << SSLSocket::get_openssl_version() << "\n";
 #endif
-		std::thread server(&serverfunc);
+		std::thread server{ &serverfunc };
 
-		std::unique_lock<std::mutex> lock(server_mutex);
+		std::unique_lock<std::mutex> lock{ server_mutex };
 		server_cv.wait(lock);
 		lock.unlock();
 
