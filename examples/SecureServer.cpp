@@ -39,48 +39,48 @@ namespace sdk {
 			const char* const certFile = R"(C:\Program Files\OpenSSL\bin\certificate.pem)";
 			const char* const keyFile = R"(C:\Program Files\OpenSSL\bin\key.key)";
 
-			int verify_callback(int preverify_ok, X509_STORE_CTX* x509_ctx)
+			int verify_callback(int preverify_ok, X509_STORE_CTX* x509Ctx)
 			{
-				X509* cert = X509_STORE_CTX_get_current_cert(x509_ctx);
+				const auto* cert = X509_STORE_CTX_get_current_cert(x509Ctx);
 				if (cert == nullptr) {
 					return 0;
 				}
 
-				int const err_code = X509_STORE_CTX_get_error(x509_ctx);
+				int const errCode = X509_STORE_CTX_get_error(x509Ctx);
 				int check = 0;
-				if (err_code != X509_V_OK) {
-					return err_code;
+				if (errCode != X509_V_OK) {
+					return errCode;
 				}
 
-				auto *subject_name = X509_get_subject_name(cert);
-				if (subject_name == nullptr) {
+				const auto* subjectName = X509_get_subject_name(cert);
+				if (subjectName == nullptr) {
 					return 0;
 				}
 
 				char buf[6][256]{};
 				std::cout << "Certificate subject:\n";
-				check = X509_NAME_get_text_by_NID(subject_name, NID_commonName, buf[0], sizeof(buf[0]));
+				check = X509_NAME_get_text_by_NID(subjectName, NID_commonName, buf[0], sizeof(buf[0]));
 				if (check > 0) {
 					std::cout << " - Common name: " << buf[0] << "\n";
 				}
-				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationName, buf[1], sizeof(buf[1]));
+				check = X509_NAME_get_text_by_NID(subjectName, NID_organizationName, buf[1], sizeof(buf[1]));
 				if (check > 0) {
 					std::cout << " - Organization name: " << buf[1] << "\n";
 				}
-				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationalUnitName, buf[2], sizeof(buf[2]));
+				check = X509_NAME_get_text_by_NID(subjectName, NID_organizationalUnitName, buf[2], sizeof(buf[2]));
 				if (check > 0) {
 					std::cout << " - Organizational unit name: " << buf[2] << "\n";
 				}
 				std::cout << "Certificate issuer:\n";
-				check = X509_NAME_get_text_by_NID(subject_name, NID_commonName, buf[3], sizeof(buf[3]));
+				check = X509_NAME_get_text_by_NID(subjectName, NID_commonName, buf[3], sizeof(buf[3]));
 				if (check > 0) {
 					std::cout << " - Common name: " << buf[3] << "\n";
 				}
-				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationName, buf[4], sizeof(buf[4]));
+				check = X509_NAME_get_text_by_NID(subjectName, NID_organizationName, buf[4], sizeof(buf[4]));
 				if (check > 0) {
 					std::cout << " - Organization name: " << buf[4] << "\n";
 				}
-				check = X509_NAME_get_text_by_NID(subject_name, NID_organizationalUnitName, buf[5], sizeof(buf[5]));
+				check = X509_NAME_get_text_by_NID(subjectName, NID_organizationalUnitName, buf[5], sizeof(buf[5]));
 				if (check > 0) {
 					std::cout << " - Organizational unit name: " << buf[5] << "\n";
 				}
