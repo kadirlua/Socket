@@ -36,8 +36,8 @@ namespace sdk {
 
 		namespace {
 			// only for testing
-			const char* cert_file = R"(C:\Program Files\OpenSSL\bin\certificate.pem)";
-			const char* key_file = R"(C:\Program Files\OpenSSL\bin\key.key)";
+			const char* const certFile = R"(C:\Program Files\OpenSSL\bin\certificate.pem)";
+			const char* const keyFile = R"(C:\Program Files\OpenSSL\bin\key.key)";
 
 			int verify_callback(int preverify_ok, X509_STORE_CTX* x509_ctx)
 			{
@@ -125,12 +125,12 @@ namespace sdk {
 				socketOpt.setReuseAddr(1);
 
 				// set certificate properties
-				m_socket_ptr->loadVerifyLocations(cert_file, nullptr);
+				m_socket_ptr->loadVerifyLocations(certFile, nullptr);
 				/* Load the client's CA file location as well */
 				// m_socket_ptr->loadClientCertificateList("client.pem");
 				// m_socket_ptr->setCipherList("AES128-SHA");
-				m_socket_ptr->loadCertificateFile(cert_file);
-				m_socket_ptr->loadPrivateKeyFile(key_file);
+				m_socket_ptr->loadCertificateFile(certFile);
+				m_socket_ptr->loadPrivateKeyFile(keyFile);
 
 				m_socket_ptr->setCallbackVerifyCertificate(SSL_VERIFY_PEER |
 															   /*SSL_VERIFY_CLIENT_ONCE |*/ SSL_VERIFY_FAIL_IF_NO_PEER_CERT,

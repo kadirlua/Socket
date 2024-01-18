@@ -36,7 +36,7 @@
 #include <algorithm>
 
 #if OPENSSL_SUPPORTED
-#define TEST_SECURE_SERVER 0
+#define TEST_SECURE_SERVER 1
 #endif // OPENSSL_SUPPORTED
 
 #define TEST_IPv6 1
@@ -46,8 +46,8 @@ using namespace sdk::application;
 using namespace sdk::general;
 
 #if (TEST_SECURE_SERVER == 1)
-static const char* cert_file = "C:\\Program Files\\OpenSSL\\bin\\certificate.pem";
-static const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\key.key";
+static const char* const certFile = R"(C:\Program Files\OpenSSL\bin\certificate.pem)";
+static const char* const keyFile = R"(C:\Program Files\OpenSSL\bin\key.key)";
 #endif
 
 namespace {
@@ -71,7 +71,7 @@ namespace {
 			SecureClient sclient{ "127.0.0.1", DEFAULT_PORT_NUMBER };
 #endif
 
-			sclient.setCertificateAtr(cert_file, key_file);
+			sclient.setCertificateAtr(certFile, keyFile);
 			sclient.connectServer();
 			/*sclient.write(msg);
 			sclient.read(response);*/
