@@ -45,7 +45,7 @@ namespace sdk {
 			SSL_CTX_set_options(m_ctx.get(), SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
 		}
 
-		bool SSLSocket::SSLLibraryInit()
+		bool SSLSocket::SSLLibraryInit() noexcept
 		{
 			if (!m_bSSLLibraryInit) {
 				/*	OpenSSL 1.0.2 or below, then you would use SSL_library_init. If you are

@@ -57,7 +57,7 @@ namespace sdk {
 			SSLSocket(const SSLSocket&) = delete;
 			SSLSocket& operator=(const SSLSocket&) = delete;
 
-			static bool SSLLibraryInit();
+			static bool SSLLibraryInit() noexcept;
 			/*
 			 *	This function creates an instance of secure socket layer object.
 			 *	param1: The id of socket.
