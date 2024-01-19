@@ -148,7 +148,7 @@ namespace sdk {
 					try {
 						SOCKET const new_socket_id = m_socket_ptr->accept();
 
-						auto ssl_obj = m_socket_ptr->createNewSocket(new_socket_id);
+						auto ssl_obj = m_socket_ptr->createSocketDescriptor(new_socket_id);
 						ssl_obj->accept();
 
 						std::unique_lock<std::mutex> lock_(vec_mutex_);

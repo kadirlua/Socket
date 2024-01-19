@@ -257,7 +257,7 @@ namespace sdk {
 			return 0;
 		}
 
-		std::shared_ptr<SocketDescriptor> Socket::createNewSocket(SOCKET socketId) const
+		std::shared_ptr<SocketDescriptor> Socket::createSocketDescriptor(SOCKET socketId) const
 		{
 			return std::make_shared<SocketDescriptor>(socketId, *this);
 		}

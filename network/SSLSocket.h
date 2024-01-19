@@ -56,11 +56,11 @@ namespace sdk {
 			SSLSocket& operator=(const SSLSocket&) = delete;
 
 			/*
-			 *	This function creates an instance of secure socket layer object.
+			 *	This function creates an instance of secure socket descriptor.
 			 *	param1: The id of socket.
-			 *	returns: A shared pointer of secure socket layer object.
+			 *	returns: A shared pointer of secure socket descriptor.
 			 */
-			NODISCARD std::shared_ptr<SSLSocketDescriptor> createNewSocket(SOCKET socketId) const;
+			NODISCARD std::shared_ptr<SSLSocketDescriptor> createSocketDescriptor(SOCKET socketId) const;
 			/*
 			 *	This function sets the list of available ciphers for ctx using the control string str.
 			 *	If this function not use, the default cipher list is "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256".

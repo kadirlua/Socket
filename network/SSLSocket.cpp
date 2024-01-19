@@ -101,7 +101,7 @@ namespace sdk {
 			SSL_CTX_set_verify_depth(m_ctx.get(), depth);
 		}
 
-		std::shared_ptr<SSLSocketDescriptor> SSLSocket::createNewSocket(SOCKET socketId) const
+		std::shared_ptr<SSLSocketDescriptor> SSLSocket::createSocketDescriptor(SOCKET socketId) const
 		{
 			return std::make_shared<SSLSocketDescriptor>(socketId, *this);
 		}

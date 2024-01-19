@@ -11,7 +11,7 @@ try {
   socketOpt.setBlockingMode(1);	//set non-blocking mode is active
   clientSocket->connect();  //connect to the server
   
-  auto socketDesc = clientSocket->createNewSocket(clientSocket->getSocketId());
+  auto socketDesc = clientSocket->createSocketDescriptor(clientSocket->getSocketId());
   
   std::string response;
   socketDesc->write("Some important messages from client!");
@@ -28,18 +28,18 @@ catch (const sdk::general::SocketException& ex)
 
 ```c++
 try {
-  static const char* cert_file = "C:\\Program Files\\OpenSSL\\bin\\mycert.pem";
-  static const char* key_file = "C:\\Program Files\\OpenSSL\\bin\\privateKey.key";
+  static const char* certFile = "C:\\Program Files\\OpenSSL\\bin\\mycert.pem";
+  static const char* keyFile = "C:\\Program Files\\OpenSSL\\bin\\privateKey.key";
   auto clientSSLSocket = std::make_unique<sdk::network::SSLSocket>(portNumber, connection_method::client);
   clientSSLSocket->setIpAddress("127.0.0.1");
   SocketOption<SSLSocket> socketOpt{ *clientSSLSocket };
   socketOpt.setBlockingMode(1);	//set non-blocking mode is active
   clientSSLSocket->connect();  //connect to the server
   
-  clientSSLSocket->loadCertificateFile(cert_file);
-  clientSSLSocket->loadPrivateKeyFile(key_file);
+  clientSSLSocket->loadCertificateFile(certFile);
+  clientSSLSocket->loadPrivateKeyFile(keyFile);
   
-  auto socketSSLDesc = clientSSLSocket->createNewSocket(clientSSLSocket->getSocketId());
+  auto socketSSLDesc = clientSSLSocket->createSocketDescriptor(clientSSLSocket->getSocketId());
   socketSSLDesc->connect();
   
   std::string response;

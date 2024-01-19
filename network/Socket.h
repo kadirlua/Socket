@@ -121,11 +121,11 @@ namespace sdk {
 			 */
 			NODISCARD virtual SOCKET accept();
 			/*
-			 *	This function creates an instance of socket.
+			 *	This function creates an instance of socket descriptor.
 			 *	param1: The id of socket.
-			 *	returns: A shared pointer of socket object.
+			 *	returns: A shared pointer of socket descriptor.
 			 */
-			NODISCARD std::shared_ptr<SocketDescriptor> createNewSocket(SOCKET socketId) const;
+			NODISCARD std::shared_ptr<SocketDescriptor> createSocketDescriptor(SOCKET socketId) const;
 			/*
 			 *	This function is useful for client applications to set an ip address.
 			 *	param: Ip address.

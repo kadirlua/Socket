@@ -50,7 +50,7 @@ namespace sdk {
 			m_socket->connect();
 			const SocketOption<Socket> socketOpt{ *m_socket };
 			socketOpt.setBlockingMode(1);
-			m_socket_obj = m_socket->createNewSocket(m_socket->getSocketId());
+			m_socket_obj = m_socket->createSocketDescriptor(m_socket->getSocketId());
 		}
 
 		int Client::write(std::initializer_list<char> msg) const

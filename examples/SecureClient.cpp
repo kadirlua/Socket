@@ -57,7 +57,7 @@ namespace sdk {
 
 		void SecureClient::connectServer()
 		{
-			m_secure_obj = m_socket_ptr->createNewSocket(m_socket_ptr->getSocketId());
+			m_secure_obj = m_socket_ptr->createSocketDescriptor(m_socket_ptr->getSocketId());
 			m_secure_obj->connect();
 		}
 
