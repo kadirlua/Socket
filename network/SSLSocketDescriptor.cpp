@@ -51,10 +51,10 @@ namespace sdk {
 			/*int err = SSL_get_error(m_ssl, -1);
 			if (err != SSL_ERROR_SYSCALL && err != SSL_ERROR_SSL)
 			{*/
-			int err = 0;
+			int ret = 0;
 			bool bDone = false;
-			while ((err = SSL_shutdown(m_ssl.get())) <= 0 && !bDone) {
-				switch (const int retCode = SSL_get_error(m_ssl.get(), err)) {
+			while ((ret = SSL_shutdown(m_ssl.get())) <= 0 && !bDone) {
+				switch (const int errCode = SSL_get_error(m_ssl.get(), ret)) {
 				case SSL_ERROR_WANT_READ:
 				case SSL_ERROR_WANT_WRITE:
 					break;
@@ -79,14 +79,14 @@ namespace sdk {
 		{
 			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
-			int errCode{};
-			while ((errCode = SSL_connect(m_ssl.get())) == -1) {
+			int retCode{};
+			while ((retCode = SSL_connect(m_ssl.get())) == -1) {
 				if (callbackInterrupt &&
 					callbackInterrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
-				switch (const int retCode = SSL_get_error(m_ssl.get(), errCode)) {
+				switch (const int errCode = SSL_get_error(m_ssl.get(), retCode)) {
 				case SSL_ERROR_WANT_READ:
 				case SSL_ERROR_WANT_WRITE:
 				case SSL_ERROR_WANT_CONNECT:
@@ -97,7 +97,7 @@ namespace sdk {
 					[[fallthrough]];
 #endif
 				default:
-					throw general::SSLSocketException(retCode);
+					throw general::SSLSocketException(errCode);
 				}
 			}
 		}
@@ -106,14 +106,14 @@ namespace sdk {
 		{
 			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
-			int errCode{};
-			while ((errCode = SSL_accept(m_ssl.get())) != 1) {
+			int retCode{};
+			while ((retCode = SSL_accept(m_ssl.get())) != 1) {
 				if (callbackInterrupt &&
 					callbackInterrupt(m_socketRef.m_userdataPtr)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
-				switch (const int retCode = SSL_get_error(m_ssl.get(), errCode)) {
+				switch (const int errCode = SSL_get_error(m_ssl.get(), retCode)) {
 				case SSL_ERROR_WANT_READ:
 				case SSL_ERROR_WANT_ACCEPT:
 					break;
@@ -123,7 +123,7 @@ namespace sdk {
 					[[fallthrough]];
 #endif
 				default:
-					throw general::SSLSocketException(retCode);
+					throw general::SSLSocketException(errCode);
 				}
 			}
 
@@ -241,7 +241,7 @@ namespace sdk {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
-				switch (const auto err_code = SSL_get_error(m_ssl.get(), sendBytes)) {
+				switch (const auto errCode = SSL_get_error(m_ssl.get(), sendBytes)) {
 				case SSL_ERROR_WANT_WRITE:
 					break;
 				case SSL_ERROR_ZERO_RETURN:
@@ -250,7 +250,7 @@ namespace sdk {
 					[[fallthrough]];
 #endif
 				default:
-					throw general::SSLSocketException(err_code);
+					throw general::SSLSocketException(errCode);
 				}
 			}
 			return sendBytes;
