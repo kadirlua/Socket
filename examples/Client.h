@@ -37,15 +37,15 @@ namespace sdk {
 			Client& operator=(const Client&) = delete;
 
 			void connectServer();
-			int write(std::initializer_list<char> msg) const;
-			int write(const char* msg, int msgSize) const;
-			int write(const std::string& msg) const;
-			int write(const std::vector<unsigned char>& msg) const;
-			std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
-			std::size_t read(std::string& message, int maxSize = 0) const;
+			NODISCARD int write(std::initializer_list<char> msg) const;
+			NODISCARD int write(const char* msg, int msgSize) const;
+			NODISCARD int write(const std::string& msg) const;
+			NODISCARD int write(const std::vector<unsigned char>& msg) const;
+			NODISCARD std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
+			NODISCARD std::size_t read(std::string& message, int maxSize = 0) const;
 
 			void abortConnection() noexcept;
-			bool isConnectionAborted() const noexcept
+			NODISCARD bool isConnectionAborted() const noexcept
 			{
 				return m_abortConnection;
 			}
