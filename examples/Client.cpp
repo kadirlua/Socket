@@ -28,12 +28,12 @@ namespace sdk {
 
 		using namespace network;
 
-		Client::Client(const std::string& ip, int port,
+		Client::Client(const std::string& ipAddr, int port,
 			network::ProtocolType type /*= ProtocolType::tcp*/,
 			network::IpVersion ipVer /*= IpVersion::IPv4*/) :
 			m_socket{ std::make_unique<Socket>(port, type, ipVer) }
 		{
-			m_socket->setIpAddress(ip);
+			m_socket->setIpAddress(ipAddr);
 			m_socket->setInterruptCallback([this](const network::Socket& socket) {
 				(void)socket;
 				return isInterrupted();
@@ -45,37 +45,37 @@ namespace sdk {
 			m_socket->connect();
 			const SocketOption<Socket> socketOpt{ *m_socket };
 			socketOpt.setBlockingMode(1);
-			m_socket_obj = m_socket->createSocketDescriptor(m_socket->getSocketId());
+			m_socketDesc = m_socket->createSocketDescriptor(m_socket->getSocketId());
 		}
 
 		int Client::write(std::initializer_list<char> msg) const
 		{
-			return m_socket_obj->write(msg);
+			return m_socketDesc->write(msg);
 		}
 
-		int Client::write(const char* msg, int msg_size) const
+		int Client::write(const char* msg, int msgSize) const
 		{
-			return m_socket_obj->write(msg, msg_size);
+			return m_socketDesc->write(msg, msgSize);
 		}
 
 		int Client::write(const std::string& msg) const
 		{
-			return m_socket_obj->write(msg);
+			return m_socketDesc->write(msg);
 		}
 
 		int Client::write(const std::vector<unsigned char>& msg) const
 		{
-			return m_socket_obj->write(msg);
+			return m_socketDesc->write(msg);
 		}
 
-		std::size_t Client::read(std::vector<unsigned char>& response_msg, int max_size /*= 0*/) const
+		std::size_t Client::read(std::vector<unsigned char>& responseMsg, int maxSize /*= 0*/) const
 		{
-			return m_socket_obj->read(response_msg, max_size);
+			return m_socketDesc->read(responseMsg, maxSize);
 		}
 
-		std::size_t Client::read(std::string& message, int max_size /*= 0*/) const
+		std::size_t Client::read(std::string& message, int maxSize /*= 0*/) const
 		{
-			return m_socket_obj->read(message, max_size);
+			return m_socketDesc->read(message, maxSize);
 		}
 	}
 }

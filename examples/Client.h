@@ -27,7 +27,7 @@ namespace sdk {
 	namespace application {
 		class Client {
 		public:
-			Client(const std::string& ip, int port,
+			Client(const std::string& ipAddr, int port,
 				network::ProtocolType type = network::ProtocolType::tcp,
 				network::IpVersion ipVer = network::IpVersion::IPv4);
 			virtual ~Client() = default;
@@ -38,11 +38,11 @@ namespace sdk {
 
 			void connectServer();
 			int write(std::initializer_list<char> msg) const;
-			int write(const char* msg, int msg_size) const;
+			int write(const char* msg, int msgSize) const;
 			int write(const std::string& msg) const;
 			int write(const std::vector<unsigned char>& msg) const;
-			std::size_t read(std::vector<unsigned char>& response_msg, int max_size = 0) const;
-			std::size_t read(std::string& message, int max_size = 0) const;
+			std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
+			std::size_t read(std::string& message, int maxSize = 0) const;
 			bool isInterrupted() const noexcept
 			{
 				return m_bInterrupt;
@@ -51,7 +51,7 @@ namespace sdk {
 		private:
 			bool m_bInterrupt{};
 			std::unique_ptr<network::Socket> m_socket;
-			std::shared_ptr<network::SocketDescriptor> m_socket_obj;
+			std::shared_ptr<network::SocketDescriptor> m_socketDesc;
 		};
 	}
 }
