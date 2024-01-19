@@ -145,7 +145,7 @@ namespace sdk {
 
 			while (::connect(m_socketId, stAddress, addressSize) == SOCKET_ERROR) {
 				//	check if any interrupt happened by user
-				if (m_callbackInterrupt && m_callbackInterrupt(m_userdataPtr)) {
+				if (m_callbackInterrupt && m_callbackInterrupt(*this)) {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
@@ -157,7 +157,7 @@ namespace sdk {
 					fd_set exceptFds{};
 
 					do {
-						if (m_callbackInterrupt && m_callbackInterrupt(m_userdataPtr)) {
+						if (m_callbackInterrupt && m_callbackInterrupt(*this)) {
 							throw general::SocketException(INTERRUPT_MSG);
 						}
 
@@ -219,7 +219,7 @@ namespace sdk {
 
 				while ((newSockId = ::accept(m_socketId, stAddress, &addrLen)) == INVALID_SOCKET) {
 					//	check if any interrupt happened by user
-					if (m_callbackInterrupt && m_callbackInterrupt(m_userdataPtr)) {
+					if (m_callbackInterrupt && m_callbackInterrupt(*this)) {
 						throw general::SocketException(INTERRUPT_MSG);
 					}
 
@@ -229,7 +229,7 @@ namespace sdk {
 						fd_set exceptFds{};
 
 						do {
-							if (m_callbackInterrupt && m_callbackInterrupt(m_userdataPtr)) {
+							if (m_callbackInterrupt && m_callbackInterrupt(*this)) {
 								throw general::SocketException(INTERRUPT_MSG);
 							}
 
@@ -262,10 +262,9 @@ namespace sdk {
 			return std::make_shared<SocketDescriptor>(socketId, *this);
 		}
 
-		void Socket::setInterruptCallback(const socket_interrupt_callback_t& callback, void* userdata) noexcept
+		void Socket::setInterruptCallback(const socketInterruptCallback& callback) noexcept
 		{
 			m_callbackInterrupt = callback;
-			m_userdataPtr = userdata;
 		}
 	}
 }

@@ -82,7 +82,7 @@ namespace sdk {
 			int retCode{};
 			while ((retCode = SSL_connect(m_ssl.get())) == -1) {
 				if (callbackInterrupt &&
-					callbackInterrupt(m_socketRef.m_userdataPtr)) {
+					callbackInterrupt(m_socketRef)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
@@ -109,7 +109,7 @@ namespace sdk {
 			int retCode{};
 			while ((retCode = SSL_accept(m_ssl.get())) != 1) {
 				if (callbackInterrupt &&
-					callbackInterrupt(m_socketRef.m_userdataPtr)) {
+					callbackInterrupt(m_socketRef)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
@@ -171,7 +171,7 @@ namespace sdk {
 			do {
 				while ((receiveByte = SSL_read(m_ssl.get(), dataVec.data(), bufLen)) == -1) {
 					if (callbackInterrupt &&
-						callbackInterrupt(m_socketRef.m_userdataPtr)) {
+						callbackInterrupt(m_socketRef)) {
 						throw general::SSLSocketException(INTERRUPT_MSG);
 					}
 
@@ -198,7 +198,7 @@ namespace sdk {
 				}
 
 				if (callbackInterrupt &&
-					callbackInterrupt(m_socketRef.m_userdataPtr)) {
+					callbackInterrupt(m_socketRef)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 
@@ -236,7 +236,7 @@ namespace sdk {
 			int sendBytes{};
 			while ((sendBytes = SSL_write(m_ssl.get(), data, dataSize)) == -1) {
 				if (callbackInterrupt &&
-					callbackInterrupt(m_socketRef.m_userdataPtr)) {
+					callbackInterrupt(m_socketRef)) {
 					throw general::SSLSocketException(INTERRUPT_MSG);
 				}
 

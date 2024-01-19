@@ -57,8 +57,10 @@ namespace sdk {
 			constexpr auto const INTERRUPT_MSG = "I/O interrupt callback is called by user.";
 		}
 
+		class Socket;	// forward declaration
+
 		//	socket interrupt callback
-		using socket_interrupt_callback_t = std::function<bool(void*)>;
+		using socketInterruptCallback = std::function<bool(const Socket&)>;
 
 		//	This class manage some connection issues for unsecure connection via TCP or UDP.
 		//	This class has methods that works blocking or non-blocking mode.
@@ -165,8 +167,7 @@ namespace sdk {
 				return m_portNumber;
 			}
 
-			void setInterruptCallback(const socket_interrupt_callback_t& callback,
-				void* userdata) noexcept;
+			void setInterruptCallback(const socketInterruptCallback& callback) noexcept;
 
 			static const char* getVersionStr() noexcept
 			{
@@ -180,13 +181,12 @@ namespace sdk {
 		private:
 			static bool m_wsaInit;
 
-			socket_interrupt_callback_t m_callbackInterrupt;
-			void* m_userdataPtr{};
 			int m_portNumber{};
 			ProtocolType m_protocolType{ ProtocolType::tcp };
 			SOCKET m_socketId{ INVALID_SOCKET };
 			struct sockaddr_in m_sockAddressIpv4{}; // Stores address information.
 			struct sockaddr_in6 m_sockAddressIpv6{};
+			socketInterruptCallback m_callbackInterrupt;
 			std::string m_ipAddress;
 			IpVersion m_ipVersion{ IpVersion::IPv4 };
 		};

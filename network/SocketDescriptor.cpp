@@ -81,7 +81,7 @@ namespace sdk {
 			do {
 				while ((receiveByte = recv(m_socketId, dataVec.data(), bufLen, 0)) == SOCKET_ERROR) {
 					if (callbackInterrupt &&
-						callbackInterrupt(m_socketRef.m_userdataPtr)) {
+						callbackInterrupt(m_socketRef)) {
 						throw general::SocketException(INTERRUPT_MSG);
 					}
 
@@ -122,7 +122,7 @@ namespace sdk {
 				}
 
 				if (callbackInterrupt &&
-					callbackInterrupt(m_socketRef.m_userdataPtr)) {
+					callbackInterrupt(m_socketRef)) {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
@@ -187,7 +187,7 @@ namespace sdk {
 
 			while ((sendBytes = send(m_socketId, data, dataSize, 0)) == SOCKET_ERROR) {
 				if (callbackInterrupt &&
-					callbackInterrupt(m_socketRef.m_userdataPtr)) {
+					callbackInterrupt(m_socketRef)) {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
