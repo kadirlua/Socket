@@ -20,17 +20,50 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
-#include <iostream>
-#include <sstream>
-#include <mutex>
+#include "Server.h"
+#include "general/SocketException.h"
+#include "network/SocketOption.h"
 
-struct pcout : std::stringstream {
-	~pcout() override
-	{
-		const std::lock_guard<std::mutex> lock_(mtx_);
-		std::cout << rdbuf();
-		std::cout.flush();
+#include <algorithm>
+#include <iostream>
+
+namespace sdk {
+	namespace application {
+
+		namespace {
+			constexpr const auto MAX_CLIENTS = 10;
+		}
+
+		Server::Server(int port, network::ProtocolType type /*= ProtocolType::tcp*/, network::IpVersion ipVer /*= IpVersion::IPv4*/) :
+			m_socket{ port, type, ipVer }
+		{
+		}
+
+		void Server::startListening()
+		{
+			const network::SocketOption<network::Socket> socketOpt{ m_socket };
+			socketOpt.setBlockingMode(1); // non-blocking mode
+			socketOpt.setReuseAddr(1);
+
+			// bind and listen
+			m_socket.bind();
+			m_socket.listen(MAX_CLIENTS);
+
+			const std::string response{ "Hello from Server!\n" };
+
+			while (true) {
+				try {
+					const SOCKET newSockId = m_socket.accept();
+					auto socketDesc = m_socket.createSocketDescriptor(newSockId);
+					std::string requestMsg;
+					socketDesc->read(requestMsg);
+					std::cout << "Message recieved from client: " << requestMsg << "\n";
+					socketDesc->write(response);
+				}
+				catch (const general::SocketException& ex) {
+					(void)ex;
+				}
+			}
+		}
 	}
-	static std::mutex mtx_;
-};
+}

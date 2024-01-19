@@ -21,39 +21,29 @@
 // SOFTWARE.
 
 #pragma once
-#include "network/Socket.h"
+#include "network/SSLSocket.h"
+#include "network/SocketExport.h"
 
 namespace sdk {
 	namespace application {
-		class Client {
+
+#if OPENSSL_SUPPORTED
+
+		class SOCKET_API SSLServer {
 		public:
-			Client(const std::string& ipAddr, int port,
-				network::ProtocolType type = network::ProtocolType::tcp,
+			SSLServer(int port, network::ProtocolType type = network::ProtocolType::tcp, 
 				network::IpVersion ipVer = network::IpVersion::IPv4);
-			virtual ~Client() = default;
+			virtual ~SSLServer() = default;
 
 			// non copyable
-			Client(const Client&) = delete;
-			Client& operator=(const Client&) = delete;
+			SSLServer(const SSLServer&) = delete;
+			SSLServer& operator=(const SSLServer&) = delete;
 
-			void connectServer();
-			NODISCARD int write(std::initializer_list<char> msg) const;
-			NODISCARD int write(const char* msg, int msgSize) const;
-			NODISCARD int write(const std::string& msg) const;
-			NODISCARD int write(const std::vector<unsigned char>& msg) const;
-			NODISCARD std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
-			NODISCARD std::size_t read(std::string& message, int maxSize = 0) const;
-
-			void abortConnection() noexcept;
-			NODISCARD bool isConnectionAborted() const noexcept
-			{
-				return m_abortConnection;
-			}
+			void startListening();
 
 		private:
-			bool m_abortConnection{};
-			network::Socket m_socket;
-			std::shared_ptr<network::SocketDescriptor> m_socketDesc;
+			network::SSLSocket m_socket;
 		};
+#endif // OPENSSL_SUPPORTED
 	}
 }
