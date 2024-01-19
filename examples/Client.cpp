@@ -31,21 +31,21 @@ namespace sdk {
 		Client::Client(const std::string& ipAddr, int port,
 			network::ProtocolType type /*= ProtocolType::tcp*/,
 			network::IpVersion ipVer /*= IpVersion::IPv4*/) :
-			m_socket{ std::make_unique<Socket>(port, type, ipVer) }
+			m_socket{ port, type, ipVer }
 		{
-			m_socket->setIpAddress(ipAddr);
-			m_socket->setInterruptCallback([this](const network::Socket& socket) {
+			m_socket.setIpAddress(ipAddr);
+			m_socket.setInterruptCallback([this](const network::Socket& socket) {
 				(void)socket;
-				return isInterrupted();
+				return isConnectionAborted();
 			});
 		}
 
 		void Client::connectServer()
 		{
-			m_socket->connect();
-			const SocketOption<Socket> socketOpt{ *m_socket };
+			m_socket.connect();
+			const SocketOption<Socket> socketOpt{ m_socket };
 			socketOpt.setBlockingMode(1);
-			m_socketDesc = m_socket->createSocketDescriptor(m_socket->getSocketId());
+			m_socketDesc = m_socket.createSocketDescriptor(m_socket.getSocketId());
 		}
 
 		int Client::write(std::initializer_list<char> msg) const
@@ -76,6 +76,11 @@ namespace sdk {
 		std::size_t Client::read(std::string& message, int maxSize /*= 0*/) const
 		{
 			return m_socketDesc->read(message, maxSize);
+		}
+
+		void Client::abortConnection() noexcept
+		{
+			m_abortConnection = true;
 		}
 	}
 }

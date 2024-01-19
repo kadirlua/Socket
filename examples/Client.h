@@ -43,14 +43,16 @@ namespace sdk {
 			int write(const std::vector<unsigned char>& msg) const;
 			std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
 			std::size_t read(std::string& message, int maxSize = 0) const;
-			bool isInterrupted() const noexcept
+
+			void abortConnection() noexcept;
+			bool isConnectionAborted() const noexcept
 			{
-				return m_bInterrupt;
+				return m_abortConnection;
 			}
 
 		private:
-			bool m_bInterrupt{};
-			std::unique_ptr<network::Socket> m_socket;
+			bool m_abortConnection{};
+			network::Socket m_socket;
 			std::shared_ptr<network::SocketDescriptor> m_socketDesc;
 		};
 	}
