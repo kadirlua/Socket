@@ -59,9 +59,8 @@ namespace sdk {
 			const int bufLen = (maxSize > 0 && maxSize < MAX_MESSAGE_SIZE) ? maxSize : MAX_MESSAGE_SIZE - 1;
 
 			std::string strMessage;
-			std::vector<char> dataVec;
-			dataVec.resize(bufLen);
-
+			std::vector<char> dataVec(bufLen);
+			
 			int receiveByte{};
 			int iResult = 0;
 #ifdef _WIN32
