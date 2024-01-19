@@ -28,21 +28,16 @@ namespace sdk {
 
 		using namespace network;
 
-		namespace {
-			bool callbackInterrupt(void* userdata_ptr)
-			{
-				auto* client = static_cast<Client*>(userdata_ptr);
-				return client->isInterrupted();
-			}
-		}
-
 		Client::Client(const std::string& ip, int port,
 			network::ProtocolType type /*= ProtocolType::tcp*/,
 			network::IpVersion ipVer /*= IpVersion::IPv4*/) :
 			m_socket{ std::make_unique<Socket>(port, type, ipVer) }
 		{
 			m_socket->setIpAddress(ip);
-			m_socket->setInterruptCallback(&callbackInterrupt, this);
+			m_socket->setInterruptCallback([this](const network::Socket& socket) {
+				(void)socket;
+				return isInterrupted();
+			});
 		}
 
 		void Client::connectServer()
