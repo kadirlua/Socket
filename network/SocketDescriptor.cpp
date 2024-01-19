@@ -205,7 +205,7 @@ namespace sdk {
 
 		int SocketDescriptor::write(const std::vector<unsigned char>& message) const
 		{
-			const std::string strBuf(message.begin(), message.end());
+			const std::string strBuf{ message.begin(), message.end() };
 			return write(strBuf.c_str(), (int)strBuf.size());
 		}
 
