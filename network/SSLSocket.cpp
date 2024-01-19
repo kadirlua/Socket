@@ -28,8 +28,6 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
-		bool SSLSocket::m_bSSLLibraryInit = false;
-
 		SSLSocket::SSLSocket(int port, ConnMethod meth, ProtocolType type, IpVersion IpVer) :
 			Socket{ port, type, IpVer },
 			m_ctx{ SSL_CTX_new(TLS_client_method()), SSL_CTX_free }
@@ -43,23 +41,6 @@ namespace sdk {
 			// enables support for all versions of SSL and TLS, and we then disable
 			// support for the old protocols immediately after creating the context.
 			SSL_CTX_set_options(m_ctx.get(), SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
-		}
-
-		bool SSLSocket::SSLLibraryInit() noexcept
-		{
-			if (!m_bSSLLibraryInit) {
-				/*	OpenSSL 1.0.2 or below, then you would use SSL_library_init. If you are
-				 *	using OpenSSL 1.1.0 or above, then the library will initialize
-				 *	itself automatically.
-				 *	https://wiki.openssl.org/index.php/Library_Initialization
-				 */
-#if (OPENSSL_VERSION_NUMBER < 0x10100000L)
-				SSL_library_init();
-				SSL_load_error_strings();
-#endif
-				m_bSSLLibraryInit = true;
-			}
-			return true;
 		}
 
 		void SSLSocket::setCipherList(const char* str) const

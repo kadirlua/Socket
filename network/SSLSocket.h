@@ -39,8 +39,6 @@ namespace sdk {
 		/*
 		 *	This class used for create a secure socket layer on socket.
 		 *	It has some methods that using fill SSL attributes.
-		 *	Before using this class methods, do not forget calling SSLLibraryInit once if you are using
-		 *	OpenSSL 1.0.2 or below. Otherwise, all methods fails.
 		 */
 
 #if OPENSSL_SUPPORTED
@@ -57,7 +55,6 @@ namespace sdk {
 			SSLSocket(const SSLSocket&) = delete;
 			SSLSocket& operator=(const SSLSocket&) = delete;
 
-			static bool SSLLibraryInit() noexcept;
 			/*
 			 *	This function creates an instance of secure socket layer object.
 			 *	param1: The id of socket.
@@ -132,7 +129,6 @@ namespace sdk {
 			}
 
 		private:
-			static bool m_bSSLLibraryInit;
 			SSLCtx_unique_ptr m_ctx;
 		};
 #endif // OPENSSL_SUPPORTED

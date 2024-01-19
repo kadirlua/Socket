@@ -158,8 +158,6 @@ int main()
 	if (Socket::WSAInit(WSA_VERSION)) {
 		/*  start server    */
 #if (TEST_SECURE_SERVER == 1)
-		SSLSocket::SSLLibraryInit();
-
 		// print openssl library version number
 		std::cout << SSLSocket::get_openssl_version() << "\n";
 #endif
