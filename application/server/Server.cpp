@@ -43,8 +43,8 @@ namespace sdk {
 		void Server::startListening()
 		{
 			const network::SocketOption<network::Socket> socketOpt{ m_socket };
-			socketOpt.setBlockingMode(1); // non-blocking mode
-			socketOpt.setReuseAddr(1);
+			socketOpt.setBlockingMode(network::SocketOpt::ON); // non-blocking mode
+			socketOpt.setReuseAddr(network::SocketOpt::ON);
 
 			// bind and listen
 			m_socket.bind();

@@ -44,8 +44,8 @@ namespace sdk {
 		void SSLServer::startListening()
 		{
 			const network::SocketOption<network::SSLSocket> socketOpt{ m_sslSocket };
-			socketOpt.setBlockingMode(1); // non-blocking mode
-			socketOpt.setReuseAddr(1);
+			socketOpt.setBlockingMode(network::SocketOpt::ON); // non-blocking mode
+			socketOpt.setReuseAddr(network::SocketOpt::ON);
 
 			// bind and listen
 			m_sslSocket.bind();

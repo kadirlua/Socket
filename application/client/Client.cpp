@@ -42,7 +42,7 @@ namespace sdk {
 		{
 			m_socket.connect();
 			const network::SocketOption<network::Socket> socketOpt{ m_socket };
-			socketOpt.setBlockingMode(1);
+			socketOpt.setBlockingMode(network::SocketOpt::ON);
 			m_socketDesc = m_socket.createSocketDescriptor(m_socket.getSocketId());
 		}
 

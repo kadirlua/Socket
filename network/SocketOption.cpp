@@ -29,44 +29,48 @@ namespace sdk {
 	namespace network {
 
 		template <typename T>
-		void SocketOption<T>::setDebug(int debugMode) const
+		void SocketOption<T>::setDebug(SocketOpt debugMode) const
 		{
+			const auto mode = static_cast<int>(debugMode);
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_DEBUG,
-					reinterpret_cast<const char*>(&debugMode), sizeof(debugMode)) == SOCKET_ERROR) {
+					reinterpret_cast<const char*>(&mode), sizeof(mode)) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
 			}
 		}
 
 		template <typename T>
-		void SocketOption<T>::setReuseAddr(int reuseMode) const
+		void SocketOption<T>::setReuseAddr(SocketOpt reuseMode) const
 		{
+			const auto mode = static_cast<int>(reuseMode);
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_REUSEADDR,
-					reinterpret_cast<const char*>(&reuseMode), sizeof(reuseMode)) == SOCKET_ERROR) {
+					reinterpret_cast<const char*>(&mode), sizeof(mode)) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
 			}
 		}
 
 		template <typename T>
-		void SocketOption<T>::setKeepAlive(int keepAliveMode) const
+		void SocketOption<T>::setKeepAlive(SocketOpt keepAliveMode) const
 		{
+			const auto mode = static_cast<int>(keepAliveMode);
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_KEEPALIVE,
-					reinterpret_cast<const char*>(&keepAliveMode), sizeof(keepAliveMode)) == SOCKET_ERROR) {
+					reinterpret_cast<const char*>(&mode), sizeof(mode)) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
 			}
 		}
 
 		template <typename T>
-		void SocketOption<T>::setBlockingMode(unsigned long blockingMode) const
+		void SocketOption<T>::setBlockingMode(SocketOpt blockingMode) const
 		{
-			if (ioctlsocket(m_socket.getSocketId(), FIONBIO, &blockingMode) == SOCKET_ERROR) {
+			auto mode = static_cast<unsigned long>(blockingMode);
+			if (ioctlsocket(m_socket.getSocketId(), FIONBIO, &mode) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
 			}
 		}
 
 		template <typename T>
-		void SocketOption<T>::setLingerOpt(unsigned short mode, unsigned short second) const
+		void SocketOption<T>::setLingerOpt(SocketOpt mode, unsigned short second) const
 		{
-			const linger opt{ mode, second };
+			const struct linger opt{ static_cast<unsigned short>(mode), second };
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_LINGER,
 					reinterpret_cast<const char*>(&opt), sizeof(opt)) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
@@ -77,9 +81,9 @@ namespace sdk {
 		void SocketOption<T>::setRecvTimeout(long seconds, long microseconds) const
 		{
 #if defined(__APPLE__)
-			const timeval tVal{ seconds, static_cast<__darwin_suseconds_t>(microseconds) };
+			const struct timeval tVal{ seconds, static_cast<__darwin_suseconds_t>(microseconds) };
 #else
-			const timeval tVal{ seconds, microseconds };
+			const struct timeval tVal{ seconds, microseconds };
 #endif
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_RCVTIMEO,
 					reinterpret_cast<const char*>(&tVal), sizeof(tVal)) == SOCKET_ERROR) {
@@ -143,7 +147,7 @@ namespace sdk {
 		template <typename T>
 		timeval SocketOption<T>::getRecvTimeout() const
 		{
-			timeval recvTimeout{};
+			struct timeval recvTimeout{};
 			socklen_t myOptionLen = sizeof(recvTimeout);
 
 			if (getsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_RCVTIMEO,

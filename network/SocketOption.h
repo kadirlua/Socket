@@ -31,8 +31,16 @@
 #include <sys/time.h>
 #endif
 
+#include <cstdint>
+
 namespace sdk {
 	namespace network {
+
+		enum class SocketOpt : std::uint8_t {
+			OFF,
+			ON
+		};
+
 		template <typename T>
 		class SOCKET_API SocketOption final {
 		private:
@@ -54,35 +62,35 @@ namespace sdk {
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setDebug(int debugMode) const;
+			void setDebug(SocketOpt debugMode) const;
 			/*
 			 *	If you want to bind two sockets of the same protocol to the same source address and port.
 			 *	param1: Reuse address is active if 1, disabled 0.
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setReuseAddr(int reuseMode) const;
+			void setReuseAddr(SocketOpt reuseMode) const;
 			/*
 			 *	Allow an application to enable keep-alive packets for a socket connection.
 			 *	param1: Keep alive is active if 1, disabled 0.
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setKeepAlive(int keepAliveMode) const;
+			void setKeepAlive(SocketOpt keepAliveMode) const;
 			/*
 			 *	Enables or disables non-blocking mode on socket.
 			 *	param1: Non-blocking mode is active if 1, disabled 0.
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setBlockingMode(unsigned long blockingMode) const;
+			void setBlockingMode(SocketOpt blockingMode) const;
 			/*
 			 *	Enables or disables linger option on socket.
 			 *	param1: Linger option is active if 1, disabled 0.
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setLingerOpt(unsigned short mode, unsigned short second) const;
+			void setLingerOpt(SocketOpt mode, unsigned short second) const;
 			/*
 			 *	Sets default timeout value for socket connections.
 			 *	param1: seconds.
@@ -121,7 +129,7 @@ namespace sdk {
 			 *	returns: returns default receive timeout.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			struct timeval getRecvTimeout() const;
+			timeval getRecvTimeout() const;
 
 			/*
 			 *	Gets default receive timeout.

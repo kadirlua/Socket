@@ -50,7 +50,7 @@ namespace sdk {
 		void SSLClient::connectServer()
 		{
 			const network::SocketOption<network::SSLSocket> socketOpt{ m_sslSocket };
-			socketOpt.setBlockingMode(1); // non-blocking mode
+			socketOpt.setBlockingMode(network::SocketOpt::ON); // non-blocking mode
 			m_sslSocket.connect();
 			m_sslSocketDesc = m_sslSocket.createSocketDescriptor(m_sslSocket.getSocketId());
 			m_sslSocketDesc->connect();
