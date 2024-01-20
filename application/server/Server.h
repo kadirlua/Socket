@@ -39,8 +39,9 @@ namespace sdk {
 			Server& operator=(const Server&) = delete;
 
 			void startListening();
-
+			void abortListening() noexcept;
 		private:
+			bool m_abortListening{};
 			network::Socket m_socket;
 		};
 

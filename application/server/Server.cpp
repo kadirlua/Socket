@@ -52,7 +52,7 @@ namespace sdk {
 
 			const std::string response{ "Hello from Server!\n" };
 
-			while (true) {
+			while (!m_abortListening) {
 				try {
 					const SOCKET newSockId = m_socket.accept();
 					auto socketDesc = m_socket.createSocketDescriptor(newSockId);
@@ -65,6 +65,11 @@ namespace sdk {
 					(void)ex;
 				}
 			}
+		}
+
+		void Server::abortListening() noexcept
+		{
+			m_abortListening = true;
 		}
 	}
 }
