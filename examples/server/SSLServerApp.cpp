@@ -33,6 +33,7 @@ namespace {
 
 int main(int argc, const char** argv)
 {
+#if OPENSSL_SUPPORTED
 	if (argc < 2) {
 		std::cout << "Missing argument.\r\nUsage <exe_name> <port_number>";
 		return -1;
@@ -57,5 +58,8 @@ int main(int argc, const char** argv)
 	}
 
 	sdk::network::Socket::WSADeinit();
+#else
+	std::cout << "Build the project with OPENSSL_SUPPORTED.\r\n";
+#endif	// OPENSSL_SUPPORTED
 	return 0;
 }
