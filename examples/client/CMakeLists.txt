@@ -9,17 +9,23 @@ if (WIN32)
 endif()
 
 add_executable(ClientApp ${PROJECT_EXAMPLES_DIR}/ClientApp.cpp)
+add_executable(SSLClientApp ${PROJECT_EXAMPLES_DIR}/SSLClientApp.cpp)
 
-target_include_directories(ClientApp PUBLIC ${PROJECT_DIR})
+include_directories(${PROJECT_DIR})
 
-target_link_directories(ClientApp PUBLIC ${CMAKE_BINARY_DIR}/network)
-target_link_directories(ClientApp PUBLIC ${CMAKE_BINARY_DIR}/application/client)
+link_directories(${CMAKE_BINARY_DIR}/network)
+link_directories(${CMAKE_BINARY_DIR}/application/client)
 
 target_link_libraries(ClientApp PUBLIC Socket Client)
+target_link_libraries(SSLClientApp PUBLIC Socket Client)
 
 if (WIN32 AND BUILD_SHARED_LIBS)
   add_custom_command(TARGET ClientApp POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:ClientApp> $<TARGET_RUNTIME_DLLS:ClientApp>
+    COMMAND_EXPAND_LISTS
+  )
+  add_custom_command(TARGET SSLClientApp POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_FILE_DIR:SSLClientApp> $<TARGET_RUNTIME_DLLS:SSLClientApp>
     COMMAND_EXPAND_LISTS
   )
 endif()
