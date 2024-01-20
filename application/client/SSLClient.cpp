@@ -34,13 +34,10 @@ namespace sdk {
 			m_socket{ port, network::ConnMethod::client, type, ipVer }
 		{
 			m_socket.setIpAddress(ipAddr);
-			const network::SocketOption<network::SSLSocket> socketOpt{ m_socket };
-			socketOpt.setBlockingMode(1); // non-blocking mode
 			m_socket.setInterruptCallback([this](const network::Socket& socket) {
 				(void)socket;
 				return isConnectionAborted();
 			});
-			m_socket.connect();
 		}
 
 		void SSLClient::setCertificateAtr(const char* certFile, const char* keyFile) const
@@ -51,6 +48,9 @@ namespace sdk {
 
 		void SSLClient::connectServer()
 		{
+			const network::SocketOption<network::SSLSocket> socketOpt{ m_socket };
+			socketOpt.setBlockingMode(1); // non-blocking mode
+			m_socket.connect();
 			m_secureDesc = m_socket.createSocketDescriptor(m_socket.getSocketId());
 			m_secureDesc->connect();
 		}
