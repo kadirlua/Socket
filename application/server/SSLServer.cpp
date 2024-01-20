@@ -101,12 +101,13 @@ namespace sdk {
 			// set certificate properties
 			m_socket.loadVerifyLocations(certFile, nullptr);
 			/* Load the client's CA file location as well */
-			// m_socket_ptr->loadClientCertificateList("client.pem");
-			// m_socket_ptr->setCipherList("AES128-SHA");
+			// m_socket.loadClientCertificateList("client.pem");
+			// m_socket.setCipherList("AES128-SHA");
 			m_socket.loadCertificateFile(certFile);
 			m_socket.loadPrivateKeyFile(keyFile);
 
-			m_socket.setCallbackVerifyCertificate(SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, verifyCallback);
+			m_socket.setCallbackVerifyCertificate(SSL_VERIFY_PEER | 
+				SSL_VERIFY_FAIL_IF_NO_PEER_CERT, verifyCallback);
 			/* We accept only certificates signed only by the CA himself */
 			// m_socket.setVerifyDepth(1);
 			// bind and listen
