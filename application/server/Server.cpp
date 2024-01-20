@@ -34,7 +34,9 @@ namespace sdk {
 			constexpr const auto MAX_CLIENTS = 10;
 		}
 
-		Server::Server(int port, network::ProtocolType type /*= ProtocolType::tcp*/, network::IpVersion ipVer /*= IpVersion::IPv4*/) :
+		Server::Server(int port, 
+						network::ProtocolType type /*= ProtocolType::tcp*/, 
+						network::IpVersion ipVer /*= IpVersion::IPv4*/) :
 			m_socket{ port, type, ipVer }
 		{
 		}

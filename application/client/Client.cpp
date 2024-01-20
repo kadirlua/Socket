@@ -26,8 +26,6 @@
 namespace sdk {
 	namespace application {
 
-		using namespace network;
-
 		Client::Client(const std::string& ipAddr, int port,
 			network::ProtocolType type /*= ProtocolType::tcp*/,
 			network::IpVersion ipVer /*= IpVersion::IPv4*/) :
@@ -43,7 +41,7 @@ namespace sdk {
 		void Client::connectServer()
 		{
 			m_socket.connect();
-			const SocketOption<Socket> socketOpt{ m_socket };
+			const network::SocketOption<network::Socket> socketOpt{ m_socket };
 			socketOpt.setBlockingMode(1);
 			m_socketDesc = m_socket.createSocketDescriptor(m_socket.getSocketId());
 		}
