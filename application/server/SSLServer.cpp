@@ -37,7 +37,7 @@ namespace sdk {
 			const char* const certFile = R"(C:\Program Files\OpenSSL\bin\certificate.pem)";
 			const char* const keyFile = R"(C:\Program Files\OpenSSL\bin\key.key)";
 
-			int verifyCallback(int preverify_ok, X509_STORE_CTX* x509Ctx)
+			int verifyCallback(int preverifyOK, X509_STORE_CTX* x509Ctx)
 			{
 				const auto* cert = X509_STORE_CTX_get_current_cert(x509Ctx);
 				if (cert == nullptr) {
@@ -83,7 +83,7 @@ namespace sdk {
 					std::cout << " - Organizational unit name: " << buf[5] << "\n";
 				}
 
-				return preverify_ok;
+				return preverifyOK;
 			}
 		}
 
