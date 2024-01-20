@@ -60,7 +60,7 @@ int main(int argc, const char** argv)
 		std::string strResponse;
 		client.read(strResponse);
 		std::cout << "Response from server: " << strResponse << "\r\n";
-	} catch (const sdk::general::SocketException& ex) {
+	} catch (const sdk::general::SSLSocketException& ex) {
 		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
 	}
 

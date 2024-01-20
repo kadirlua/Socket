@@ -52,7 +52,7 @@ int main(int argc, const char** argv)
 	try {
 		sdk::application::SSLServer srv{ portNumber };
 		srv.startListening();
-	} catch (const sdk::general::SocketException& ex) {
+	} catch (const sdk::general::SSLSocketException& ex) {
 		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
 	}
 
