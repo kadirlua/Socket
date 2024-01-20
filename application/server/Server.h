@@ -40,6 +40,11 @@ namespace sdk {
 
 			virtual void startListening();
 			void abortListening() noexcept;
+			bool isAbortedListening() const noexcept
+			{
+				return m_abortListening;
+			}
+
 		private:
 			bool m_abortListening{};
 			network::Socket m_socket;

@@ -53,7 +53,7 @@ namespace sdk {
 
 			const std::string response{ "Hello from SSLServer!\n" };
 
-			while (true) {
+			while (!isAbortedListening()) {
 				try {
 					const SOCKET newSockId = m_sslSocket.accept();
 					auto sslSocketDesc = m_sslSocket.createSocketDescriptor(newSockId);
