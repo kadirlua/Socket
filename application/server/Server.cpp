@@ -24,7 +24,6 @@
 #include "general/SocketException.h"
 #include "network/SocketOption.h"
 
-#include <algorithm>
 #include <iostream>
 
 namespace sdk {
