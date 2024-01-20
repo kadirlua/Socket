@@ -25,26 +25,26 @@
     <Filter Include="Header Files\general">
       <UniqueIdentifier>{9ab9176f-f517-4920-bbc4-eaf03db001c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\application">
+      <UniqueIdentifier>{9da67c28-6e1e-4c5a-ae4c-346be3e3e279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\application\client">
+      <UniqueIdentifier>{526d35b0-8496-40db-bce5-e2ce96f9b273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\application\server">
+      <UniqueIdentifier>{1b479769-6ce4-412b-a91c-b9a16d4be4d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\application">
+      <UniqueIdentifier>{d9aa65ce-0fe4-487c-8258-95a18ced9c29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\application\server">
+      <UniqueIdentifier>{671e95e7-2903-4ad4-be48-53a46740d56d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\application\client">
+      <UniqueIdentifier>{26a0507c-ee1a-4452-a41b-0b1cd4c269d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\examples\Client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\examples\pcout.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\examples\SecureClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\examples\SecureServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\examples\Server.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\examples\SocketExample.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\network\Socket.cpp">
       <Filter>Source Files\network</Filter>
     </ClCompile>
@@ -65,6 +65,21 @@
     </ClCompile>
     <ClCompile Include="..\network\SSLSocketDescriptor.cpp">
       <Filter>Source Files\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\application\client\Client.cpp">
+      <Filter>Source Files\application\client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\application\client\SSLClient.cpp">
+      <Filter>Source Files\application\client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\application\server\Server.cpp">
+      <Filter>Source Files\application\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\application\server\SSLServer.cpp">
+      <Filter>Source Files\application\server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\examples\server\ServerApp.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +124,18 @@
     </ClInclude>
     <ClInclude Include="..\network\SSLSocketDescriptor.h">
       <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\application\client\Client.h">
+      <Filter>Header Files\application\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\application\client\SSLClient.h">
+      <Filter>Header Files\application\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\application\server\Server.h">
+      <Filter>Header Files\application\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\application\server\SSLServer.h">
+      <Filter>Header Files\application\server</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
