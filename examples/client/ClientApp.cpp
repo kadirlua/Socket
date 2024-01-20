@@ -27,10 +27,6 @@
 #include "application/client/Client.h"
 #include "general/SocketException.h"
 
-namespace {
-	constexpr const auto WSA_VERSION = 0x202;
-}
-
 int main(int argc, const char** argv)
 {
 	if (argc < 4) {
@@ -48,7 +44,7 @@ int main(int argc, const char** argv)
 
 	const std::string strMsg = argv[3];
 	
-	if (!sdk::network::Socket::WSAInit(WSA_VERSION)) {
+	if (!sdk::network::Socket::WSAInit(sdk::network::WSA_VER_2_2)) {
 		std::cout << "sdk::network::Socket::WSAInit failed\r\n";
 		return -1;
 	}
