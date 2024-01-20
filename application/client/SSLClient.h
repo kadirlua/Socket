@@ -21,8 +21,8 @@
 // SOFTWARE.
 
 #pragma once
+#include "Client.h"
 #include "network/SSLSocket.h"
-#include "network/SocketExport.h"
 #include <string>
 
 namespace sdk {
@@ -30,36 +30,29 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
-		class SOCKET_API SSLClient {
+		class SOCKET_API SSLClient : public Client {
 		public:
 			SSLClient(const std::string& ipAddr, int port,
 				network::ProtocolType type = network::ProtocolType::tcp,
 				network::IpVersion ipVer = network::IpVersion::IPv4);
-			virtual ~SSLClient() = default;
+			~SSLClient() override = default;
 
 			// non copyable
 			SSLClient(const SSLClient&) = delete;
 			SSLClient& operator=(const SSLClient&) = delete;
 
 			void setCertificateAtr(const char* certFile, const char* keyFile) const;
-			void connectServer();
-			NODISCARD int write(std::initializer_list<char> msg) const;
-			NODISCARD int write(const char* msg, int msgSize) const;
-			NODISCARD int write(const std::string& msg) const;
-			NODISCARD int write(const std::vector<unsigned char>& msg) const;
-			NODISCARD std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
-			NODISCARD std::size_t read(std::string& message, int maxSize = 0) const;
-
-			void abortConnection() noexcept;
-			NODISCARD bool isConnectionAborted() const noexcept
-			{
-				return m_abortConnection;
-			}
+			void connectServer() override;
+			NODISCARD int write(std::initializer_list<char> msg) const override;
+			NODISCARD int write(const char* msg, int msgSize) const override;
+			NODISCARD int write(const std::string& msg) const override;
+			NODISCARD int write(const std::vector<unsigned char>& msg) const override;
+			NODISCARD std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const override;
+			NODISCARD std::size_t read(std::string& message, int maxSize = 0) const override;
 
 		private:
-			bool m_abortConnection{};
-			network::SSLSocket m_socket;
-			std::shared_ptr<network::SSLSocketDescriptor> m_secureDesc;
+			network::SSLSocket m_sslSocket;
+			std::shared_ptr<network::SSLSocketDescriptor> m_sslSocketDesc;
 		};
 #endif // OPENSSL_SUPPORTED
 	}

@@ -37,13 +37,13 @@ namespace sdk {
 			Client(const Client&) = delete;
 			Client& operator=(const Client&) = delete;
 
-			void connectServer();
-			NODISCARD int write(std::initializer_list<char> msg) const;
-			NODISCARD int write(const char* msg, int msgSize) const;
-			NODISCARD int write(const std::string& msg) const;
-			NODISCARD int write(const std::vector<unsigned char>& msg) const;
-			NODISCARD std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
-			NODISCARD std::size_t read(std::string& message, int maxSize = 0) const;
+			virtual void connectServer();
+			NODISCARD virtual int write(std::initializer_list<char> msg) const;
+			NODISCARD virtual int write(const char* msg, int msgSize) const;
+			NODISCARD virtual int write(const std::string& msg) const;
+			NODISCARD virtual int write(const std::vector<unsigned char>& msg) const;
+			NODISCARD virtual std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
+			NODISCARD virtual std::size_t read(std::string& message, int maxSize = 0) const;
 
 			void abortConnection() noexcept;
 			NODISCARD bool isConnectionAborted() const noexcept

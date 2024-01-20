@@ -31,10 +31,11 @@ namespace sdk {
 		SSLClient::SSLClient(const std::string& ipAddr, int port, 
 							network::ProtocolType type /*= network::ProtocolType::tcp*/, 
 							network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
-			m_socket{ port, network::ConnMethod::client, type, ipVer }
+			Client{ ipAddr, port, type, ipVer },
+			m_sslSocket{ port, network::ConnMethod::client, type, ipVer }
 		{
-			m_socket.setIpAddress(ipAddr);
-			m_socket.setInterruptCallback([this](const network::Socket& socket) {
+			m_sslSocket.setIpAddress(ipAddr);
+			m_sslSocket.setInterruptCallback([this](const network::Socket& socket) {
 				(void)socket;
 				return isConnectionAborted();
 			});
@@ -42,53 +43,49 @@ namespace sdk {
 
 		void SSLClient::setCertificateAtr(const char* certFile, const char* keyFile) const
 		{
-			m_socket.loadCertificateFile(certFile);
-			m_socket.loadPrivateKeyFile(keyFile);
+			m_sslSocket.loadCertificateFile(certFile);
+			m_sslSocket.loadPrivateKeyFile(keyFile);
 		}
 
 		void SSLClient::connectServer()
 		{
-			const network::SocketOption<network::SSLSocket> socketOpt{ m_socket };
+			const network::SocketOption<network::SSLSocket> socketOpt{ m_sslSocket };
 			socketOpt.setBlockingMode(1); // non-blocking mode
-			m_socket.connect();
-			m_secureDesc = m_socket.createSocketDescriptor(m_socket.getSocketId());
-			m_secureDesc->connect();
+			m_sslSocket.connect();
+			m_sslSocketDesc = m_sslSocket.createSocketDescriptor(m_sslSocket.getSocketId());
+			m_sslSocketDesc->connect();
 		}
 
 		int SSLClient::write(std::initializer_list<char> msg) const
 		{
-			return m_secureDesc->write(msg);
+			return m_sslSocketDesc->write(msg);
 		}
 
 		int SSLClient::write(const char* msg, int msgSize) const
 		{
-			return m_secureDesc->write(msg, msgSize);
+			return m_sslSocketDesc->write(msg, msgSize);
 		}
 
 		int SSLClient::write(const std::string& msg) const
 		{
-			return m_secureDesc->write(msg);
+			return m_sslSocketDesc->write(msg);
 		}
 
 		int SSLClient::write(const std::vector<unsigned char>& msg) const
 		{
-			return m_secureDesc->write(msg);
+			return m_sslSocketDesc->write(msg);
 		}
 
 		std::size_t SSLClient::read(std::vector<unsigned char>& responseMsg, int maxSize /*= 0*/) const
 		{
-			return m_secureDesc->read(responseMsg, maxSize);
+			return m_sslSocketDesc->read(responseMsg, maxSize);
 		}
 
 		std::size_t SSLClient::read(std::string& message, int maxSize /*= 0*/) const
 		{
-			return m_secureDesc->read(message, maxSize);
+			return m_sslSocketDesc->read(message, maxSize);
 		}
 
-		void SSLClient::abortConnection() noexcept
-		{
-			m_abortConnection = true;
-		}
 #endif // OPENSSL_SUPPORTED
 	}
 }
