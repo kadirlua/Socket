@@ -27,6 +27,10 @@
 #include "application/client/SSLClient.h"
 #include "general/SocketException.h"
 
+// only for testing for now
+const char* const certFile = R"(C:\Program Files\OpenSSL\bin\certificate.pem)";
+const char* const keyFile = R"(C:\Program Files\OpenSSL\bin\key.key)";
+
 int main(int argc, const char** argv)
 {
 #if OPENSSL_SUPPORTED
@@ -52,6 +56,7 @@ int main(int argc, const char** argv)
 
 	try {
 		sdk::application::SSLClient client{ strIpAddress, portNumber };
+		client.setCertificateAtr(certFile, keyFile);
 		client.connectServer();
 		client.write(strMsg);
 		std::string strResponse;

@@ -23,6 +23,7 @@
 #pragma once
 #include "network/SSLSocket.h"
 #include "network/SocketExport.h"
+#include <functional>
 
 namespace sdk {
 	namespace application {
@@ -41,6 +42,10 @@ namespace sdk {
 
 			void startListening();
 
+			void loadServerCertificate(const char* certFile) const;
+			void loadServerPrivateKey(const char* keyFile) const;
+			void loadServerVerifyLocations(const char* caFile, const char* caPath) const;
+			void setVerifyCallback(const network::CertVerifyCallback& callback);
 		private:
 			network::SSLSocket m_socket;
 		};

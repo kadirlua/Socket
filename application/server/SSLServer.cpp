@@ -33,58 +33,6 @@ namespace sdk {
 
 		namespace {
 			constexpr const auto MAX_CLIENTS = 10;
-			// only for testing for now
-			const char* const certFile = R"(C:\Program Files\OpenSSL\bin\certificate.pem)";
-			const char* const keyFile = R"(C:\Program Files\OpenSSL\bin\key.key)";
-
-			int verifyCallback(int preverifyOK, X509_STORE_CTX* x509Ctx)
-			{
-				const auto* cert = X509_STORE_CTX_get_current_cert(x509Ctx);
-				if (cert == nullptr) {
-					return 0;
-				}
-
-				int const errCode = X509_STORE_CTX_get_error(x509Ctx);
-				int check = 0;
-				if (errCode != X509_V_OK) {
-					return errCode;
-				}
-
-				const auto* subjectName = X509_get_subject_name(cert);
-				if (subjectName == nullptr) {
-					return 0;
-				}
-
-				char buf[6][256]{};
-				std::cout << "Certificate subject:\n";
-				check = X509_NAME_get_text_by_NID(subjectName, NID_commonName, buf[0], sizeof(buf[0]));
-				if (check > 0) {
-					std::cout << " - Common name: " << buf[0] << "\n";
-				}
-				check = X509_NAME_get_text_by_NID(subjectName, NID_organizationName, buf[1], sizeof(buf[1]));
-				if (check > 0) {
-					std::cout << " - Organization name: " << buf[1] << "\n";
-				}
-				check = X509_NAME_get_text_by_NID(subjectName, NID_organizationalUnitName, buf[2], sizeof(buf[2]));
-				if (check > 0) {
-					std::cout << " - Organizational unit name: " << buf[2] << "\n";
-				}
-				std::cout << "Certificate issuer:\n";
-				check = X509_NAME_get_text_by_NID(subjectName, NID_commonName, buf[3], sizeof(buf[3]));
-				if (check > 0) {
-					std::cout << " - Common name: " << buf[3] << "\n";
-				}
-				check = X509_NAME_get_text_by_NID(subjectName, NID_organizationName, buf[4], sizeof(buf[4]));
-				if (check > 0) {
-					std::cout << " - Organization name: " << buf[4] << "\n";
-				}
-				check = X509_NAME_get_text_by_NID(subjectName, NID_organizationalUnitName, buf[5], sizeof(buf[5]));
-				if (check > 0) {
-					std::cout << " - Organizational unit name: " << buf[5] << "\n";
-				}
-
-				return preverifyOK;
-			}
 		}
 
 		SSLServer::SSLServer(int port, network::ProtocolType type, network::IpVersion ipVer) :
@@ -98,18 +46,6 @@ namespace sdk {
 			socketOpt.setBlockingMode(1); // non-blocking mode
 			socketOpt.setReuseAddr(1);
 
-			// set certificate properties
-			m_socket.loadVerifyLocations(certFile, nullptr);
-			/* Load the client's CA file location as well */
-			// m_socket.loadClientCertificateList("client.pem");
-			// m_socket.setCipherList("AES128-SHA");
-			m_socket.loadCertificateFile(certFile);
-			m_socket.loadPrivateKeyFile(keyFile);
-
-			m_socket.setCallbackVerifyCertificate(SSL_VERIFY_PEER | 
-				SSL_VERIFY_FAIL_IF_NO_PEER_CERT, verifyCallback);
-			/* We accept only certificates signed only by the CA himself */
-			// m_socket.setVerifyDepth(1);
 			// bind and listen
 			m_socket.bind();
 			m_socket.listen(MAX_CLIENTS);
@@ -126,10 +62,30 @@ namespace sdk {
 					std::cout << "Message recieved from client: " << requestMsg << "\n";
 					sslSocketDesc->write(response);
 				}
-				catch (const general::SSLSocketException& ex) {
+				catch (const general::SocketException& ex) {
 					(void)ex;
 				}
 			}
+		}
+
+		void SSLServer::loadServerCertificate(const char* certFile) const
+		{
+			m_socket.loadCertificateFile(certFile);
+		}
+
+		void SSLServer::loadServerPrivateKey(const char* keyFile) const
+		{
+			m_socket.loadPrivateKeyFile(keyFile);
+		}
+
+		void SSLServer::loadServerVerifyLocations(const char* caFile, const char* caPath) const
+		{
+			m_socket.loadVerifyLocations(caFile, caPath);
+		}
+
+		void SSLServer::setVerifyCallback(const network::CertVerifyCallback& callback)
+		{
+			m_socket.setVerifyCallback(callback);
 		}
 
 #endif // OPENSSL_SUPPORTED
