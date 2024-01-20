@@ -1,4 +1,4 @@
-set(PROJECT_EXAMPLES_DIR ${PROJECT_DIR}/examples/server)
+set(PROJECT_EXAMPLES_SERVER_DIR ${PROJECT_DIR}/examples/server)
 
 if (BUILD_WITH_OPENSSL)
   add_compile_definitions(OPENSSL_SUPPORTED=1)
@@ -8,8 +8,8 @@ if (WIN32)
   add_compile_definitions(NOMINMAX)
 endif()
 
-add_executable(ServerApp ${PROJECT_EXAMPLES_DIR}/ServerApp.cpp)
-add_executable(SSLServerApp ${PROJECT_EXAMPLES_DIR}/SSLServerApp.cpp)
+add_executable(ServerApp ${PROJECT_EXAMPLES_SERVER_DIR}/ServerApp.cpp)
+add_executable(SSLServerApp ${PROJECT_EXAMPLES_SERVER_DIR}/SSLServerApp.cpp)
 
 include_directories(${PROJECT_DIR})
 

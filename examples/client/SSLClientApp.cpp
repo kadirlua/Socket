@@ -34,7 +34,7 @@ namespace {
 int main(int argc, const char** argv)
 {
 	if (argc < 4) {
-		std::cout << "Missing argument.\r\n Usage <exe_name> <ip_address> <port_number> <message>";
+		std::cout << "Missing argument.\r\nUsage <exe_name> <ip_address> <port_number> <message>";
 		return -1;
 	}
 
@@ -42,7 +42,7 @@ int main(int argc, const char** argv)
 
 	const auto portNumber = std::atoi(argv[2]);
 	if (portNumber <= 0 || portNumber > std::numeric_limits<std::uint16_t>::max()) {
-		std::cout << "Invalid port range.";
+		std::cout << "Invalid port range.\r\n";
 		return -1;
 	}
 
@@ -61,7 +61,7 @@ int main(int argc, const char** argv)
 		client.read(strResponse);
 		std::cout << "Response from server: " << strResponse << "\r\n";
 	} catch (const sdk::general::SSLSocketException& ex) {
-		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
+		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\r\n";
 	}
 
 	sdk::network::Socket::WSADeinit();

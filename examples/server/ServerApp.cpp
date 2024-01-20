@@ -34,13 +34,13 @@ namespace {
 int main(int argc, const char** argv)
 {
 	if (argc < 2) {
-		std::cout << "Missing argument.\r\n Usage <exe_name> <port_number>";
+		std::cout << "Missing argument.\r\nUsage <exe_name> <port_number>";
 		return -1;
 	}
 
 	const auto portNumber = std::atoi(argv[1]);
 	if (portNumber <= 0 || portNumber > std::numeric_limits<std::uint16_t>::max()) {
-		std::cout << "Invalid port range.";
+		std::cout << "Invalid port range.\r\n";
 		return -1;
 	}
 	
@@ -53,7 +53,7 @@ int main(int argc, const char** argv)
 		sdk::application::Server srv{ portNumber };
 		srv.startListening();
 	} catch (const sdk::general::SocketException& ex) {
-		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
+		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\r\n";
 	}
 
 	sdk::network::Socket::WSADeinit();
