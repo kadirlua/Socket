@@ -126,7 +126,7 @@ namespace sdk {
 					std::cout << "Message recieved from client: " << requestMsg << "\n";
 					sslSocketDesc->write(response);
 				}
-				catch (const general::SocketException& ex) {
+				catch (const general::SSLSocketException& ex) {
 					(void)ex;
 				}
 			}
