@@ -24,7 +24,7 @@
 #include <cstdlib>
 #include <limits>
 
-#include "application/server/Server.h"
+#include "application/server/SSLServer.h"
 #include "general/SocketException.h"
 
 namespace {
@@ -50,7 +50,7 @@ int main(int argc, const char** argv)
 	}
 
 	try {
-		sdk::application::Server srv{ portNumber };
+		sdk::application::SSLServer srv{ portNumber };
 		srv.startListening();
 	} catch (const sdk::general::SocketException& ex) {
 		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\n";
