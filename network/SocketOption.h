@@ -84,8 +84,9 @@ namespace sdk {
 			 */
 			void setLingerOpt(unsigned short mode, unsigned short second) const;
 			/*
-			 *	Enables or disables linger option on socket.
-			 *	param1: Linger option is active if 1, disabled 0.
+			 *	Sets default timeout value for socket connections.
+			 *	param1: seconds.
+			 *	param2: microseconds.
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
@@ -120,7 +121,7 @@ namespace sdk {
 			 *	returns: returns default receive timeout.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			timeval getRecvTimeout() const;
+			struct timeval getRecvTimeout() const;
 
 			/*
 			 *	Gets default receive timeout.
