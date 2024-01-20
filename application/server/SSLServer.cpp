@@ -30,6 +30,8 @@
 namespace sdk {
 	namespace application {
 
+#if OPENSSL_SUPPORTED
+
 		namespace {
 			constexpr const auto MAX_CLIENTS = 10;
 			// only for testing for now
@@ -85,8 +87,6 @@ namespace sdk {
 				return preverify_ok;
 			}
 		}
-
-#if OPENSSL_SUPPORTED
 
 		SSLServer::SSLServer(int port, network::ProtocolType type, network::IpVersion ipVer) :
 			m_socket{ port, network::ConnMethod::server, type, ipVer }
