@@ -22,7 +22,6 @@
 
 #include "SSLSocket.h"
 #include "general/SocketException.h"
-#include <iostream>
 
 namespace sdk {
 	namespace network {
