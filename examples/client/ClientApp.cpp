@@ -20,17 +20,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
 #include <iostream>
-#include <sstream>
-#include <mutex>
+#include <cstdlib>
+#include <limits>
 
-struct pcout : std::stringstream {
-	~pcout() override
-	{
-		const std::lock_guard<std::mutex> lock_(mtx_);
-		std::cout << rdbuf();
-		std::cout.flush();
+#include "application/client/Client.h"
+#include "general/SocketException.h"
+
+int main(int argc, const char** argv)
+{
+	if (argc < 4) {
+		std::cout << "Missing argument.\r\nUsage <exe_name> <ip_address> <port_number> <message>";
+		return -1;
 	}
-	static std::mutex mtx_;
-};
+
+	const std::string strIpAddress = argv[1];
+
+	const auto portNumber = std::atoi(argv[2]);
+	if (portNumber <= 0 || portNumber > std::numeric_limits<std::uint16_t>::max()) {
+		std::cout << "Invalid port range.\r\n";
+		return -1;
+	}
+
+	const std::string strMsg = argv[3];
+	
+	if (!sdk::network::Socket::WSAInit(sdk::network::WSA_VER_2_2)) {
+		std::cout << "sdk::network::Socket::WSAInit failed\r\n";
+		return -1;
+	}
+
+	try {
+		sdk::application::Client client{ strIpAddress, portNumber };
+		client.connectServer();
+		client.write(strMsg);
+		std::string strResponse;
+		client.read(strResponse);
+		std::cout << "Response from server: " << strResponse << "\r\n";
+	} catch (const sdk::general::SocketException& ex) {
+		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\r\n";
+	}
+
+	sdk::network::Socket::WSADeinit();
+	return 0;
+}

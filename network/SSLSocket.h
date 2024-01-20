@@ -35,7 +35,6 @@
 namespace sdk {
 	namespace network {
 
-		// using verify_cert_callback_t = std::function<int(int, X509_STORE_CTX* x509_ctx)>;
 		/*
 		 *	This class used for create a secure socket layer on socket.
 		 *	It has some methods that using fill SSL attributes.
@@ -43,6 +42,7 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
+		using CertVerifyCallback = std::function<int(int,X509_STORE_CTX*)>;
 		using SSLCtx_unique_ptr = std::unique_ptr<SSL_CTX, decltype(&SSL_CTX_free)>;
 
 		class SOCKET_API SSLSocket : public Socket {
@@ -84,14 +84,7 @@ namespace sdk {
 			 *	exception: This function throws an SSLSocketException if an error occurs.
 			 */
 			void loadPrivateKeyFile(const char* keyFile, int type = SSL_FILETYPE_PEM) const;
-			/*
-			 *	This function sets the verification flags for ctx to be mode and specifies the verify_callback function to be used.
-			 *	param1: Exactly one of the mode flags SSL_VERIFY_NONE and SSL_VERIFY_PEER must be set at any time.
-			 *	param2: If no callback function shall be specified, the nullptr can be used for verify_callback.
-			 *	returns: nothing.
-			 *	exception: This function throws an SSLSocketException if an error occurs.
-			 */
-			void setCallbackVerifyCertificate(int mode, SSL_verify_cb callback) const noexcept;
+			
 			/*
 			 *	This function specifies the locations for ctx, at which CA certificates for verification purposes are located.
 			 *	The certificates available via CAfile and CApath are trusted.
@@ -127,9 +120,13 @@ namespace sdk {
 				return OpenSSL_version(OPENSSL_FULL_VERSION_STRING);
 #endif
 			}
+			
+			void setVerifyCallback(const CertVerifyCallback& callback);
 
 		private:
+			static int verifyCallbackFunc(int preverifyOK, X509_STORE_CTX* x509Ctx);
 			SSLCtx_unique_ptr m_ctx;
+			CertVerifyCallback m_verifyCallback;
 		};
 #endif // OPENSSL_SUPPORTED
 	}

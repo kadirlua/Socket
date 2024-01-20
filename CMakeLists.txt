@@ -9,4 +9,5 @@ set(PROJECT_DIR ${CMAKE_SOURCE_DIR})
 
 add_subdirectory(general)
 add_subdirectory(network)
+add_subdirectory(application)
 add_subdirectory(examples)

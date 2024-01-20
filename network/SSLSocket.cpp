@@ -28,12 +28,35 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
+		int SSLSocket::verifyCallbackFunc(int preverifyOK, X509_STORE_CTX* x509Ctx)
+		{
+			/*
+			* Retrieve the pointer to the SSL of the connection currently treated
+			* and the application specific data stored into the SSL object.
+			*/
+			const auto* ssl = static_cast<SSL*>(X509_STORE_CTX_get_ex_data(x509Ctx, 
+				SSL_get_ex_data_X509_STORE_CTX_idx()));
+			if (ssl != nullptr) {
+				const auto* sslCtx = SSL_get_SSL_CTX(ssl);
+				if (sslCtx != nullptr) {
+					auto* sslServ = static_cast<SSLSocket*>(SSL_CTX_get_ex_data(sslCtx, 0));
+					if (sslServ != nullptr && sslServ->m_verifyCallback) {
+						return sslServ->m_verifyCallback(preverifyOK, x509Ctx);
+					}
+				}
+			}
+			return preverifyOK;
+		}
+
 		SSLSocket::SSLSocket(int port, ConnMethod meth, ProtocolType type, IpVersion IpVer) :
 			Socket{ port, type, IpVer },
 			m_ctx{ SSL_CTX_new(TLS_client_method()), SSL_CTX_free }
 		{
 			if (meth == ConnMethod::server) {
 				m_ctx = SSLCtx_unique_ptr{ SSL_CTX_new(TLS_server_method()), SSL_CTX_free };
+				SSL_CTX_set_ex_data(m_ctx.get(), 0, this);
+				SSL_CTX_set_verify(m_ctx.get(), SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
+                    &SSLSocket::verifyCallbackFunc);
 			}
 
 			// We want to support all versions of TLS >= 1.0, but not the deprecated
@@ -72,12 +95,6 @@ namespace sdk {
 			}
 		}
 
-		void SSLSocket::setCallbackVerifyCertificate(int mode, SSL_verify_cb callback) const noexcept
-		{
-			/*Used only if client authentication will be used*/
-			SSL_CTX_set_verify(m_ctx.get(), mode, callback);
-		}
-
 		void SSLSocket::loadVerifyLocations(const char* caFile, const char* caPath) const
 		{
 			const int retCode = SSL_CTX_load_verify_locations(m_ctx.get(), caFile, caPath);
@@ -104,6 +121,11 @@ namespace sdk {
 		std::shared_ptr<SSLSocketDescriptor> SSLSocket::createSocketDescriptor(SOCKET socketId) const
 		{
 			return std::make_shared<SSLSocketDescriptor>(socketId, *this);
+		}
+
+		void SSLSocket::setVerifyCallback(const CertVerifyCallback& callback)
+		{
+			m_verifyCallback = callback;
 		}
 #endif // OPENSSL_SUPPORTED
 	}

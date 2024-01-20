@@ -38,6 +38,11 @@ namespace sdk {
 #define SOKCET_VERSION_MINOR 0
 #define SOCKET_VERSION_PATCH 0
 
+		constexpr std::uint16_t MakeVer(std::uint8_t lowByte, std::uint8_t highByte) 
+		{
+			return (lowByte & 0xff) | ((highByte & 0xff) << 8);
+		}
+
 		enum class ConnMethod : std::uint8_t {
 			client = 1,
 			server
@@ -51,6 +56,15 @@ namespace sdk {
 		enum class IpVersion : std::uint8_t {
 			IPv4 = AF_INET,
 			IPv6 = AF_INET6
+		};
+
+		// Useful WSA socket DLL versions
+		enum {
+			WSA_VER_1_0 = MakeVer(1, 0),
+			WSA_VER_1_1 = MakeVer(1, 1),
+			WSA_VER_2_0 = MakeVer(2, 0),
+			WSA_VER_2_1 = MakeVer(2, 1),
+			WSA_VER_2_2 = MakeVer(2, 2)
 		};
 
 		namespace {

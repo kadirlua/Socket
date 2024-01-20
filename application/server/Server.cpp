@@ -20,40 +20,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
-#include "network/Socket.h"
+#include "Server.h"
+#include "general/SocketException.h"
+#include "network/SocketOption.h"
+
+#include <iostream>
 
 namespace sdk {
 	namespace application {
-		class Client {
-		public:
-			Client(const std::string& ipAddr, int port,
-				network::ProtocolType type = network::ProtocolType::tcp,
-				network::IpVersion ipVer = network::IpVersion::IPv4);
-			virtual ~Client() = default;
 
-			// non copyable
-			Client(const Client&) = delete;
-			Client& operator=(const Client&) = delete;
+		namespace {
+			constexpr const auto MAX_CLIENTS = 10;
+		}
 
-			void connectServer();
-			NODISCARD int write(std::initializer_list<char> msg) const;
-			NODISCARD int write(const char* msg, int msgSize) const;
-			NODISCARD int write(const std::string& msg) const;
-			NODISCARD int write(const std::vector<unsigned char>& msg) const;
-			NODISCARD std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
-			NODISCARD std::size_t read(std::string& message, int maxSize = 0) const;
+		Server::Server(int port, 
+						network::ProtocolType type /*= ProtocolType::tcp*/, 
+						network::IpVersion ipVer /*= IpVersion::IPv4*/) :
+			m_socket{ port, type, ipVer }
+		{
+		}
 
-			void abortConnection() noexcept;
-			NODISCARD bool isConnectionAborted() const noexcept
-			{
-				return m_abortConnection;
+		void Server::startListening()
+		{
+			const network::SocketOption<network::Socket> socketOpt{ m_socket };
+			socketOpt.setBlockingMode(1); // non-blocking mode
+			socketOpt.setReuseAddr(1);
+
+			// bind and listen
+			m_socket.bind();
+			m_socket.listen(MAX_CLIENTS);
+
+			const std::string response{ "Hello from Server!\n" };
+
+			while (true) {
+				try {
+					const SOCKET newSockId = m_socket.accept();
+					auto socketDesc = m_socket.createSocketDescriptor(newSockId);
+					std::string requestMsg;
+					socketDesc->read(requestMsg);
+					std::cout << "Message recieved from client: " << requestMsg << "\n";
+					socketDesc->write(response);
+				}
+				catch (const general::SocketException& ex) {
+					(void)ex;
+				}
 			}
-
-		private:
-			bool m_abortConnection{};
-			network::Socket m_socket;
-			std::shared_ptr<network::SocketDescriptor> m_socketDesc;
-		};
+		}
 	}
 }

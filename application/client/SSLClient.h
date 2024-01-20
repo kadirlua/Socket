@@ -22,6 +22,7 @@
 
 #pragma once
 #include "network/SSLSocket.h"
+#include "network/SocketExport.h"
 #include <string>
 
 namespace sdk {
@@ -29,34 +30,36 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
-		class SecureClient {
+		class SOCKET_API SSLClient {
 		public:
-			SecureClient(const std::string& ip, int port,
+			SSLClient(const std::string& ipAddr, int port,
 				network::ProtocolType type = network::ProtocolType::tcp,
 				network::IpVersion ipVer = network::IpVersion::IPv4);
-			virtual ~SecureClient() = default;
+			virtual ~SSLClient() = default;
 
 			// non copyable
-			SecureClient(const SecureClient&) = delete;
-			SecureClient& operator=(const SecureClient&) = delete;
+			SSLClient(const SSLClient&) = delete;
+			SSLClient& operator=(const SSLClient&) = delete;
 
-			void setCertificateAtr(const char* cert_file, const char* key_file) const;
+			void setCertificateAtr(const char* certFile, const char* keyFile) const;
 			void connectServer();
-			int write(std::initializer_list<char> msg) const;
-			int write(const char* msg, int msg_size) const;
-			int write(const std::string& msg) const;
-			int write(const std::vector<unsigned char>& msg) const;
-			std::size_t read(std::vector<unsigned char>& response_msg, int max_size = 0) const;
-			std::size_t read(std::string& message, int max_size = 0) const;
-			bool isInterrupted() const noexcept
+			NODISCARD int write(std::initializer_list<char> msg) const;
+			NODISCARD int write(const char* msg, int msgSize) const;
+			NODISCARD int write(const std::string& msg) const;
+			NODISCARD int write(const std::vector<unsigned char>& msg) const;
+			NODISCARD std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
+			NODISCARD std::size_t read(std::string& message, int maxSize = 0) const;
+
+			void abortConnection() noexcept;
+			NODISCARD bool isConnectionAborted() const noexcept
 			{
-				return m_bInterrupt;
+				return m_abortConnection;
 			}
 
 		private:
-			bool m_bInterrupt{};
-			std::unique_ptr<network::SSLSocket> m_socket_ptr;
-			std::shared_ptr<network::SSLSocketDescriptor> m_secure_obj;
+			bool m_abortConnection{};
+			network::SSLSocket m_socket;
+			std::shared_ptr<network::SSLSocketDescriptor> m_secureDesc;
 		};
 #endif // OPENSSL_SUPPORTED
 	}

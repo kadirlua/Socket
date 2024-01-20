@@ -21,41 +21,40 @@
 // SOFTWARE.
 
 #pragma once
-#include "network/SSLSocket.h"
-#include <thread>
-#include <condition_variable>
-#include <mutex>
-#include <memory>
-#include <map>
-#include <vector>
-#include "Server.h"
+#include "network/Socket.h"
+#include "network/SocketExport.h"
 
 namespace sdk {
 	namespace application {
-
-#if OPENSSL_SUPPORTED
-
-		class SecureServer {
+		class SOCKET_API Client {
 		public:
-			SecureServer(int port, network::ProtocolType type = network::ProtocolType::tcp, network::IpVersion ipVer = network::IpVersion::IPv4);
-			virtual ~SecureServer();
+			Client(const std::string& ipAddr, int port,
+				network::ProtocolType type = network::ProtocolType::tcp,
+				network::IpVersion ipVer = network::IpVersion::IPv4);
+			virtual ~Client() = default;
 
 			// non copyable
-			SecureServer(const SecureServer&) = delete;
-			SecureServer& operator=(const SecureServer&) = delete;
+			Client(const Client&) = delete;
+			Client& operator=(const Client&) = delete;
+
+			void connectServer();
+			NODISCARD int write(std::initializer_list<char> msg) const;
+			NODISCARD int write(const char* msg, int msgSize) const;
+			NODISCARD int write(const std::string& msg) const;
+			NODISCARD int write(const std::vector<unsigned char>& msg) const;
+			NODISCARD std::size_t read(std::vector<unsigned char>& responseMsg, int maxSize = 0) const;
+			NODISCARD std::size_t read(std::string& message, int maxSize = 0) const;
+
+			void abortConnection() noexcept;
+			NODISCARD bool isConnectionAborted() const noexcept
+			{
+				return m_abortConnection;
+			}
 
 		private:
-			std::unique_ptr<network::SSLSocket> m_socket_ptr;
-
-			void listener_thread_proc(int port_, network::ProtocolType type, network::IpVersion ipVer);
-			workerThread_t listener_thread;
-			workerThread_t purging_thread;
+			bool m_abortConnection{};
+			network::Socket m_socket;
+			std::shared_ptr<network::SocketDescriptor> m_socketDesc;
 		};
-
-		static std::vector<std::unique_ptr<WorkerThread<network::SSLSocketDescriptor>>> thread_vec_;
-		static std::mutex vec_mutex_;
-		static std::condition_variable vec_cv_;
-		static bool purging_flag_{};
-#endif // OPENSSL_SUPPORTED
 	}
 }
