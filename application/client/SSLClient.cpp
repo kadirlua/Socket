@@ -26,16 +26,15 @@
 namespace sdk {
 	namespace application {
 
-		using namespace network;
-
 #if OPENSSL_SUPPORTED
 
-		SSLClient::SSLClient(const std::string& ipAddr, int port, network::ProtocolType type /*= network::ProtocolType::tcp*/, network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
-			m_socket{ port, ConnMethod::client, type, ipVer }
-
+		SSLClient::SSLClient(const std::string& ipAddr, int port, 
+							network::ProtocolType type /*= network::ProtocolType::tcp*/, 
+							network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
+			m_socket{ port, network::ConnMethod::client, type, ipVer }
 		{
 			m_socket.setIpAddress(ipAddr);
-			const SocketOption<SSLSocket> socketOpt{ m_socket };
+			const network::SocketOption<network::SSLSocket> socketOpt{ m_socket };
 			socketOpt.setBlockingMode(1); // non-blocking mode
 			m_socket.setInterruptCallback([this](const network::Socket& socket) {
 				(void)socket;
