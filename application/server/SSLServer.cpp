@@ -36,26 +36,27 @@ namespace sdk {
 		}
 
 		SSLServer::SSLServer(int port, network::ProtocolType type, network::IpVersion ipVer) :
-			m_socket{ port, network::ConnMethod::server, type, ipVer }
+			Server{ port, type, ipVer },
+			m_sslSocket{ port, network::ConnMethod::server, type, ipVer }
 		{
 		}
 
 		void SSLServer::startListening()
 		{
-			const network::SocketOption<network::SSLSocket> socketOpt{ m_socket };
+			const network::SocketOption<network::SSLSocket> socketOpt{ m_sslSocket };
 			socketOpt.setBlockingMode(1); // non-blocking mode
 			socketOpt.setReuseAddr(1);
 
 			// bind and listen
-			m_socket.bind();
-			m_socket.listen(MAX_CLIENTS);
+			m_sslSocket.bind();
+			m_sslSocket.listen(MAX_CLIENTS);
 
 			const std::string response{ "Hello from SSLServer!\n" };
 
 			while (true) {
 				try {
-					const SOCKET newSockId = m_socket.accept();
-					auto sslSocketDesc = m_socket.createSocketDescriptor(newSockId);
+					const SOCKET newSockId = m_sslSocket.accept();
+					auto sslSocketDesc = m_sslSocket.createSocketDescriptor(newSockId);
 					sslSocketDesc->accept();
 					std::string requestMsg;
 					sslSocketDesc->read(requestMsg);
@@ -70,22 +71,22 @@ namespace sdk {
 
 		void SSLServer::loadServerCertificate(const char* certFile) const
 		{
-			m_socket.loadCertificateFile(certFile);
+			m_sslSocket.loadCertificateFile(certFile);
 		}
 
 		void SSLServer::loadServerPrivateKey(const char* keyFile) const
 		{
-			m_socket.loadPrivateKeyFile(keyFile);
+			m_sslSocket.loadPrivateKeyFile(keyFile);
 		}
 
 		void SSLServer::loadServerVerifyLocations(const char* caFile, const char* caPath) const
 		{
-			m_socket.loadVerifyLocations(caFile, caPath);
+			m_sslSocket.loadVerifyLocations(caFile, caPath);
 		}
 
 		void SSLServer::setVerifyCallback(const network::CertVerifyCallback& callback)
 		{
-			m_socket.setVerifyCallback(callback);
+			m_sslSocket.setVerifyCallback(callback);
 		}
 
 #endif // OPENSSL_SUPPORTED

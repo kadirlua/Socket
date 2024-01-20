@@ -21,33 +21,32 @@
 // SOFTWARE.
 
 #pragma once
+#include "Server.h"
 #include "network/SSLSocket.h"
-#include "network/SocketExport.h"
-#include <functional>
 
 namespace sdk {
 	namespace application {
 
 #if OPENSSL_SUPPORTED
 
-		class SOCKET_API SSLServer {
+		class SOCKET_API SSLServer : public Server {
 		public:
 			SSLServer(int port, network::ProtocolType type = network::ProtocolType::tcp, 
 				network::IpVersion ipVer = network::IpVersion::IPv4);
-			virtual ~SSLServer() = default;
+			~SSLServer() override = default;
 
 			// non copyable
 			SSLServer(const SSLServer&) = delete;
 			SSLServer& operator=(const SSLServer&) = delete;
 
-			void startListening();
+			void startListening() override;
 
 			void loadServerCertificate(const char* certFile) const;
 			void loadServerPrivateKey(const char* keyFile) const;
 			void loadServerVerifyLocations(const char* caFile, const char* caPath) const;
 			void setVerifyCallback(const network::CertVerifyCallback& callback);
 		private:
-			network::SSLSocket m_socket;
+			network::SSLSocket m_sslSocket;
 		};
 #endif // OPENSSL_SUPPORTED
 	}

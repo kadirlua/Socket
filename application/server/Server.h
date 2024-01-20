@@ -38,7 +38,7 @@ namespace sdk {
 			Server(const Server&) = delete;
 			Server& operator=(const Server&) = delete;
 
-			void startListening();
+			virtual void startListening();
 			void abortListening() noexcept;
 		private:
 			bool m_abortListening{};
