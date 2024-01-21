@@ -40,7 +40,7 @@ namespace sdk {
 			m_ssl{ SSL_new(sSocket.getSSLCtx()), SSL_free }
 		{
 			if (m_ssl != nullptr) {
-				if (SSL_set_fd(m_ssl.get(), (int)socketId) == 0) {
+				if (SSL_set_fd(m_ssl.get(), static_cast<int>(socketId)) == 0) {
 					throw general::SSLSocketException(SSL_get_error(m_ssl.get(), 0));
 				}
 			}
