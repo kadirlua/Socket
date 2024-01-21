@@ -62,7 +62,7 @@ namespace sdk {
 			std::vector<char> dataVec(bufLen);
 			
 			int receiveByte{};
-			int iResult = 0;
+			int iResult{};
 #ifdef _WIN32
 			const struct timeval tVal = { 0, 0 };
 #else
@@ -176,7 +176,7 @@ namespace sdk {
 
 		int SocketDescriptor::write(std::initializer_list<char> dataList) const
 		{
-			return write(dataList.begin(), (int)dataList.size());
+			return write(dataList.begin(), static_cast<int>(dataList.size()));
 		}
 
 		int SocketDescriptor::write(const char* data, int dataSize) const
@@ -205,13 +205,12 @@ namespace sdk {
 		int SocketDescriptor::write(const std::vector<unsigned char>& message) const
 		{
 			const std::string strBuf{ message.begin(), message.end() };
-			return write(strBuf.c_str(), (int)strBuf.size());
+			return write(strBuf.c_str(), static_cast<int>(strBuf.size()));
 		}
 
 		int SocketDescriptor::write(const std::string& message) const
 		{
-			return write(message.c_str(),
-				static_cast<int>(message.size()));
+			return write(message.c_str(), static_cast<int>(message.size()));
 		}
 	}
 }

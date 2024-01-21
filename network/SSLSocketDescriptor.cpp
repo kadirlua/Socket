@@ -48,9 +48,6 @@ namespace sdk {
 
 		SSLSocketDescriptor::~SSLSocketDescriptor()
 		{
-			/*int err = SSL_get_error(m_ssl, -1);
-			if (err != SSL_ERROR_SYSCALL && err != SSL_ERROR_SSL)
-			{*/
 			int ret = 0;
 			bool bDone = false;
 			while ((ret = SSL_shutdown(m_ssl.get())) <= 0 && !bDone) {
@@ -63,7 +60,6 @@ namespace sdk {
 					break;
 				}
 			}
-			//}
 		}
 
 		void SSLSocketDescriptor::setHostname(const char* hostname)
@@ -137,7 +133,8 @@ namespace sdk {
 				// check host
 				// if our server has valid certificate such an google.com uncomment this if block
 				if (!m_hostname.empty()) {
-					const int checkResult = X509_check_host(peer.get(), m_hostname.c_str(), m_hostname.size(), 0, nullptr);
+					const int checkResult = X509_check_host(peer.get(), m_hostname.c_str(), 
+						m_hostname.size(), 0, nullptr);
 					if (checkResult != 1) {
 						throw general::SSLSocketException(checkResult);
 					}
@@ -226,7 +223,7 @@ namespace sdk {
 
 		int SSLSocketDescriptor::write(std::initializer_list<char> dataList) const
 		{
-			return write(dataList.begin(), (int)dataList.size());
+			return write(dataList.begin(), static_cast<int>(dataList.size()));
 		}
 
 		int SSLSocketDescriptor::write(const char* data, int dataSize) const
@@ -258,7 +255,7 @@ namespace sdk {
 		int SSLSocketDescriptor::write(const std::vector<unsigned char>& message) const
 		{
 			const std::string strBuf{ message.begin(), message.end() };
-			return write(strBuf.c_str(), (int)strBuf.size());
+			return write(strBuf.c_str(), static_cast<int>(strBuf.size()));
 		}
 
 		int SSLSocketDescriptor::write(const std::string& message) const
