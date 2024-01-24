@@ -123,7 +123,7 @@ namespace sdk {
 				}
 			}
 
- 			const auto peer = X509_unique_ptr{ SSL_get_peer_certificate(m_ssl.get()), X509_free };
+ 			const X509_unique_ptr peer{ SSL_get_peer_certificate(m_ssl.get()), X509_free };
 			if (peer) {
 				const long retCode = SSL_get_verify_result(m_ssl.get());
 				if (retCode != X509_V_OK) {
