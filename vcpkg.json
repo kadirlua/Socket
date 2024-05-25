@@ -1,0 +1,9 @@
+{
+  "dependencies": [
+    {
+      "name": "openssl",
+      "version>=": "3.3.0"
+    }
+  ],
+  "builtin-baseline": "9224b3bbd8df24999d85720b1d005dd6f969ade0"
+}
