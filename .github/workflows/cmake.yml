@@ -19,7 +19,6 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-13]
         buildType: ["Debug", "Release"]
         shared: [true, false]
-        ssl: [true, false]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -36,18 +35,17 @@ jobs:
 
       # no need to install OpenSSL library if ssl feature is disabled
     - name: Install OpenSSL
-      if: matrix.ssl == true
       run: vcpkg install
 
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-    - name: Configure CMake shared=${{ matrix.shared }} ssl=${{ matrix.ssl }} with vcpkg dependencies (Non-Windows)
+    - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies (Non-Windows)
       if: runner.os != 'Windows'
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=${{ matrix.ssl }}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=true
 
-    - name: Configure CMake shared=${{ matrix.shared }} ssl=${{ matrix.ssl }} with vcpkg dependencies (Windows)
+    - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies (Windows)
       if: runner.os == 'Windows'
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=${env:VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=${{ matrix.ssl }}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=${env:VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=true
 
     - name: Build
       # Build your program with the given configuration
