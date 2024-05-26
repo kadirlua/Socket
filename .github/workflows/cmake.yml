@@ -33,7 +33,7 @@ jobs:
     - name: Restore vcpkg packages
       run: vcpkg integrate install
 
-      # no need to install OpenSSL library if ssl feature is disabled
+      # install OpenSSL library
     - name: Install OpenSSL
       run: vcpkg install --triplet x64-${{ matrix.platform.name }}-${{ matrix.buildType }}
 
