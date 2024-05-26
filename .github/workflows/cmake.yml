@@ -16,10 +16,10 @@ jobs:
   build_matrix:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13]
+        platform: [ { os: ubuntu-latest, name: linux }, { os: windows-latest, name: windows}, { os: macos-13, name: osx } ]
         buildType: ["Debug", "Release"]
         shared: [true, false]
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.platform.os }}
     steps:
     - uses: actions/checkout@v4
 
@@ -35,7 +35,7 @@ jobs:
 
       # no need to install OpenSSL library if ssl feature is disabled
     - name: Install OpenSSL
-      run: vcpkg install
+      run: vcpkg install --triplet x64-${{ matrix.platform.name }}-${{ matrix.buildType }}
 
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
