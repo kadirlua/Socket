@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up vcpkg on Linux and macOS
+    - name: Set up vcpkg on Non-Windows
       if: runner.os != 'Windows'
       run: |
         git clone https://github.com/microsoft/vcpkg.git
@@ -44,9 +44,6 @@ jobs:
           core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
           core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
-    - name: Restore vcpkg packages
-      run: ./vcpkg/vcpkg integrate install
-
     - name: Install dependencies with vcpkg
       run: ./vcpkg/vcpkg install
 
@@ -54,11 +51,11 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
     - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies (Non-Windows)
       if: runner.os != 'Windows'
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=true
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=true
 
     - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies (Windows)
       if: runner.os == 'Windows'
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=${env:VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=true
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=.\vcpkg\scripts\buildsystems\vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=true
 
     - name: Build
       # Build your program with the given configuration
