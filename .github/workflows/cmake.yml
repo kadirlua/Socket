@@ -35,9 +35,6 @@ jobs:
           core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
           core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
-    - name: Restore vcpkg packages
-      run: ./vcpkg/vcpkg integrate install
-
     - name: Install dependencies with vcpkg
       run: ./vcpkg/vcpkg install
 
