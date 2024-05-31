@@ -16,12 +16,26 @@ jobs:
   build_matrix:
     strategy:
       matrix:
-        platform: [ { os: ubuntu-latest, name: linux }, { os: windows-latest, name: windows}, { os: macos-13, name: osx } ]
+        platform: [ { os: ubuntu-latest, name: linux }, { os: windows-latest, name: windows}, { os: macos-latest, name: osx } ]
         buildType: ["Debug", "Release"]
         shared: [true, false]
     runs-on: ${{ matrix.platform.os }}
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up vcpkg on Non-Windows
+      if: runner.os != 'Windows'
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git
+        ./vcpkg/bootstrap-vcpkg.sh
+      shell: bash
+
+    - name: Set up vcpkg on Windows
+      if: runner.os == 'Windows'
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git
+        .\vcpkg\bootstrap-vcpkg.bat
+      shell: cmd
 
     - name: Export GitHub Actions cache environment variables
       uses: actions/github-script@v7
@@ -30,22 +44,18 @@ jobs:
           core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
           core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
-    - name: Restore vcpkg packages
-      run: vcpkg integrate install
-
-      # install OpenSSL library
-    - name: Install OpenSSL
-      run: vcpkg install
+    - name: Install dependencies with vcpkg
+      run: ./vcpkg/vcpkg install
 
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
     - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies (Non-Windows)
       if: runner.os != 'Windows'
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=true
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=true
 
     - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies (Windows)
       if: runner.os == 'Windows'
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=${env:VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=true
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} "-DCMAKE_TOOLCHAIN_FILE=.\vcpkg\scripts\buildsystems\vcpkg.cmake" -DBUILD_SHARED_LIBS=${{ matrix.shared }} -DBUILD_WITH_OPENSSL=true
 
     - name: Build
       # Build your program with the given configuration
