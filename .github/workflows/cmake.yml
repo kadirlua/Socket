@@ -23,16 +23,19 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up vcpkg
+    - name: Set up vcpkg on Linux and macOS
+      if: runner.os != 'Windows'
       run: |
-        if [ "${{ matrix.platform.os }}" == "windows-latest" ]; then
-          git clone https://github.com/microsoft/vcpkg.git
-          .\vcpkg\bootstrap-vcpkg.bat
-        else
-          git clone https://github.com/microsoft/vcpkg.git
-          ./vcpkg/bootstrap-vcpkg.sh
-        fi
+        git clone https://github.com/microsoft/vcpkg.git
+        ./vcpkg/bootstrap-vcpkg.sh
       shell: bash
+
+    - name: Set up vcpkg on Windows
+      if: runner.os == 'Windows'
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git
+        .\vcpkg\bootstrap-vcpkg.bat
+      shell: cmd
 
     - name: Export GitHub Actions cache environment variables
       uses: actions/github-script@v7
