@@ -42,7 +42,7 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
-		using CertVerifyCallback = std::function<int(int,X509_STORE_CTX*)>;
+		using CertVerifyCallback = std::function<int(int, X509_STORE_CTX*)>;
 		using SSLCtx_unique_ptr = std::unique_ptr<SSL_CTX, decltype(&SSL_CTX_free)>;
 
 		class SOCKET_API SSLSocket : public Socket {
