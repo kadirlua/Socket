@@ -16,8 +16,8 @@ include_directories(${PROJECT_DIR})
 link_directories(${CMAKE_BINARY_DIR}/network)
 link_directories(${CMAKE_BINARY_DIR}/application/client)
 
-target_link_libraries(ClientApp PUBLIC Socket Client)
-target_link_libraries(SSLClientApp PUBLIC Socket Client)
+target_link_libraries(ClientApp PUBLIC Client)
+target_link_libraries(SSLClientApp PUBLIC Client)
 
 if (WIN32 AND BUILD_SHARED_LIBS)
   add_custom_command(TARGET ClientApp POST_BUILD
