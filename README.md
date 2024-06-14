@@ -83,7 +83,7 @@ You can configure the project with the arguments described above.
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}\\build\\examples\\Client\\ClientApp.exe",
-            "args": ["127.0.0.1 8080 Hello"],
+            "args": ["www.google.com", "80", "GET / HTTP/1.1\r\nHost: google.com\r\nConnection: close\r\n\r\n"],
             "environment": [{ "name": "config", "value": "Debug" }],
             "cwd": "${workspaceFolder}"
         }
