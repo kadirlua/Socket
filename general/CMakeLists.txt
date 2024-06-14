@@ -6,6 +6,9 @@ set(PROJECT_GENERAL_SOURCES
 	${PROJECT_GENERAL_DIR}/SocketException.cpp
 )
 
+# build options
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
 if (BUILD_SHARED_LIBS)
 	add_library(${LIBRARY_NAME} SHARED ${PROJECT_GENERAL_SOURCES})
 	if (WIN32)
