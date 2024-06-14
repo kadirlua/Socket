@@ -105,7 +105,7 @@ namespace sdk {
 			std::memset(&hints, 0, sizeof(hints));
 			hints.ai_family = AF_UNSPEC; // AF_INET or AF_INET6 to force version
 			hints.ai_socktype = SOCK_STREAM;
-			hints.ai_flags = AI_NUMERICHOST;
+			//hints.ai_flags = AI_NUMERICHOST;
 
 			if (getaddrinfo(m_ipAddress.c_str(), std::to_string(m_portNumber).c_str(), &hints, &res) != 0) {
 				throw general::SocketException(WSAGetLastError());
