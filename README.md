@@ -97,8 +97,8 @@ You can configure the project with the arguments described above.
 try {
   auto clientSocket = std::make_unique<sdk::network::Socket>(portNumber);
   clientSocket->setIpAddress("127.0.0.1");
-  SocketOption<Socket> socketOpt{ *clientSocket };
-  socketOpt.setBlockingMode(1);	//set non-blocking mode is active
+  sdk::network::SocketOption<sdk::network::Socket> socketOpt{ *clientSocket };
+  socketOpt.setBlockingMode(sdk::network::SocketOpt::ON);	//set non-blocking mode is active
   clientSocket->connect();  //connect to the server
   
   auto socketDesc = clientSocket->createSocketDescriptor(clientSocket->getSocketId());
@@ -122,8 +122,8 @@ try {
   static const char* keyFile = "C:\\Program Files\\OpenSSL\\bin\\privateKey.key";
   auto clientSSLSocket = std::make_unique<sdk::network::SSLSocket>(portNumber, connection_method::client);
   clientSSLSocket->setIpAddress("127.0.0.1");
-  SocketOption<SSLSocket> socketOpt{ *clientSSLSocket };
-  socketOpt.setBlockingMode(1);	//set non-blocking mode is active
+  sdk::network::SocketOption<sdk::network::SSLSocket> socketOpt{ *clientSSLSocket };
+  socketOpt.setBlockingMode(sdk::network::SocketOpt::ON);	//set non-blocking mode is active
   clientSSLSocket->connect();  //connect to the server
   
   clientSSLSocket->loadCertificateFile(certFile);
