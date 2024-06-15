@@ -21,6 +21,20 @@ Secure and non-secure version of Socket classes. If you want to use secure conne
 # Build the library
 You can build the library using vcpkg or your own environment. You can use Visual Studio, VSCode or CLion IDEs for building.
 
+## Compile the library using cmake
+```
+  > mkdir build
+  > cmake -B build -S .
+  > cmake --build build
+```
+Or with make option
+```
+  > mkdir build
+  > cd build
+  > cmake ..
+  > make
+```
+
 ## Compile OpenSSL library on Windows
 Before compile OpenSSL you need Strawberry Perl that you can download and install from: https://strawberryperl.com/. You also need nasm assembler which can be downloaded and installed from: https://www.nasm.us/
 
