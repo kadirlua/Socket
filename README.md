@@ -8,9 +8,10 @@ Secure and non-secure version of Socket classes. If you want to use secure conne
 - TLS/SSL connections
 - TCP/UDP
 - Blocking/Non-blocking mode
+- Socket options
 
 # Prerequisites
-- C++14 and later supported compiler
+- C++14 or later supported compiler
     - msvc
     - gcc
     - clang
