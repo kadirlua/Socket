@@ -36,6 +36,16 @@ Or with make option
   > make
 ```
 
+If you want to enable OpenSSL support, pass -DBUILD_WITH_OPENSSL=ON option to cmake for configuration, such as;
+```
+  > cmake -B build -S . -DBUILD_WITH_OPENSSL=ON
+```
+
+You also can build as static library (default is shared) by passing;
+```
+  > cmake -B build -S . -DBUILD_WITH_OPENSSL=ON -DBUILD_SHARED_LIBS=OFF
+```
+
 ## Compile OpenSSL library on Windows
 Before compile OpenSSL you need Strawberry Perl that you can download and install from: https://strawberryperl.com/. You also need nasm assembler which can be downloaded and installed from: https://www.nasm.us/
 
@@ -159,4 +169,4 @@ catch (const sdk::general::SecureSocketException& ex)
 ```
 
 # Conclusion
-If you have any questions, please do not hesitate to ask me!
+If you have any questions, please do not hesitate to ask me :)
