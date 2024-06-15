@@ -68,3 +68,6 @@ Socket/x64
 *.ncb
 *.suo
 *.sdf
+
+# for Android
+outputs
