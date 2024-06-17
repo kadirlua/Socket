@@ -19,7 +19,22 @@ Secure and non-secure version of Socket classes. If you want to use secure conne
     - OpenSSL (3.x.x) (Optional)
 - CMake (Optional)
 
-# Build the library
+# Cloning the library
+You can clone the library using git. This library also includes a submodule named Exception in the repository. So, for cloning the library;
+
+```
+  > git clone --recursive https://github.com/kadirlua/Socket.git
+```
+
+It's also possible to clone the library using with;
+
+```
+  > git submodule init
+  > git submodule update
+  > git clone https://github.com/kadirlua/Socket.git
+```
+
+# Building the library
 You can build the library using vcpkg or your own environment. You can use Visual Studio, VSCode or CLion IDEs for building.
 
 ## Compile the library using cmake

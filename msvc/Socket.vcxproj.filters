@@ -19,12 +19,6 @@
     <Filter Include="Header Files\network">
       <UniqueIdentifier>{f8320e00-2b45-4dd2-81da-3bf6cabec331}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\general">
-      <UniqueIdentifier>{db549116-f942-4fe6-950f-016ad372eb5d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\general">
-      <UniqueIdentifier>{9ab9176f-f517-4920-bbc4-eaf03db001c5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\application">
       <UniqueIdentifier>{9da67c28-6e1e-4c5a-ae4c-346be3e3e279}</UniqueIdentifier>
     </Filter>
@@ -43,6 +37,12 @@
     <Filter Include="Source Files\application\client">
       <UniqueIdentifier>{26a0507c-ee1a-4452-a41b-0b1cd4c269d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\libs">
+      <UniqueIdentifier>{db549116-f942-4fe6-950f-016ad372eb5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\libs">
+      <UniqueIdentifier>{ed2412ac-dfdd-4d1a-a3d6-2a0d3b8c4360}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\network\Socket.cpp">
@@ -50,12 +50,6 @@
     </ClCompile>
     <ClCompile Include="..\network\SocketOption.cpp">
       <Filter>Source Files\network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\general\BaseException.cpp">
-      <Filter>Source Files\general</Filter>
-    </ClCompile>
-    <ClCompile Include="..\general\SocketException.cpp">
-      <Filter>Source Files\general</Filter>
     </ClCompile>
     <ClCompile Include="..\network\SocketDescriptor.cpp">
       <Filter>Source Files\network</Filter>
@@ -80,6 +74,12 @@
     </ClCompile>
     <ClCompile Include="..\examples\server\ServerApp.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\general\BaseException.cpp">
+      <Filter>Source Files\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\general\SocketException.cpp">
+      <Filter>Source Files\libs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,12 +107,6 @@
     <ClInclude Include="..\examples\Server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\general\BaseException.h">
-      <Filter>Header Files\general</Filter>
-    </ClInclude>
-    <ClInclude Include="..\general\SocketException.h">
-      <Filter>Header Files\general</Filter>
-    </ClInclude>
     <ClInclude Include="..\network\SocketDescriptor.h">
       <Filter>Header Files\network</Filter>
     </ClInclude>
@@ -136,6 +130,15 @@
     </ClInclude>
     <ClInclude Include="..\application\server\SSLServer.h">
       <Filter>Header Files\application\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\general\BaseException.h">
+      <Filter>Header Files\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\general\ExceptionExport.h">
+      <Filter>Header Files\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\general\SocketException.h">
+      <Filter>Header Files\libs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

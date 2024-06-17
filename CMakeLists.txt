@@ -7,7 +7,7 @@ set(PROJECT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 #enable_testing()
 
-add_subdirectory(general)
+add_subdirectory(libs)
 add_subdirectory(network)
 add_subdirectory(application)
 add_subdirectory(examples)

@@ -1,5 +1,6 @@
 set(LIBRARY_NAME Socket)
 set(PROJECT_NETWORK_DIR ${PROJECT_DIR}/network)
+set(PROJECT_LIBS_DIR ${PROJECT_DIR}/libs)
 
 # Socket library requires C++14 or higher features
 if (NOT CMAKE_CXX_STANDARD)
@@ -52,9 +53,9 @@ if (MSVC)
 endif()
 
 if (OPENSSL_FOUND)
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${OPENSSL_INCLUDE_DIR})
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${PROJECT_LIBS_DIR} ${OPENSSL_INCLUDE_DIR})
 else()
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR})
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${PROJECT_LIBS_DIR})
 endif()
 
 target_link_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_BINARY_DIR}/general)
