@@ -107,8 +107,14 @@ namespace sdk {
 			hints.ai_socktype = SOCK_STREAM;
 			//hints.ai_flags = AI_NUMERICHOST;
 
-			if (getaddrinfo(m_ipAddress.c_str(), std::to_string(m_portNumber).c_str(), &hints, &res) != 0) {
+			const auto ret = getaddrinfo(m_ipAddress.c_str(), std::to_string(m_portNumber).c_str(), &hints, &res);
+			if (ret != 0) {
+#ifdef _WIN32
 				throw general::SocketException(WSAGetLastError());
+#else
+				// gai_strerror is not thread-safe.
+				throw general::SocketException(gai_strerror(ret));
+#endif
 			}
 
 			const std::unique_ptr<addrinfo, decltype(&freeaddrinfo)> pResPtr{ res, freeaddrinfo }; 
