@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.22.1)
 
 project("SocketAndroid")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions")
 # Sets LIB_SOCKET_DIR to the path of the target CMake project.
 set(LIB_SOCKET_DIR ../../../../../../Socket)
 # Sets LIB_SOCKET_BUILD_DIR to the path of the desired output directory.

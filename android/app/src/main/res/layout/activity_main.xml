@@ -6,14 +6,80 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/sample_text"
+    <EditText
+        android:id="@+id/ipaddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="91dp"
+        android:layout_marginEnd="103dp"
+        android:layout_marginBottom="33dp"
+        android:ems="10"
+        android:hint="Ip address"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/portNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/portNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="103dp"
+        android:layout_marginBottom="42dp"
+        android:ems="10"
+        android:hint="Port number"
+        android:inputType="numberDecimal"
+        app:layout_constraintBottom_toTopOf="@+id/requestMessage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ipaddress" />
+
+    <EditText
+        android:id="@+id/requestMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="98dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="103dp"
+        android:layout_marginBottom="21dp"
+        android:ems="10"
+        android:hint="Request message"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/request"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/portNumber" />
+
+    <Button
+        android:id="@+id/request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="156dp"
+        android:layout_marginEnd="153dp"
+        android:layout_marginBottom="32dp"
+        android:text="Request"
+        app:layout_constraintBottom_toTopOf="@+id/result"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/requestMessage" />
+
+    <EditText
+        android:id="@+id/result"
+        android:layout_width="331dp"
+        android:layout_height="267dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginBottom="25dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/request" />
 </androidx.constraintlayout.widget.ConstraintLayout>
