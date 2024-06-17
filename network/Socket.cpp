@@ -152,6 +152,7 @@ namespace sdk {
 				const int lastError = WSAGetLastError();
 
 				switch (lastError) {
+				case WSAEINPROGRESS:
 				case WSAEWOULDBLOCK: {
 					fd_set writeFds{};
 					fd_set exceptFds{};
