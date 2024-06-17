@@ -27,15 +27,11 @@
 #include "application/client/SSLClient.h"
 #include "general/SocketException.h"
 
-// only for testing for now
-const char* const certFile = R"(C:\Program Files\OpenSSL\bin\certificate.pem)";
-const char* const keyFile = R"(C:\Program Files\OpenSSL\bin\key.key)";
-
 int main(int argc, const char** argv)
 {
 #if OPENSSL_SUPPORTED
-	if (argc < 4) {
-		std::cout << "Missing argument.\r\nUsage <exe_name> <ip_address> <port_number> <message>";
+	if (argc < 6) {
+		std::cout << "Missing argument.\r\nUsage <exe_name> <ip_address> <port_number> <message> <cert_file> <key_file>";
 		return -1;
 	}
 
@@ -56,7 +52,7 @@ int main(int argc, const char** argv)
 
 	try {
 		sdk::application::SSLClient client{ strIpAddress, portNumber };
-		client.setCertificateAtr(certFile, keyFile);
+		client.setCertificateAtr(argv[4], argv[5]);
 		client.connectServer();
 		client.write(strMsg);
 		std::string strResponse;

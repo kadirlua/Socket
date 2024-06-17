@@ -28,9 +28,6 @@
 #include "general/SocketException.h"
 
 namespace {
-	// only for testing for now
-	const char* const certFile = R"(C:\Program Files\OpenSSL\bin\certificate.pem)";
-	const char* const keyFile = R"(C:\Program Files\OpenSSL\bin\key.key)";
 
 #if OPENSSL_SUPPORTED
 	int verifyCallback(int preverifyOK, X509_STORE_CTX* x509Ctx)
@@ -89,7 +86,7 @@ int main(int argc, const char** argv)
 {
 #if OPENSSL_SUPPORTED
 	if (argc < 2) {
-		std::cout << "Missing argument.\r\nUsage <exe_name> <port_number>";
+		std::cout << "Missing argument.\r\nUsage <exe_name> <port_number> <cert_file> <key_file>";
 		return -1;
 	}
 
@@ -106,9 +103,9 @@ int main(int argc, const char** argv)
 
 	try {
 		sdk::application::SSLServer srv{ portNumber };
-		srv.loadServerCertificate(certFile);
-		srv.loadServerPrivateKey(keyFile);
-		srv.loadServerVerifyLocations(certFile, nullptr);
+		srv.loadServerCertificate(argv[4]);
+		srv.loadServerPrivateKey(argv[5]);
+		srv.loadServerVerifyLocations(argv[4], nullptr);
 		srv.setVerifyCallback(verifyCallback);
 		srv.startListening();
 	} catch (const sdk::general::SSLSocketException& ex) {
