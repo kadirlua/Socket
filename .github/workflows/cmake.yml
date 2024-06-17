@@ -22,6 +22,8 @@ jobs:
     runs-on: ${{ matrix.platform.os }}
     steps:
     - uses: actions/checkout@v4
+      with:
+        submodules: 'true' # Set to 'recursive' to recursively checkout submodules
 
     - name: Set up vcpkg on Non-Windows
       if: runner.os != 'Windows'
