@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.sdk.socket.databinding.ActivityMainBinding;
 
@@ -34,7 +35,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Code to execute when the button is clicked
                 String ipAddress = binding.ipaddress.getText().toString();
+                if (!Utils.isValidIPAddressDomain(ipAddress)) {
+                    Toast.makeText(getApplicationContext(), "Invalid IP address, domain",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String portNumber = binding.portNumber.getText().toString();
+                if (!Utils.isValidPort(portNumber)) {
+                    Toast.makeText(getApplicationContext(), "Invalid port number",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String reqMessage = binding.requestMessage.getText().toString();
                 EditText result = binding.result;
                 result.setText(SendRequest(ipAddress, Integer.parseInt(portNumber), reqMessage));
