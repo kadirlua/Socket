@@ -71,3 +71,6 @@ Socket/x64
 
 # for Android
 outputs
+
+# for vcpkg
+vcpkg_installed

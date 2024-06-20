@@ -14,6 +14,14 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                arguments "-DBUILD_WITH_OPENSSL=OFF",
+                          "-DANDROID_STL=c++_shared"
+                cppFlags "-std=c++17"
+            }
+        }
     }
 
     buildTypes {
