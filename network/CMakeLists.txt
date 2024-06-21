@@ -34,6 +34,18 @@ else()
     add_library(${LIBRARY_NAME} STATIC ${PROJECT_NETWORK_SOURCES})
 endif()
 
+# Set the library version properties
+set_target_properties(${LIBRARY_NAME} PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION 1
+)
+
+# configure header template
+configure_file(
+    "${PROJECT_SOURCE_DIR}/network/version.h.in"
+    "${PROJECT_BINARY_DIR}/network/version.h"
+)
+
 if (OPENSSL_FOUND)
     if (WIN32)
         target_link_libraries(${LIBRARY_NAME} PUBLIC OpenSSL::SSL Ws2_32 crypt32 BaseException)
