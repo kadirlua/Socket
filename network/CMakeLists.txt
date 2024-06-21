@@ -71,3 +71,30 @@ else()
 endif()
 
 target_link_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_BINARY_DIR}/general)
+
+include(CPack)
+
+# Set packaging details
+set(CPACK_PACKAGE_NAME "Socket")
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_DESCRIPTION "Cross platform secure and non-secure versions of Socket classes were written in modern C++.")
+set(CPACK_PACKAGE_MAINTAINER "kadirlua")
+
+# Use file(GLOB ...) to match specific header files
+file(GLOB HEADER_FILES "${PROJECT_SOURCE_DIR}/network/*.h")
+
+# Install the matched header files
+install(FILES ${HEADER_FILES} DESTINATION include)
+
+install(FILES ${PROJECT_BINARY_DIR}/network/version.h DESTINATION include)
+
+# Include the CHANGELOG.md and LICENSE files in the package
+install(FILES ${PROJECT_SOURCE_DIR}/CHANGELOG.md DESTINATION .)
+install(FILES ${PROJECT_SOURCE_DIR}/LICENSE DESTINATION .)
+
+# Include other necessary files and targets
+install(TARGETS ${LIBRARY_NAME}
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
