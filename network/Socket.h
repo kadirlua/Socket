@@ -27,16 +27,11 @@
 #include <memory>
 #include <functional>
 #include "SocketDescriptor.h"
-#include "version.h"
 
 #include <cstdint>
 
 namespace sdk {
 	namespace network {
-
-#define SOCKET_VERSION_MAJOR 1
-#define SOKCET_VERSION_MINOR 0
-#define SOCKET_VERSION_PATCH 0
 
 		constexpr std::uint16_t MakeVer(std::uint8_t lowByte, std::uint8_t highByte) 
 		{
@@ -182,12 +177,6 @@ namespace sdk {
 			}
 
 			void setInterruptCallback(const socketInterruptCallback& callback) noexcept;
-
-			static const char* getVersionStr() noexcept
-			{
-				return VERSION_STR(SOCKET_VERSION_MAJOR,
-					SOCKET_VERSION_MINOR, SOCKET_VERSION_PATCH);
-			}
 
 		protected:
 			void fillAddrInfo();
