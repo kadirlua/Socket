@@ -48,13 +48,13 @@ configure_file(
 
 if (OPENSSL_FOUND)
     if (WIN32)
-        target_link_libraries(${LIBRARY_NAME} PUBLIC OpenSSL::SSL Ws2_32 crypt32 BaseException)
+        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException OpenSSL::SSL Ws2_32 crypt32)
     else()
-        target_link_libraries(${LIBRARY_NAME} PUBLIC OpenSSL::SSL BaseException)
+        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException OpenSSL::SSL )
     endif()
 else()
     if (WIN32)
-        target_link_libraries(${LIBRARY_NAME} PUBLIC Ws2_32 BaseException)
+        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException Ws2_32)
     else()
         target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException)
     endif()
@@ -69,8 +69,6 @@ if (OPENSSL_FOUND)
 else()
     target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${PROJECT_LIBS_DIR})
 endif()
-
-target_link_directories(${LIBRARY_NAME} PUBLIC ${CMAKE_BINARY_DIR}/general)
 
 include(CPack)
 
