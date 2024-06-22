@@ -64,11 +64,7 @@ if (MSVC)
     target_compile_options(${LIBRARY_NAME} PRIVATE "/Zc:__cplusplus")
 endif()
 
-if (OPENSSL_FOUND)
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${PROJECT_LIBS_DIR} ${OPENSSL_INCLUDE_DIR})
-else()
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${PROJECT_LIBS_DIR})
-endif()
+target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${PROJECT_LIBS_DIR})
 
 include(CPack)
 
