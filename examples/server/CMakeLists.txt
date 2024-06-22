@@ -16,8 +16,8 @@ include_directories(${PROJECT_DIR})
 link_directories(${CMAKE_BINARY_DIR}/network)
 link_directories(${CMAKE_BINARY_DIR}/application/server)
 
-target_link_libraries(ServerApp PUBLIC Server)
-target_link_libraries(SSLServerApp PUBLIC Server)
+target_link_libraries(ServerApp PRIVATE Server)
+target_link_libraries(SSLServerApp PRIVATE Server)
 
 if (WIN32 AND BUILD_SHARED_LIBS)
   add_custom_command(TARGET ServerApp POST_BUILD
