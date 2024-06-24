@@ -3,8 +3,12 @@ set(PROJECT_CLIENT_DIR ${PROJECT_DIR}/application/client)
 
 set(PROJECT_CLIENT_SOURCES
     ${PROJECT_CLIENT_DIR}/Client.cpp
-    ${PROJECT_CLIENT_DIR}/SSLClient.cpp
 )
+
+# Check if OpenSSL support is enabled
+if (BUILD_WITH_OPENSSL)
+    list(APPEND PROJECT_CLIENT_SOURCES ${PROJECT_CLIENT_DIR}/SSLClient.cpp)
+endif()
 
 if (BUILD_WITH_OPENSSL)
   add_compile_definitions(OPENSSL_SUPPORTED=1)

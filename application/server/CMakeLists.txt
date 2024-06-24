@@ -3,8 +3,12 @@ set(PROJECT_SERVER_DIR ${PROJECT_DIR}/application/server)
 
 set(PROJECT_SERVER_SOURCES
     ${PROJECT_SERVER_DIR}/Server.cpp
-    ${PROJECT_SERVER_DIR}/SSLServer.cpp
 )
+
+# Check if OpenSSL support is enabled
+if (BUILD_WITH_OPENSSL)
+    list(APPEND PROJECT_SERVER_SOURCES ${PROJECT_SERVER_DIR}/SSLServer.cpp)
+endif()
 
 if (BUILD_WITH_OPENSSL)
   add_compile_definitions(OPENSSL_SUPPORTED=1)

@@ -9,11 +9,14 @@ endif()
 
 set(PROJECT_NETWORK_SOURCES
     ${PROJECT_NETWORK_DIR}/Socket.cpp
-    ${PROJECT_NETWORK_DIR}/SSLSocket.cpp
     ${PROJECT_NETWORK_DIR}/SocketDescriptor.cpp
-    ${PROJECT_NETWORK_DIR}/SSLSocketDescriptor.cpp
     ${PROJECT_NETWORK_DIR}/SocketOption.cpp
 )
+
+# Check if OpenSSL support is enabled
+if (BUILD_WITH_OPENSSL)
+    list(APPEND PROJECT_NETWORK_SOURCES ${PROJECT_NETWORK_DIR}/SSLSocket.cpp ${PROJECT_NETWORK_DIR}/SSLSocketDescriptor.cpp)
+endif()
 
 # build options
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
