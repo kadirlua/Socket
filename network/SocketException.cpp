@@ -95,7 +95,7 @@ namespace sdk{
             SocketException(err_code)
         {
 #if OPENSSL_SUPPORTED
-            int err{};
+            unsigned long err{};
             while ((err = ERR_get_error()) != 0) {
                 m_error_msg += ERR_error_string(err, nullptr);
             }
