@@ -48,7 +48,6 @@ jobs:
     - name: Install dependencies with vcpkg
       run: .\vcpkg\vcpkg install
 
-      shell: cmd
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
 
