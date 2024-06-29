@@ -56,7 +56,7 @@ namespace sdk {
         class SOCKET_API SSLSocketException : public SocketException
         {
         public:
-            SSLSocketException(int err_code) noexcept;
+            SSLSocketException(int err_code);
             SSLSocketException(int err_code, std::string&& err_msg) noexcept;
             SSLSocketException(int err_code, const std::string& err_msg) noexcept;
             SSLSocketException(const std::string& err_msg) noexcept;

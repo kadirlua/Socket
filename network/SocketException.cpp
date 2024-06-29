@@ -91,8 +91,8 @@ namespace sdk{
             return strErrMsg;
         }
 
-        SSLSocketException::SSLSocketException(int err_code) noexcept :
-            SocketException(err_code)
+        SSLSocketException::SSLSocketException(int err_code):
+            SocketException{ err_code }
         {
 #if OPENSSL_SUPPORTED
             unsigned long err{};
