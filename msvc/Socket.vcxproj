@@ -291,9 +291,9 @@
     <ClCompile Include="..\application\server\SSLServer.cpp" />
     <ClCompile Include="..\examples\server\ServerApp.cpp" />
     <ClCompile Include="..\libs\general\BaseException.cpp" />
-    <ClCompile Include="..\libs\general\SocketException.cpp" />
     <ClCompile Include="..\network\Socket.cpp" />
     <ClCompile Include="..\network\SocketDescriptor.cpp" />
+    <ClCompile Include="..\network\SocketException.cpp" />
     <ClCompile Include="..\network\SocketOption.cpp" />
     <ClCompile Include="..\network\SSLSocket.cpp" />
     <ClCompile Include="..\network\SSLSocketDescriptor.cpp" />
@@ -310,9 +310,9 @@
     <ClInclude Include="..\examples\Server.h" />
     <ClInclude Include="..\libs\general\BaseException.h" />
     <ClInclude Include="..\libs\general\ExceptionExport.h" />
-    <ClInclude Include="..\libs\general\SocketException.h" />
     <ClInclude Include="..\network\Socket.h" />
     <ClInclude Include="..\network\SocketDescriptor.h" />
+    <ClInclude Include="..\network\SocketException.h" />
     <ClInclude Include="..\network\SocketExport.h" />
     <ClInclude Include="..\network\SocketOption.h" />
     <ClInclude Include="..\network\SSLSocket.h" />
