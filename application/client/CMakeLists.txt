@@ -27,8 +27,5 @@ endif()
 
 target_include_directories(${LIBRARY_NAME} PRIVATE ${PROJECT_DIR} ${PROJECT_DIR}/network ${PROJECT_DIR}/libs ${OPENSSL_INCLUDE_DIR})
 
-if (WIN32)
-    target_link_libraries(${LIBRARY_NAME} PUBLIC Socket $<$<TARGET_EXISTS:OpenSSL::SSL>:OpenSSL::SSL> Ws2_32 crypt32)
-else()
-    target_link_libraries(${LIBRARY_NAME} PUBLIC Socket $<$<TARGET_EXISTS:OpenSSL::SSL>:OpenSSL::SSL>)
-endif()
+target_link_libraries(${LIBRARY_NAME} PUBLIC Socket 
+        $<$<TARGET_EXISTS:OpenSSL::SSL>:OpenSSL::SSL> $<$<PLATFORM_ID:Windows>:Ws2_32>)

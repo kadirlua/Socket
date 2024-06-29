@@ -15,7 +15,8 @@ set(PROJECT_NETWORK_SOURCES
 
 # Check if OpenSSL support is enabled
 if (BUILD_WITH_OPENSSL)
-    list(APPEND PROJECT_NETWORK_SOURCES ${PROJECT_NETWORK_DIR}/SSLSocket.cpp ${PROJECT_NETWORK_DIR}/SSLSocketDescriptor.cpp)
+    list(APPEND PROJECT_NETWORK_SOURCES 
+        ${PROJECT_NETWORK_DIR}/SSLSocket.cpp ${PROJECT_NETWORK_DIR}/SSLSocketDescriptor.cpp)
 endif()
 
 # build options
@@ -50,24 +51,16 @@ configure_file(
 
 if (OPENSSL_FOUND)
     target_compile_definitions(${LIBRARY_NAME} PUBLIC OPENSSL_SUPPORTED)
-    if (WIN32)
-        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException PRIVATE OpenSSL::SSL Ws2_32 crypt32)
-    else()
-        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException PRIVATE OpenSSL::SSL)
-    endif()
-else()
-    if (WIN32)
-        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException PRIVATE Ws2_32)
-    else()
-        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException)
-    endif()
 endif()
+
+target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException PRIVATE 
+        $<$<TARGET_EXISTS:OpenSSL::SSL>:OpenSSL::SSL> $<$<PLATFORM_ID:Windows>:Ws2_32>)
 
 if (MSVC)
     target_compile_options(${LIBRARY_NAME} PRIVATE "/Zc:__cplusplus")
 endif()
 
-target_include_directories(${LIBRARY_NAME} PRIVATE ${PROJECT_DIR} ${PROJECT_LIBS_DIR} ${OPENSSL_INCLUDE_DIR})
+target_include_directories(${LIBRARY_NAME} PRIVATE ${PROJECT_DIR} ${PROJECT_LIBS_DIR})
 
 include(CPack)
 
