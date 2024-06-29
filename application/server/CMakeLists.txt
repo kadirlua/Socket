@@ -11,10 +11,6 @@ if (BUILD_WITH_OPENSSL)
     list(APPEND PROJECT_SERVER_SOURCES ${PROJECT_SERVER_DIR}/SSLServer.cpp)
 endif()
 
-if (BUILD_WITH_OPENSSL)
-  add_compile_definitions(OPENSSL_SUPPORTED=1)
-endif()
-
 if (BUILD_SHARED_LIBS)
     add_library(${LIBRARY_NAME} SHARED ${PROJECT_SERVER_SOURCES})
     if (WIN32)

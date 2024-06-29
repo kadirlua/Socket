@@ -1,9 +1,5 @@
 set(PROJECT_EXAMPLES_CLIENT_DIR ${PROJECT_DIR}/examples/client)
 
-if (BUILD_WITH_OPENSSL)
-  add_compile_definitions(OPENSSL_SUPPORTED=1)
-endif()
-
 if (WIN32)
   add_compile_definitions(NOMINMAX)
 endif()
