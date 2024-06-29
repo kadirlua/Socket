@@ -35,11 +35,11 @@ namespace sdk {
         class SOCKET_API SocketException : public BaseException
         {
         public:
-            SocketException(int err_code) noexcept;
-            SocketException(int err_code, std::string&& err_msg) noexcept;
-            SocketException(int err_code, const std::string& err_msg) noexcept;
-            SocketException(const std::string& err_msg) noexcept;
-            SocketException(std::string&& err_msg) noexcept;
+            SocketException(int errCode) noexcept;
+            SocketException(int errCode, std::string&& errMsg) noexcept;
+            SocketException(int errCode, const std::string& errMsg) noexcept;
+            SocketException(const std::string& errMsg) noexcept;
+            SocketException(std::string&& errMsg) noexcept;
             /*
             *	Gets an error code for detect which error occurs.
             *	returns: Error code.
@@ -56,11 +56,11 @@ namespace sdk {
         class SOCKET_API SSLSocketException : public SocketException
         {
         public:
-            SSLSocketException(int err_code);
-            SSLSocketException(int err_code, std::string&& err_msg) noexcept;
-            SSLSocketException(int err_code, const std::string& err_msg) noexcept;
-            SSLSocketException(const std::string& err_msg) noexcept;
-            SSLSocketException(std::string&& err_msg) noexcept;
+            SSLSocketException(int errCode);
+            SSLSocketException(int errCode, std::string&& errMsg) noexcept;
+            SSLSocketException(int errCode, const std::string& errMsg) noexcept;
+            SSLSocketException(const std::string& errMsg) noexcept;
+            SSLSocketException(std::string&& errMsg) noexcept;
         };
     }
 }
