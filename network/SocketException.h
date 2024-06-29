@@ -23,7 +23,7 @@
 #ifndef SOCKET_EXCEPTION_H_
 #define SOCKET_EXCEPTION_H_
 
-#include "general/BaseException.h"
+#include "BaseException.h"
 #include "SocketExport.h"
 
 namespace sdk {

@@ -61,7 +61,7 @@ if (MSVC)
     target_compile_options(${LIBRARY_NAME} PRIVATE "/Zc:__cplusplus")
 endif()
 
-target_include_directories(${LIBRARY_NAME} PRIVATE ${PROJECT_DIR} ${PROJECT_LIBS_DIR})
+target_include_directories(${LIBRARY_NAME} PRIVATE ${PROJECT_DIR} ${PROJECT_LIBS_DIR}/general)
 
 include(CPack)
 

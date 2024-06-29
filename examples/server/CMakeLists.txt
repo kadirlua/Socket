@@ -10,7 +10,7 @@ if (BUILD_WITH_OPENSSL)
   add_executable(SSLServerApp ${PROJECT_EXAMPLES_SERVER_DIR}/SSLServerApp.cpp)
 endif()
 
-include_directories(${PROJECT_DIR} ${PROJECT_DIR}/libs ${OPENSSL_INCLUDE_DIR})
+include_directories(${PROJECT_DIR} ${PROJECT_DIR}/libs/general ${OPENSSL_INCLUDE_DIR})
 
 link_directories(${CMAKE_BINARY_DIR}/network)
 link_directories(${CMAKE_BINARY_DIR}/application/server)
