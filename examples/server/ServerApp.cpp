@@ -25,7 +25,7 @@
 #include <limits>
 
 #include "application/server/Server.h"
-#include "general/SocketException.h"
+#include "network/SocketException.h"
 
 int main(int argc, const char** argv)
 {

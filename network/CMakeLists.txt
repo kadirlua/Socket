@@ -8,6 +8,7 @@ if (NOT CMAKE_CXX_STANDARD)
 endif()
 
 set(PROJECT_NETWORK_SOURCES
+    ${PROJECT_NETWORK_DIR}/SocketException.cpp
     ${PROJECT_NETWORK_DIR}/Socket.cpp
     ${PROJECT_NETWORK_DIR}/SocketDescriptor.cpp
     ${PROJECT_NETWORK_DIR}/SocketOption.cpp
@@ -15,7 +16,8 @@ set(PROJECT_NETWORK_SOURCES
 
 # Check if OpenSSL support is enabled
 if (BUILD_WITH_OPENSSL)
-    list(APPEND PROJECT_NETWORK_SOURCES ${PROJECT_NETWORK_DIR}/SSLSocket.cpp ${PROJECT_NETWORK_DIR}/SSLSocketDescriptor.cpp)
+    list(APPEND PROJECT_NETWORK_SOURCES 
+        ${PROJECT_NETWORK_DIR}/SSLSocket.cpp ${PROJECT_NETWORK_DIR}/SSLSocketDescriptor.cpp)
 endif()
 
 # build options
@@ -24,7 +26,6 @@ option(BUILD_WITH_OPENSSL "Build with openssl support" OFF)
 
 if (BUILD_WITH_OPENSSL)
     find_package(OpenSSL REQUIRED)
-    add_compile_definitions(OPENSSL_SUPPORTED=1)
 endif()
 
 if (BUILD_SHARED_LIBS)
@@ -50,24 +51,17 @@ configure_file(
 )
 
 if (OPENSSL_FOUND)
-    if (WIN32)
-        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException OpenSSL::SSL Ws2_32 crypt32)
-    else()
-        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException OpenSSL::SSL )
-    endif()
-else()
-    if (WIN32)
-        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException Ws2_32)
-    else()
-        target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException)
-    endif()
+    target_compile_definitions(${LIBRARY_NAME} PUBLIC OPENSSL_SUPPORTED)
 endif()
+
+target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException PRIVATE 
+        $<$<TARGET_EXISTS:OpenSSL::SSL>:OpenSSL::SSL> $<$<PLATFORM_ID:Windows>:Ws2_32>)
 
 if (MSVC)
     target_compile_options(${LIBRARY_NAME} PRIVATE "/Zc:__cplusplus")
 endif()
 
-target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR} ${PROJECT_LIBS_DIR})
+target_include_directories(${LIBRARY_NAME} PRIVATE ${PROJECT_DIR} ${PROJECT_LIBS_DIR}/general)
 
 include(CPack)
 
@@ -90,8 +84,35 @@ install(FILES ${PROJECT_SOURCE_DIR}/CHANGELOG.md DESTINATION .)
 install(FILES ${PROJECT_SOURCE_DIR}/LICENSE DESTINATION .)
 
 # Include other necessary files and targets
-install(TARGETS ${LIBRARY_NAME}
+install(TARGETS ${LIBRARY_NAME} BaseException
+    EXPORT SocketTargets
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib
+    INCLUDES DESTINATION include
+)
+
+# Export the targets for other projects to find
+install(EXPORT SocketTargets
+        FILE SocketTargets.cmake
+        NAMESPACE Socket::
+        DESTINATION lib/cmake/Socket)
+
+# Create a config file for find_package
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/SocketConfigVersion.cmake"
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY AnyNewerVersion
+)
+
+configure_package_config_file(${PROJECT_SOURCE_DIR}/Config.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/SocketConfig.cmake"
+  INSTALL_DESTINATION lib/cmake/Socket
+)
+
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/SocketConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/SocketConfigVersion.cmake"
+  DESTINATION lib/cmake/Socket
 )

@@ -131,6 +131,59 @@ You can configure the project with the arguments described above.
   }
   ```
   Do not forget to save the file you have created. After saving the file, follow 'Run and Debug' section in VSCode (Ctrl + Shift + D) and run the app.
+
+# Use the library
+You can use the library into your project. It's easy to integrate into your project using cmake configuration. Insert the necessary codes into your project as shown below:
+
+CMakeLists.txt:
+``` cmake
+
+cmake_minimum_required(VERSION 3.22.1)
+
+project(TestProject VERSION 1.0 LANGUAGES CXX)
+
+find_package(Socket REQUIRED)    # It's required to find the library
+
+add_executable(TestProject main.cpp)
+
+target_link_libraries(TestProject PRIVATE Socket::Socket)    # link the library if It's found
+```
+
+main.cpp:
+
+``` cpp
+#include <iostream>
+#include <Socket.h>
+#include <SocketOption.h>
+#include <SocketException.h>
+
+int main()
+{
+    if (!sdk::network::Socket::WSAInit(sdk::network::WSA_VER_2_2)) {
+		std::cout << "sdk::network::Socket::WSAInit failed\r\n";
+		return -1;
+	}
+
+    try {
+        sdk::network::Socket s{ 8080 };
+        s.setIpAddress("127.0.0.1");
+        sdk::network::SocketOption<sdk::network::Socket> opt{ s };
+        opt.setBlockingMode(sdk::network::SocketOpt::ON);   // enable non-blocking mode
+        s.connect();
+        auto socketDesc = s.createSocketDescriptor(s.getSocketId());
+        socketDesc->write("Hello from client!");
+        std::string response;
+        socketDesc->read(response);
+        std::cout << "Response from server: " << response << "\r\n";
+    } catch(const sdk::general::SocketException& err) {
+        std::cout << err.getErrorMsg() << "\r\n";
+    }
+
+    sdk::network::Socket::WSADeinit();
+    return 0;
+}
+```
+
 # Basic example of usage (non-secure version):
 
 ```cpp

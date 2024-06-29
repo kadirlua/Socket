@@ -2,7 +2,7 @@
 #include <string>
 #include <network/Socket.h>
 #include <network/SocketOption.h>
-#include <general/SocketException.h>
+#include <network/SocketException.h>
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_sdk_socket_MainActivity_SendRequest(

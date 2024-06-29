@@ -125,36 +125,39 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>../;../libs;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>../;../libs/general;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_OpenSSL|Win32'">
-    <IncludePath>../;../libs;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>../;../libs/general;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>../;../libs;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>../;../libs/general;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_OpenSSL|Win32'">
-    <IncludePath>../;../libs;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>../;../libs/general;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>../;../libs;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>../;../libs/general;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_OpenSSL|x64'">
-    <IncludePath>../;../libs;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>../;../libs/general;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>../;../libs;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>../;../libs/general;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_OpenSSL|x64'">
-    <IncludePath>../;../libs;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>../;../libs/general;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
     <EnableClangTidyCodeAnalysis>true</EnableClangTidyCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -291,9 +294,9 @@
     <ClCompile Include="..\application\server\SSLServer.cpp" />
     <ClCompile Include="..\examples\server\ServerApp.cpp" />
     <ClCompile Include="..\libs\general\BaseException.cpp" />
-    <ClCompile Include="..\libs\general\SocketException.cpp" />
     <ClCompile Include="..\network\Socket.cpp" />
     <ClCompile Include="..\network\SocketDescriptor.cpp" />
+    <ClCompile Include="..\network\SocketException.cpp" />
     <ClCompile Include="..\network\SocketOption.cpp" />
     <ClCompile Include="..\network\SSLSocket.cpp" />
     <ClCompile Include="..\network\SSLSocketDescriptor.cpp" />
@@ -310,9 +313,9 @@
     <ClInclude Include="..\examples\Server.h" />
     <ClInclude Include="..\libs\general\BaseException.h" />
     <ClInclude Include="..\libs\general\ExceptionExport.h" />
-    <ClInclude Include="..\libs\general\SocketException.h" />
     <ClInclude Include="..\network\Socket.h" />
     <ClInclude Include="..\network\SocketDescriptor.h" />
+    <ClInclude Include="..\network\SocketException.h" />
     <ClInclude Include="..\network\SocketExport.h" />
     <ClInclude Include="..\network\SocketOption.h" />
     <ClInclude Include="..\network\SSLSocket.h" />

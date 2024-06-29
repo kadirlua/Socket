@@ -78,8 +78,8 @@
     <ClCompile Include="..\libs\general\BaseException.cpp">
       <Filter>Source Files\libs</Filter>
     </ClCompile>
-    <ClCompile Include="..\libs\general\SocketException.cpp">
-      <Filter>Source Files\libs</Filter>
+    <ClCompile Include="..\network\SocketException.cpp">
+      <Filter>Source Files\network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,8 +137,8 @@
     <ClInclude Include="..\libs\general\ExceptionExport.h">
       <Filter>Header Files\libs</Filter>
     </ClInclude>
-    <ClInclude Include="..\libs\general\SocketException.h">
-      <Filter>Header Files\libs</Filter>
+    <ClInclude Include="..\network\SocketException.h">
+      <Filter>Header Files\network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
