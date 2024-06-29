@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include "SSLSocketDescriptor.h"
-#include "general/SocketException.h"
+#include "SocketException.h"
 #include "SSLSocket.h"
 #include <iterator>
 

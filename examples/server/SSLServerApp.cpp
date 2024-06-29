@@ -25,7 +25,7 @@
 #include <limits>
 
 #include "application/server/SSLServer.h"
-#include "general/SocketException.h"
+#include "network/SocketException.h"
 
 namespace {
 

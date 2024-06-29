@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include "Socket.h"
-#include "general/SocketException.h"
+#include "SocketException.h"
 #include <cstring>
 #include <array>
 

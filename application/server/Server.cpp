@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include "Server.h"
-#include "general/SocketException.h"
+#include "network/SocketException.h"
 #include "network/SocketOption.h"
 
 #include <iostream>

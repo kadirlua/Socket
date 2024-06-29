@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include "SSLSocket.h"
-#include "general/SocketException.h"
+#include "SocketException.h"
 
 namespace sdk {
 	namespace network {

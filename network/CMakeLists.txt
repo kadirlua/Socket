@@ -8,6 +8,7 @@ if (NOT CMAKE_CXX_STANDARD)
 endif()
 
 set(PROJECT_NETWORK_SOURCES
+    ${PROJECT_NETWORK_DIR}/SocketException.cpp
     ${PROJECT_NETWORK_DIR}/Socket.cpp
     ${PROJECT_NETWORK_DIR}/SocketDescriptor.cpp
     ${PROJECT_NETWORK_DIR}/SocketOption.cpp

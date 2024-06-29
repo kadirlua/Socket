@@ -22,7 +22,7 @@
 
 #include "SocketDescriptor.h"
 #include "Socket.h"
-#include "general/SocketException.h"
+#include "SocketException.h"
 #include "SocketOption.h"
 
 #include <memory>
