@@ -43,7 +43,7 @@ jobs:
           core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
     - name: Install dependencies with vcpkg
-      run: ./vcpkg/vcpkg install
+      run: .\vcpkg\vcpkg install
 
       shell: cmd
     - name: Add MSBuild to PATH
