@@ -45,9 +45,6 @@ jobs:
     - name: Integrate vcpkg
       run: .\vcpkg\vcpkg integrate install
 
-    - name: Install dependencies with vcpkg
-      run: .\vcpkg\vcpkg install
-
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
 
