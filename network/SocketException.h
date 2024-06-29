@@ -50,7 +50,7 @@ namespace sdk {
             }
         protected:
             int m_error_code{};
-            std::string GetWSALastErrorMessage() const noexcept;
+            std::string GetWSALastErrorMessage() const;
         };
 
         class SOCKET_API SSLSocketException : public SocketException

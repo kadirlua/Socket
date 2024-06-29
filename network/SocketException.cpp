@@ -41,28 +41,28 @@ namespace sdk{
         }
 
         SocketException::SocketException(int err_code, std::string&& err_msg) noexcept :
-            BaseException( std::move(err_msg) ),
+            BaseException{ std::move(err_msg) },
             m_error_code{ err_code }
         {
         }
 
         SocketException::SocketException(int err_code, const std::string& err_msg) noexcept :
-            BaseException(err_msg),
+            BaseException{ err_msg },
             m_error_code{ err_code }
         {
         }
 
         SocketException::SocketException(std::string&& err_msg) noexcept :
-            BaseException(std::move(err_msg))
+            BaseException{ std::move(err_msg) }
         {
         }
 
         SocketException::SocketException(const std::string& err_msg) noexcept :
-            BaseException(err_msg)
+            BaseException{ err_msg }
         {
         }
 
-        std::string SocketException::GetWSALastErrorMessage() const noexcept
+        std::string SocketException::GetWSALastErrorMessage() const
         {
             std::string strErrMsg;
 #ifdef _WIN32
@@ -103,22 +103,22 @@ namespace sdk{
         }
 
         SSLSocketException::SSLSocketException(int err_code, std::string&& err_msg) noexcept :
-            SocketException(err_code, std::move(err_msg))
+            SocketException{ err_code, std::move(err_msg) }
         {
         }
 
         SSLSocketException::SSLSocketException(int err_code, const std::string& err_msg) noexcept :
-            SocketException(err_code, err_msg)
+            SocketException{ err_code, err_msg }
         {
         }
 
         SSLSocketException::SSLSocketException(std::string&& err_msg) noexcept :
-            SocketException(std::move(err_msg))
+            SocketException{ std::move(err_msg) }
         {
         }
 
         SSLSocketException::SSLSocketException(const std::string& err_msg) noexcept :
-            SocketException(err_msg)
+            SocketException{ err_msg }
         {
         }
 
