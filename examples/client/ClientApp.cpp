@@ -29,7 +29,7 @@
 
 int main(int argc, const char** argv)
 {
-	if (argc < 4) {
+	if (argc != 4) {
 		std::cout << "Missing argument.\r\nUsage <exe_name> <ip_address> <port_number> <message>";
 		return -1;
 	}

@@ -30,7 +30,7 @@
 int main(int argc, const char** argv)
 {
 #if OPENSSL_SUPPORTED
-	if (argc < 6) {
+	if (argc != 6) {
 		std::cout << "Missing argument.\r\nUsage <exe_name> <ip_address> <port_number> <message> <cert_file> <key_file>";
 		return -1;
 	}
