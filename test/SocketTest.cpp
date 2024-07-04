@@ -74,12 +74,12 @@ int main()
         condReady.wait(lock, []() {
 			return isServerReady;
 		});
-        sdk::network::Socket s{ DEFAULT_LISTEN_PORT };
-        s.setIpAddress("127.0.0.1");
-        sdk::network::SocketOption<sdk::network::Socket> opt{ s };
+        sdk::network::Socket client{ DEFAULT_LISTEN_PORT };
+        client.setIpAddress("127.0.0.1");
+        sdk::network::SocketOption<sdk::network::Socket> opt{ client };
         opt.setBlockingMode(sdk::network::SocketOpt::ON);   // enable non-blocking mode
-        s.connect();
-        auto socketDesc = s.createSocketDescriptor(s.getSocketId());
+        client.connect();
+        auto socketDesc = client.createSocketDescriptor(client.getSocketId());
         socketDesc->write("Hello from client!");
         socketDesc->read(response);
         std::cout << "Response from server: " << response << "\r\n";
