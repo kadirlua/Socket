@@ -18,7 +18,9 @@ android {
         externalNativeBuild {
             cmake {
                 arguments "-DBUILD_WITH_OPENSSL=OFF",
-                          "-DANDROID_STL=c++_shared"
+                          "-DANDROID_STL=c++_shared",
+                          "-DBUILD_APPLICATION_SRC=OFF",
+                          "-DBUILD_EXAMPLES_SRC=OFF"
                 cppFlags "-std=c++17"
             }
         }
