@@ -50,7 +50,7 @@ configure_file(
     "${PROJECT_BINARY_DIR}/network/version.h"
 )
 
-if (OPENSSL_FOUND)
+if (BUILD_WITH_OPENSSL)
     target_compile_definitions(${LIBRARY_NAME} PUBLIC OPENSSL_SUPPORTED)
 endif()
 
