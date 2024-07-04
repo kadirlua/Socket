@@ -29,7 +29,7 @@ namespace sdk {
 	namespace network {
 
 		template <typename T>
-		void SocketOption<T>::setDebug(SocketOpt debugMode) const
+		void SocketOption<T>::setDebug(SocketOpt debugMode)
 		{
 			const auto mode = static_cast<int>(debugMode);
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_DEBUG,
@@ -39,7 +39,7 @@ namespace sdk {
 		}
 
 		template <typename T>
-		void SocketOption<T>::setReuseAddr(SocketOpt reuseMode) const
+		void SocketOption<T>::setReuseAddr(SocketOpt reuseMode)
 		{
 			const auto mode = static_cast<int>(reuseMode);
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_REUSEADDR,
@@ -49,7 +49,7 @@ namespace sdk {
 		}
 
 		template <typename T>
-		void SocketOption<T>::setKeepAlive(SocketOpt keepAliveMode) const
+		void SocketOption<T>::setKeepAlive(SocketOpt keepAliveMode)
 		{
 			const auto mode = static_cast<int>(keepAliveMode);
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_KEEPALIVE,
@@ -59,7 +59,7 @@ namespace sdk {
 		}
 
 		template <typename T>
-		void SocketOption<T>::setBlockingMode(SocketOpt blockingMode) const
+		void SocketOption<T>::setBlockingMode(SocketOpt blockingMode)
 		{
 			auto mode = static_cast<unsigned long>(blockingMode);
 			if (ioctlsocket(m_socket.getSocketId(), FIONBIO, &mode) == SOCKET_ERROR) {
@@ -68,7 +68,7 @@ namespace sdk {
 		}
 
 		template <typename T>
-		void SocketOption<T>::setLingerOpt(SocketOpt mode, unsigned short second) const
+		void SocketOption<T>::setLingerOpt(SocketOpt mode, unsigned short second)
 		{
 			const struct linger opt{ static_cast<unsigned short>(mode), second };
 			if (setsockopt(m_socket.getSocketId(), SOL_SOCKET, SO_LINGER,
@@ -78,7 +78,7 @@ namespace sdk {
 		}
 
 		template <typename T>
-		void SocketOption<T>::setRecvTimeout(long seconds, long microseconds) const
+		void SocketOption<T>::setRecvTimeout(long seconds, long microseconds)
 		{
 #if defined(__APPLE__)
 			const struct timeval tVal{ seconds, static_cast<__darwin_suseconds_t>(microseconds) };

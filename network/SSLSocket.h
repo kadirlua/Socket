@@ -60,7 +60,7 @@ namespace sdk {
 			 *	param1: The id of socket.
 			 *	returns: A shared pointer of secure socket descriptor.
 			 */
-			NODISCARD std::shared_ptr<SSLSocketDescriptor> createSocketDescriptor(SOCKET socketId) const;
+			NODISCARD std::shared_ptr<SSLSocketDescriptor> createSocketDescriptor(SOCKET socketId);
 			/*
 			 *	This function sets the list of available ciphers for ctx using the control string str.
 			 *	If this function not use, the default cipher list is "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256".
@@ -69,21 +69,21 @@ namespace sdk {
 			 *	returns: nothing.
 			 *	exception: This function throws an SSLSocketException if an error occurs.
 			 */
-			void setCipherList(const char* str) const;
+			void setCipherList(const char* str);
 			/*
 			 *	This function load the certificates in the given file path.
 			 *	param1: File path.
 			 *	returns: nothing.
 			 *	exception: This function throws an SSLSocketException if an error occurs.
 			 */
-			void loadCertificateFile(const char* certFile, int type = SSL_FILETYPE_PEM) const;
+			void loadCertificateFile(const char* certFile, int type = SSL_FILETYPE_PEM);
 			/*
 			 *	This function load the key in the given file path.
 			 *	param1: File path.
 			 *	returns: nothing.
 			 *	exception: This function throws an SSLSocketException if an error occurs.
 			 */
-			void loadPrivateKeyFile(const char* keyFile, int type = SSL_FILETYPE_PEM) const;
+			void loadPrivateKeyFile(const char* keyFile, int type = SSL_FILETYPE_PEM);
 			
 			/*
 			 *	This function specifies the locations for ctx, at which CA certificates for verification purposes are located.
@@ -93,9 +93,9 @@ namespace sdk {
 			 *	returns: nothing.
 			 *	exception: This function throws an SSLSocketException if an error occurs.
 			 */
-			void loadVerifyLocations(const char* caFile, const char* caPath) const;
-			void loadClientCertificateList(const char* path) const;
-			void setVerifyDepth(int depth) const noexcept;
+			void loadVerifyLocations(const char* caFile, const char* caPath);
+			void loadClientCertificateList(const char* path);
+			void setVerifyDepth(int depth) noexcept;
 			/*
 			 *	Gets a context object.
 			 *	returns: The pointer address of SSL_CTX object created, otherwise nullptr.

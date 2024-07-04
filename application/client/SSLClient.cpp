@@ -41,7 +41,7 @@ namespace sdk {
 			});
 		}
 
-		void SSLClient::setCertificateAtr(const char* certFile, const char* keyFile) const
+		void SSLClient::setCertificateAtr(const char* certFile, const char* keyFile)
 		{
 			m_sslSocket.loadCertificateFile(certFile);
 			m_sslSocket.loadPrivateKeyFile(keyFile);
@@ -49,7 +49,7 @@ namespace sdk {
 
 		void SSLClient::connectServer()
 		{
-			const network::SocketOption<network::SSLSocket> socketOpt{ m_sslSocket };
+			network::SocketOption<network::SSLSocket> socketOpt{ m_sslSocket };
 			socketOpt.setBlockingMode(network::SocketOpt::ON); // non-blocking mode
 			m_sslSocket.connect();
 			m_sslSocketDesc = m_sslSocket.createSocketDescriptor(m_sslSocket.getSocketId());

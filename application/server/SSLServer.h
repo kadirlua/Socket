@@ -41,9 +41,9 @@ namespace sdk {
 
 			void startListening() override;
 
-			void loadServerCertificate(const char* certFile) const;
-			void loadServerPrivateKey(const char* keyFile) const;
-			void loadServerVerifyLocations(const char* caFile, const char* caPath) const;
+			void loadServerCertificate(const char* certFile);
+			void loadServerPrivateKey(const char* keyFile);
+			void loadServerVerifyLocations(const char* caFile, const char* caPath);
 			void setVerifyCallback(const network::CertVerifyCallback& callback);
 		private:
 			network::SSLSocket m_sslSocket;

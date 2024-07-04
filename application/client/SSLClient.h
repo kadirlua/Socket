@@ -41,7 +41,7 @@ namespace sdk {
 			SSLClient(const SSLClient&) = delete;
 			SSLClient& operator=(const SSLClient&) = delete;
 
-			void setCertificateAtr(const char* certFile, const char* keyFile) const;
+			void setCertificateAtr(const char* certFile, const char* keyFile);
 			void connectServer() override;
 			NODISCARD int write(std::initializer_list<char> msg) const override;
 			NODISCARD int write(const char* msg, int msgSize) const override;

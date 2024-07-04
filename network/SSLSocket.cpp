@@ -66,7 +66,7 @@ namespace sdk {
 			SSL_CTX_set_options(m_ctx.get(), SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3);
 		}
 
-		void SSLSocket::setCipherList(const char* str) const
+		void SSLSocket::setCipherList(const char* str)
 		{
 			const int retCode = SSL_CTX_set_cipher_list(m_ctx.get(), str);
 			if (retCode <= 0) {
@@ -74,7 +74,7 @@ namespace sdk {
 			}
 		}
 
-		void SSLSocket::loadCertificateFile(const char* certFile, int type /*= SSL_FILETYPE_PEM*/) const
+		void SSLSocket::loadCertificateFile(const char* certFile, int type /*= SSL_FILETYPE_PEM*/)
 		{
 			const int retCode = SSL_CTX_use_certificate_file(m_ctx.get(), certFile, type);
 			if (retCode <= 0) {
@@ -82,7 +82,7 @@ namespace sdk {
 			}
 		}
 
-		void SSLSocket::loadPrivateKeyFile(const char* keyFile, int type /*= SSL_FILETYPE_PEM*/) const
+		void SSLSocket::loadPrivateKeyFile(const char* keyFile, int type /*= SSL_FILETYPE_PEM*/)
 		{
 			int retCode = SSL_CTX_use_PrivateKey_file(m_ctx.get(), keyFile, type);
 			if (retCode <= 0) {
@@ -95,7 +95,7 @@ namespace sdk {
 			}
 		}
 
-		void SSLSocket::loadVerifyLocations(const char* caFile, const char* caPath) const
+		void SSLSocket::loadVerifyLocations(const char* caFile, const char* caPath)
 		{
 			const int retCode = SSL_CTX_load_verify_locations(m_ctx.get(), caFile, caPath);
 			if (retCode < 1) {
@@ -103,7 +103,7 @@ namespace sdk {
 			}
 		}
 
-		void SSLSocket::loadClientCertificateList(const char* path) const
+		void SSLSocket::loadClientCertificateList(const char* path)
 		{
 			auto* stackPtr = SSL_load_client_CA_file(path);
 			if (stackPtr == nullptr) {
@@ -113,12 +113,12 @@ namespace sdk {
 			SSL_CTX_set_client_CA_list(m_ctx.get(), stackPtr);
 		}
 
-		void SSLSocket::setVerifyDepth(int depth) const noexcept
+		void SSLSocket::setVerifyDepth(int depth) noexcept
 		{
 			SSL_CTX_set_verify_depth(m_ctx.get(), depth);
 		}
 
-		std::shared_ptr<SSLSocketDescriptor> SSLSocket::createSocketDescriptor(SOCKET socketId) const
+		std::shared_ptr<SSLSocketDescriptor> SSLSocket::createSocketDescriptor(SOCKET socketId)
 		{
 			return std::make_shared<SSLSocketDescriptor>(socketId, *this);
 		}

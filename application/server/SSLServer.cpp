@@ -43,7 +43,7 @@ namespace sdk {
 
 		void SSLServer::startListening()
 		{
-			const network::SocketOption<network::SSLSocket> socketOpt{ m_sslSocket };
+			network::SocketOption<network::SSLSocket> socketOpt{ m_sslSocket };
 			socketOpt.setBlockingMode(network::SocketOpt::ON); // non-blocking mode
 			socketOpt.setReuseAddr(network::SocketOpt::ON);
 
@@ -69,17 +69,17 @@ namespace sdk {
 			}
 		}
 
-		void SSLServer::loadServerCertificate(const char* certFile) const
+		void SSLServer::loadServerCertificate(const char* certFile)
 		{
 			m_sslSocket.loadCertificateFile(certFile);
 		}
 
-		void SSLServer::loadServerPrivateKey(const char* keyFile) const
+		void SSLServer::loadServerPrivateKey(const char* keyFile)
 		{
 			m_sslSocket.loadPrivateKeyFile(keyFile);
 		}
 
-		void SSLServer::loadServerVerifyLocations(const char* caFile, const char* caPath) const
+		void SSLServer::loadServerVerifyLocations(const char* caFile, const char* caPath)
 		{
 			m_sslSocket.loadVerifyLocations(caFile, caPath);
 		}

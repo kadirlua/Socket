@@ -174,12 +174,12 @@ namespace sdk {
 			return message.size();
 		}
 
-		int SocketDescriptor::write(std::initializer_list<char> dataList) const
+		int SocketDescriptor::write(std::initializer_list<char> dataList)
 		{
 			return write(dataList.begin(), static_cast<int>(dataList.size()));
 		}
 
-		int SocketDescriptor::write(const char* data, int dataSize) const
+		int SocketDescriptor::write(const char* data, int dataSize)
 		{
 			int sendBytes = 0;
 
@@ -202,13 +202,13 @@ namespace sdk {
 			return sendBytes;
 		}
 
-		int SocketDescriptor::write(const std::vector<unsigned char>& message) const
+		int SocketDescriptor::write(const std::vector<unsigned char>& message)
 		{
 			const std::string strBuf{ message.begin(), message.end() };
 			return write(strBuf.c_str(), static_cast<int>(strBuf.size()));
 		}
 
-		int SocketDescriptor::write(const std::string& message) const
+		int SocketDescriptor::write(const std::string& message)
 		{
 			return write(message.c_str(), static_cast<int>(message.size()));
 		}

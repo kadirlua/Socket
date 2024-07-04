@@ -41,7 +41,7 @@ namespace sdk {
 		void Client::connectServer()
 		{
 			m_socket.connect();
-			const network::SocketOption<network::Socket> socketOpt{ m_socket };
+			network::SocketOption<network::Socket> socketOpt{ m_socket };
 			socketOpt.setBlockingMode(network::SocketOpt::ON);
 			m_socketDesc = m_socket.createSocketDescriptor(m_socket.getSocketId());
 		}

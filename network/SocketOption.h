@@ -62,35 +62,35 @@ namespace sdk {
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setDebug(SocketOpt debugMode) const;
+			void setDebug(SocketOpt debugMode);
 			/*
 			 *	If you want to bind two sockets of the same protocol to the same source address and port.
 			 *	param1: Reuse address is active if 1, disabled 0.
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setReuseAddr(SocketOpt reuseMode) const;
+			void setReuseAddr(SocketOpt reuseMode);
 			/*
 			 *	Allow an application to enable keep-alive packets for a socket connection.
 			 *	param1: Keep alive is active if 1, disabled 0.
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setKeepAlive(SocketOpt keepAliveMode) const;
+			void setKeepAlive(SocketOpt keepAliveMode);
 			/*
 			 *	Enables or disables non-blocking mode on socket.
 			 *	param1: Non-blocking mode is active if 1, disabled 0.
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setBlockingMode(SocketOpt blockingMode) const;
+			void setBlockingMode(SocketOpt blockingMode);
 			/*
 			 *	Enables or disables linger option on socket.
 			 *	param1: Linger option is active if 1, disabled 0.
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setLingerOpt(SocketOpt mode, unsigned short second) const;
+			void setLingerOpt(SocketOpt mode, unsigned short second);
 			/*
 			 *	Sets default timeout value for socket connections.
 			 *	param1: seconds.
@@ -98,7 +98,7 @@ namespace sdk {
 			 *	returns: nothing.
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			void setRecvTimeout(long seconds, long microseconds) const;
+			void setRecvTimeout(long seconds, long microseconds);
 			/*
 			 *	Gets linger option state on socket.
 			 *	returns: Active if returns 1, disabled 0.

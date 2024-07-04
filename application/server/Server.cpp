@@ -42,7 +42,7 @@ namespace sdk {
 
 		void Server::startListening()
 		{
-			const network::SocketOption<network::Socket> socketOpt{ m_socket };
+			network::SocketOption<network::Socket> socketOpt{ m_socket };
 			socketOpt.setBlockingMode(network::SocketOpt::ON); // non-blocking mode
 			socketOpt.setReuseAddr(network::SocketOpt::ON);
 
