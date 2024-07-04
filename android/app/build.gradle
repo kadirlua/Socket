@@ -20,7 +20,8 @@ android {
                 arguments "-DBUILD_WITH_OPENSSL=OFF",
                           "-DANDROID_STL=c++_shared",
                           "-DBUILD_APPLICATION_SRC=OFF",
-                          "-DBUILD_EXAMPLES_SRC=OFF"
+                          "-DBUILD_EXAMPLES_SRC=OFF",
+                          "-DBUILD_TESTS_SRC=OFF"
                 cppFlags "-std=c++17"
             }
         }
