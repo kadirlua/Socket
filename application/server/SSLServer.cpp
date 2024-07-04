@@ -43,7 +43,7 @@ namespace sdk {
 
 		void SSLServer::startListening()
 		{
-			const network::SocketOption<network::SSLSocket> socketOpt{ m_sslSocket };
+			network::SocketOption<network::SSLSocket> socketOpt{ m_sslSocket };
 			socketOpt.setBlockingMode(network::SocketOpt::ON); // non-blocking mode
 			socketOpt.setReuseAddr(network::SocketOpt::ON);
 
