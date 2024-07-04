@@ -77,6 +77,16 @@ nmake install
 ```
 5. The last two steps may take a while. So you can take a cup of coffee or tea and relax :)
 
+## Build options
+- DBUILD_SHARED_LIBS: Enables/disables shared library. Default is ON.
+- DBUILD_EXAMPLES_SRC: Enables/disables to build examples source codes. Default is ON.
+- DBUILD_APPLICATION_SRC: Enables/disables to build application interface source codes. Default is ON.
+
+An example:
+```
+  > cmake -B build -S . -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES_SRC=OFF -DBUILD_APPLICATION_SRC=ON
+```
+
 ## Using vcpkg
 First, you have to install vcpkg in your local machine. For installing, follow these steps:
   ```
