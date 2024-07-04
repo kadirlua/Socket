@@ -41,7 +41,7 @@ namespace sdk {
 			});
 		}
 
-		void SSLClient::setCertificateAtr(const char* certFile, const char* keyFile) const
+		void SSLClient::setCertificateAtr(const char* certFile, const char* keyFile)
 		{
 			m_sslSocket.loadCertificateFile(certFile);
 			m_sslSocket.loadPrivateKeyFile(keyFile);

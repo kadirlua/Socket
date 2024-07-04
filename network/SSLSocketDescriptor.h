@@ -95,7 +95,7 @@ namespace sdk {
 			 *	returns: Return byte count that write.
 			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
-			NODISCARD int write(std::initializer_list<char> dataList) const override;
+			NODISCARD int write(std::initializer_list<char> dataList) override;
 
 			/*
 			 *	This method used for writing operations from related secure socket layer.
@@ -104,7 +104,7 @@ namespace sdk {
 			 *	returns: Return byte count that write.
 			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
-			NODISCARD int write(const char* data, int dataSize) const override;
+			NODISCARD int write(const char* data, int dataSize) override;
 			/*
 			 *	This method used for writing operations from related secure socket layer.
 			 *	param1: Bytes of vector message.
@@ -112,7 +112,7 @@ namespace sdk {
 			 *	returns: Return byte count that write.
 			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
-			NODISCARD int write(const std::vector<unsigned char>& message) const override;
+			NODISCARD int write(const std::vector<unsigned char>& message) override;
 			/*
 			 *	This method used for writing operations from related secure socket layer.
 			 *	param1: String of message.
@@ -120,7 +120,7 @@ namespace sdk {
 			 *	returns: Return byte count that write.
 			 *	exception: This method throws an SSLSocketException if an error occurs.
 			 */
-			NODISCARD int write(const std::string& message) const override;
+			NODISCARD int write(const std::string& message) override;
 			/*
 			 *	Gets a socket id from related socket.
 			 *	returns: The id of socket.

@@ -221,12 +221,12 @@ namespace sdk {
 			return message.size();
 		}
 
-		int SSLSocketDescriptor::write(std::initializer_list<char> dataList) const
+		int SSLSocketDescriptor::write(std::initializer_list<char> dataList)
 		{
 			return write(dataList.begin(), static_cast<int>(dataList.size()));
 		}
 
-		int SSLSocketDescriptor::write(const char* data, int dataSize) const
+		int SSLSocketDescriptor::write(const char* data, int dataSize)
 		{
 			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
@@ -252,13 +252,13 @@ namespace sdk {
 			return sendBytes;
 		}
 
-		int SSLSocketDescriptor::write(const std::vector<unsigned char>& message) const
+		int SSLSocketDescriptor::write(const std::vector<unsigned char>& message)
 		{
 			const std::string strBuf{ message.begin(), message.end() };
 			return write(strBuf.c_str(), static_cast<int>(strBuf.size()));
 		}
 
-		int SSLSocketDescriptor::write(const std::string& message) const
+		int SSLSocketDescriptor::write(const std::string& message)
 		{
 			return write(message.c_str(),
 				static_cast<int>(message.size()));

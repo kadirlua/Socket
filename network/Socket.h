@@ -123,7 +123,7 @@ namespace sdk {
 			 *	returns: nothing
 			 *	exception: This function throws an SocketException if an error occurs.
 			 */
-			virtual void listen(int listenCount) const;
+			virtual void listen(int listenCount);
 			/*
 			 *	The accept function permits an incoming connection attempt on a socket.
 			 *	This function is useless for udp connections.
@@ -136,7 +136,7 @@ namespace sdk {
 			 *	param1: The id of socket.
 			 *	returns: A shared pointer of socket descriptor.
 			 */
-			NODISCARD std::shared_ptr<SocketDescriptor> createSocketDescriptor(SOCKET socketId) const;
+			NODISCARD std::shared_ptr<SocketDescriptor> createSocketDescriptor(SOCKET socketId);
 			/*
 			 *	This function is useful for client applications to set an ip address.
 			 *	param: Ip address.

@@ -128,7 +128,7 @@ namespace sdk {
 			 *	returns: Return byte count that write.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual int write(std::initializer_list<char> dataList) const;
+			NODISCARD virtual int write(std::initializer_list<char> dataList);
 
 			/*
 			 *	This function used for writing operations from related socket.
@@ -137,21 +137,21 @@ namespace sdk {
 			 *	returns: Return byte count that write.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual int write(const char* data, int dataSize) const;
+			NODISCARD virtual int write(const char* data, int dataSize);
 			/*
 			 *	This function used for writing operations from related socket.
 			 *	param1: Bytes of vector.
 			 *	returns: Return byte count that write.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual int write(const std::vector<unsigned char>& message) const;
+			NODISCARD virtual int write(const std::vector<unsigned char>& message);
 			/*
 			 *	This function used for writing operations from related socket.
 			 *	param1: string message.
 			 *	returns: Return byte count that write.
 			 *	exception: this function throws an SocketException if an error occurs.
 			 */
-			NODISCARD virtual int write(const std::string& message) const;
+			NODISCARD virtual int write(const std::string& message);
 			/*
 			 *	Gets a socket id from related socket.
 			 *	returns: The id of socket.

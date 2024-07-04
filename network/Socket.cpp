@@ -201,7 +201,7 @@ namespace sdk {
 			}
 		}
 
-		void Socket::listen(int listenCount) const
+		void Socket::listen(int listenCount)
 		{
 			if (m_protocolType != ProtocolType::udp) {
 				if (::listen(m_socketId, listenCount) == SOCKET_ERROR) {
@@ -264,7 +264,7 @@ namespace sdk {
 			return 0;
 		}
 
-		std::shared_ptr<SocketDescriptor> Socket::createSocketDescriptor(SOCKET socketId) const
+		std::shared_ptr<SocketDescriptor> Socket::createSocketDescriptor(SOCKET socketId)
 		{
 			return std::make_shared<SocketDescriptor>(socketId, *this);
 		}
