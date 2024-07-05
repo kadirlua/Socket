@@ -19,7 +19,8 @@ add_library(${CMAKE_PROJECT_NAME} SHARED
     SocketAndroid.cpp
 )
 
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${LIB_SOCKET_DIR} ${LIB_SOCKET_DIR}/libs/general)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${LIB_SOCKET_DIR}
+        ${LIB_SOCKET_DIR}/libs/general)
 
 # Specifies libraries CMake should link to your target library. You
 # can link libraries from various origins, such as libraries defined in this
