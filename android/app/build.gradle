@@ -17,11 +17,12 @@ android {
 
         externalNativeBuild {
             cmake {
-                arguments "-DBUILD_WITH_OPENSSL=OFF",
+                arguments "-DBUILD_WITH_OPENSSL=ON",
                           "-DANDROID_STL=c++_shared",
                           "-DBUILD_APPLICATION_SRC=OFF",
                           "-DBUILD_EXAMPLES_SRC=OFF",
                           "-DBUILD_TESTS_SRC=OFF"
+                abiFilters 'x86_64'
                 cppFlags "-std=c++17"
             }
         }
