@@ -30,7 +30,11 @@ jobs:
           core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
     - name: Install dependencies with vcpkg
-      run: vcpkg install --triplet x64-android
+      run: |
+        vcpkg install --triplet x86-android
+        vcpkg install --triplet x64-android
+        vcpkg install --triplet arm64-android
+        vcpkg install --triplet arm-neon-android
 
     - name: Set up JDK
       uses: actions/setup-java@v4

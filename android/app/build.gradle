@@ -22,7 +22,6 @@ android {
                           "-DBUILD_APPLICATION_SRC=OFF",
                           "-DBUILD_EXAMPLES_SRC=OFF",
                           "-DBUILD_TESTS_SRC=OFF"
-                abiFilters 'x86_64'
                 cppFlags "-std=c++17"
             }
         }
