@@ -46,7 +46,12 @@ jobs:
       run: |
         chmod +x ./android/gradlew
 
+    - name: Print Environment
+      run: |
+        echo "ANDROID_ABI=${{ matrix.ARCH.ABI }}"
+        printenv | sort
+
     - name: Build with Gradle
       run: |
         cd android
-        ANDROID_ABI=${{ matrix.ARCH.ABI }} ./gradlew build
+        ./gradlew build -PANDROID_ABI=${{ matrix.ARCH.ABI }}
