@@ -1,6 +1,6 @@
 #include <jni.h>
 #include <string>
-#include <network/Socket.h>
+#include <network/SSLSocket.h>
 #include <network/SocketOption.h>
 #include <network/SocketException.h>
 
@@ -16,13 +16,9 @@ Java_com_sdk_socket_MainActivity_SendRequest(
     const char* strIpAddress = env->GetStringUTFChars(ipAddress, nullptr);
     const char* strReqMsg = env->GetStringUTFChars(reqMsg, nullptr);
     try {
-        sdk::network::Socket socket{ portNumber };
+        sdk::network::SSLSocket socket{ portNumber, sdk::network::ConnMethod::client };
         socket.setIpAddress(strIpAddress);
-        socket.setInterruptCallback([](const sdk::network::Socket& socket) {
-            (void)socket;
-            return false;
-        });
-        sdk::network::SocketOption<sdk::network::Socket> socketOpt{ socket };
+        sdk::network::SocketOption<sdk::network::SSLSocket> socketOpt{ socket };
         socketOpt.setBlockingMode(sdk::network::SocketOpt::ON); // Set non-blocking mode is active
         socket.connect();
         auto socketDescriptor = socket.createSocketDescriptor(socket.getSocketId());

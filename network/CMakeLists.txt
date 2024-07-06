@@ -24,10 +24,6 @@ endif()
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 option(BUILD_WITH_OPENSSL "Build with openssl support" OFF)
 
-if (BUILD_WITH_OPENSSL)
-    find_package(OpenSSL REQUIRED)
-endif()
-
 if (BUILD_SHARED_LIBS)
     add_library(${LIBRARY_NAME} SHARED ${PROJECT_NETWORK_SOURCES})
     if (WIN32)
@@ -54,8 +50,34 @@ if (BUILD_WITH_OPENSSL)
     target_compile_definitions(${LIBRARY_NAME} PUBLIC OPENSSL_SUPPORTED)
 endif()
 
-target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException PRIVATE 
-        $<$<TARGET_EXISTS:OpenSSL::SSL>:OpenSSL::SSL> $<$<PLATFORM_ID:Windows>:Ws2_32>)
+if (ANDROID)
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR}/vcpkg_installed/arm-neon-android/include)
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR}/vcpkg_installed/arm64-android/include)
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR}/vcpkg_installed/x86-android/include)
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR}/vcpkg_installed/x64-android/include)
+    
+    if (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "armeabi-v7a")
+        set(OPENSSL_ROOT_DIR ${PROJECT_DIR}/vcpkg_installed/arm-neon-android/)
+    elseif (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a")
+        set(OPENSSL_ROOT_DIR ${PROJECT_DIR}/vcpkg_installed/arm64-android)
+    elseif (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86")
+        set(OPENSSL_ROOT_DIR ${PROJECT_DIR}/vcpkg_installed/x86-android)
+    elseif (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86_64")
+        set(OPENSSL_ROOT_DIR ${PROJECT_DIR}/vcpkg_installed/x64-android)
+    endif()
+
+    set(OPENSSL_INCLUDE_DIR ${OPENSSL_ROOT_DIR}/include)
+    set(OPENSSL_CRYPTO_LIBRARY ${OPENSSL_ROOT_DIR}/lib/libcrypto.a)
+    set(OPENSSL_SSL_LIBRARY ${OPENSSL_ROOT_DIR}/lib/libssl.a)
+
+endif()
+
+if (BUILD_WITH_OPENSSL)
+    find_package(OpenSSL REQUIRED)
+endif()
+
+target_link_libraries(${LIBRARY_NAME} PUBLIC BaseException 
+        PRIVATE $<$<TARGET_EXISTS:OpenSSL::SSL>:OpenSSL::SSL> $<$<PLATFORM_ID:Windows>:Ws2_32>)
 
 if (MSVC)
     target_compile_options(${LIBRARY_NAME} PRIVATE "/Zc:__cplusplus")
