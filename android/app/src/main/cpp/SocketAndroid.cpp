@@ -16,7 +16,7 @@ Java_com_sdk_socket_MainActivity_SendRequest(
     const char* strIpAddress = env->GetStringUTFChars(ipAddress, nullptr);
     const char* strReqMsg = env->GetStringUTFChars(reqMsg, nullptr);
     try {
-        sdk::network::SSLSocket socket{ portNumber };
+        sdk::network::SSLSocket socket{ portNumber, sdk::network::ConnMethod::client };
         socket.setIpAddress(strIpAddress);
         sdk::network::SocketOption<sdk::network::SSLSocket> socketOpt{ socket };
         socketOpt.setBlockingMode(sdk::network::SocketOpt::ON); // Set non-blocking mode is active
