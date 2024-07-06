@@ -22,7 +22,7 @@ android {
                           "-DBUILD_APPLICATION_SRC=OFF",
                           "-DBUILD_EXAMPLES_SRC=OFF",
                           "-DBUILD_TESTS_SRC=OFF"
-                abiFilters project.hasProperty('ANDROID_ABI') ? project.ANDROID_ABI : "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+                abiFilters "arm64-v8a"
                 cppFlags "-std=c++17"
             }
         }
