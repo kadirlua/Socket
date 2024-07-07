@@ -2,9 +2,9 @@ set(LIBRARY_NAME Socket)
 set(PROJECT_NETWORK_DIR ${PROJECT_DIR}/network)
 set(PROJECT_LIBS_DIR ${PROJECT_DIR}/libs)
 
-# Socket library requires C++14 or higher features
+# Socket library requires C++11 or higher features
 if (NOT CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 14)
+    set(CMAKE_CXX_STANDARD 11)
 endif()
 
 set(PROJECT_NETWORK_SOURCES
