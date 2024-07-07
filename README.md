@@ -3,7 +3,7 @@ Secure and non-secure versions of Socket classes. If you want to use secure conn
 
 # Features
 - Cross platform (Windows, MacOS, Linux, Android)
-- C++14 and later are supported.
+- C++11 and later are supported.
 - Plain socket connections
 - TLS/SSL connections
 - TCP/UDP
@@ -11,7 +11,7 @@ Secure and non-secure versions of Socket classes. If you want to use secure conn
 - Socket options
 
 # Prerequisites
-- C++14 or later supported compiler
+- C++11 or later supported compiler
     - msvc
     - gcc
     - clang
