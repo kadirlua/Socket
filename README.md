@@ -81,10 +81,11 @@ nmake install
 - DBUILD_SHARED_LIBS: Enables/disables shared library. Default is ON.
 - DBUILD_EXAMPLES_SRC: Enables/disables to build examples source codes. Default is ON.
 - DBUILD_APPLICATION_SRC: Enables/disables to build application interface source codes. Default is ON.
+- DBUILD_TESTS_SRC: Enables/disables to build test source codes. Default is ON.
 
 An example:
 ```
-  > cmake -B build -S . -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES_SRC=OFF -DBUILD_APPLICATION_SRC=ON
+  > cmake -B build -S . -DBUILD_SHARED_LIBS=OFF -DBUILD_EXAMPLES_SRC=OFF -DBUILD_APPLICATION_SRC=ON -DBUILD_TESTS_SRC=OFF
 ```
 
 ## Using vcpkg
