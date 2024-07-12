@@ -1,4 +1,4 @@
-set(PROJECT_EXAMPLES_SERVER_DIR ${PROJECT_DIR}/examples/server)
+set(PROJECT_EXAMPLES_SERVER_DIR ${PROJECT_SOURCE_DIR}/examples/server)
 
 if (WIN32)
   add_compile_definitions(NOMINMAX)
@@ -10,7 +10,7 @@ if (BUILD_WITH_OPENSSL)
   add_executable(SSLServerApp ${PROJECT_EXAMPLES_SERVER_DIR}/SSLServerApp.cpp)
 endif()
 
-include_directories(${PROJECT_DIR} ${PROJECT_DIR}/libs/general ${OPENSSL_INCLUDE_DIR})
+include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/libs/general ${OPENSSL_INCLUDE_DIR})
 
 link_directories(${CMAKE_BINARY_DIR}/network)
 link_directories(${CMAKE_BINARY_DIR}/application/server)
