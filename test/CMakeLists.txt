@@ -1,5 +1,5 @@
 set(PROJECT_NAME SocketTest)
-set(PROJECT_TEST_DIR ${PROJECT_DIR}/test)
+set(PROJECT_TEST_DIR ${PROJECT_SOURCE_DIR}/test)
 
 set(PROJECT_TEST_SOURCES
     ${PROJECT_TEST_DIR}/SocketTest.cpp
@@ -11,7 +11,7 @@ if (MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE "/Zc:__cplusplus")
 endif()
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_DIR} ${PROJECT_DIR}/libs/general)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/libs/general)
 
 target_link_directories(${PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR}/network)
 

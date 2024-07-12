@@ -1,6 +1,6 @@
 set(LIBRARY_NAME Socket)
-set(PROJECT_NETWORK_DIR ${PROJECT_DIR}/network)
-set(PROJECT_LIBS_DIR ${PROJECT_DIR}/libs)
+set(PROJECT_NETWORK_DIR ${PROJECT_SOURCE_DIR}/network)
+set(PROJECT_LIBS_DIR ${PROJECT_SOURCE_DIR}/libs)
 
 # Socket library requires C++11 or higher features
 if (NOT CMAKE_CXX_STANDARD)
@@ -51,19 +51,19 @@ if (BUILD_WITH_OPENSSL)
 endif()
 
 if (ANDROID)
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR}/vcpkg_installed/arm-neon-android/include)
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR}/vcpkg_installed/arm64-android/include)
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR}/vcpkg_installed/x86-android/include)
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_DIR}/vcpkg_installed/x64-android/include)
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/vcpkg_installed/arm-neon-android/include)
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/vcpkg_installed/arm64-android/include)
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/vcpkg_installed/x86-android/include)
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/vcpkg_installed/x64-android/include)
     
     if (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "armeabi-v7a")
-        set(OPENSSL_ROOT_DIR ${PROJECT_DIR}/vcpkg_installed/arm-neon-android/)
+        set(OPENSSL_ROOT_DIR ${PROJECT_SOURCE_DIR}/vcpkg_installed/arm-neon-android/)
     elseif (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a")
-        set(OPENSSL_ROOT_DIR ${PROJECT_DIR}/vcpkg_installed/arm64-android)
+        set(OPENSSL_ROOT_DIR ${PROJECT_SOURCE_DIR}/vcpkg_installed/arm64-android)
     elseif (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86")
-        set(OPENSSL_ROOT_DIR ${PROJECT_DIR}/vcpkg_installed/x86-android)
+        set(OPENSSL_ROOT_DIR ${PROJECT_SOURCE_DIR}/vcpkg_installed/x86-android)
     elseif (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86_64")
-        set(OPENSSL_ROOT_DIR ${PROJECT_DIR}/vcpkg_installed/x64-android)
+        set(OPENSSL_ROOT_DIR ${PROJECT_SOURCE_DIR}/vcpkg_installed/x64-android)
     endif()
 
     set(OPENSSL_INCLUDE_DIR ${OPENSSL_ROOT_DIR}/include)
@@ -83,7 +83,7 @@ if (MSVC)
     target_compile_options(${LIBRARY_NAME} PRIVATE "/Zc:__cplusplus")
 endif()
 
-target_include_directories(${LIBRARY_NAME} PRIVATE ${PROJECT_DIR} ${PROJECT_LIBS_DIR}/general)
+target_include_directories(${LIBRARY_NAME} PRIVATE ${PROJECT_SOURCE_DIR} ${PROJECT_LIBS_DIR}/general)
 
 include(CPack)
 

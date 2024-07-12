@@ -1,5 +1,5 @@
 set(LIBRARY_NAME Server)
-set(PROJECT_SERVER_DIR ${PROJECT_DIR}/application/server)
+set(PROJECT_SERVER_DIR ${PROJECT_SOURCE_DIR}/application/server)
 
 set(PROJECT_SERVER_SOURCES
     ${PROJECT_SERVER_DIR}/Server.cpp
@@ -21,7 +21,7 @@ else()
     add_library(${LIBRARY_NAME} STATIC ${PROJECT_SERVER_SOURCES})
 endif()
 
-target_include_directories(${LIBRARY_NAME} PRIVATE ${PROJECT_DIR} ${PROJECT_DIR}/network ${PROJECT_DIR}/libs/general ${OPENSSL_INCLUDE_DIR})
+target_include_directories(${LIBRARY_NAME} PRIVATE ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/network ${PROJECT_SOURCE_DIR}/libs/general ${OPENSSL_INCLUDE_DIR})
 
 target_link_libraries(${LIBRARY_NAME} PUBLIC Socket 
         $<$<TARGET_EXISTS:OpenSSL::SSL>:OpenSSL::SSL> $<$<PLATFORM_ID:Windows>:Ws2_32>)
