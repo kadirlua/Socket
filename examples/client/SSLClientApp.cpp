@@ -54,9 +54,9 @@ int main(int argc, const char** argv)
 		sdk::application::SSLClient client{ strIpAddress, portNumber };
 		client.setCertificateAtr(argv[4], argv[5]);
 		client.connectServer();
-		client.write(strMsg);
+		static_cast<void>(client.write(strMsg));
 		std::string strResponse;
-		client.read(strResponse);
+		static_cast<void>(client.read(strResponse));
 		std::cout << "Response from server: " << strResponse << "\r\n";
 	} catch (const sdk::general::SSLSocketException& ex) {
 		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\r\n";
