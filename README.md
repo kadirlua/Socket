@@ -79,6 +79,7 @@ nmake install
 
 ## Build options
 - DBUILD_SHARED_LIBS: Enables/disables shared library. Default is ON.
+- DBUILD_WITH_OPENSSL: Enables/disables openssl support. Default is OFF.
 - DBUILD_EXAMPLES_SRC: Enables/disables to build examples source codes. Default is ON.
 - DBUILD_APPLICATION_SRC: Enables/disables to build application interface source codes. Default is ON.
 - DBUILD_TESTS_SRC: Enables/disables to build test source codes. Default is ON.
