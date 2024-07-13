@@ -51,11 +51,6 @@ if (BUILD_WITH_OPENSSL)
 endif()
 
 if (ANDROID)
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/vcpkg_installed/arm-neon-android/include)
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/vcpkg_installed/arm64-android/include)
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/vcpkg_installed/x86-android/include)
-    target_include_directories(${LIBRARY_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/vcpkg_installed/x64-android/include)
-    
     if (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "armeabi-v7a")
         set(OPENSSL_ROOT_DIR ${PROJECT_SOURCE_DIR}/vcpkg_installed/arm-neon-android/)
     elseif (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a")
@@ -66,10 +61,11 @@ if (ANDROID)
         set(OPENSSL_ROOT_DIR ${PROJECT_SOURCE_DIR}/vcpkg_installed/x64-android)
     endif()
 
+    target_include_directories(${LIBRARY_NAME} PUBLIC ${OPENSSL_ROOT_DIR}/include)
+
     set(OPENSSL_INCLUDE_DIR ${OPENSSL_ROOT_DIR}/include)
     set(OPENSSL_CRYPTO_LIBRARY ${OPENSSL_ROOT_DIR}/lib/libcrypto.a)
     set(OPENSSL_SSL_LIBRARY ${OPENSSL_ROOT_DIR}/lib/libssl.a)
-
 endif()
 
 if (BUILD_WITH_OPENSSL)
