@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SocketAndroid</string>
+    <string name="ip_address">Ip address</string>
+    <string name="port_number">Port number</string>
+    <string name="request_msg">Request message</string>
+    <string name="request">Request</string>
 </resources>
