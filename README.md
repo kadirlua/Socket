@@ -78,11 +78,13 @@ nmake install
 5. The last two steps may take a while. So you can take a cup of coffee or tea and relax :)
 
 ## Build options
-- DBUILD_SHARED_LIBS: Enables/disables shared library. Default is ON.
-- DBUILD_WITH_OPENSSL: Enables/disables openssl support. Default is OFF.
-- DBUILD_EXAMPLES_SRC: Enables/disables to build examples source codes. Default is ON.
-- DBUILD_APPLICATION_SRC: Enables/disables to build application interface source codes. Default is ON.
-- DBUILD_TESTS_SRC: Enables/disables to build test source codes. Default is ON.
+| Option | Description |
+| --- | --- |
+| BUILD_SHARED_LIBS | Enables/disables shared library. Default is ON. |
+| BUILD_WITH_OPENSSL | Enables/disables openssl support. Default is OFF. |
+| BUILD_EXAMPLES_SRC | Enables/disables to build examples source codes. Default is ON. |
+| BUILD_APPLICATION_SRC | Enables/disables to build application interface source codes. Default is ON. |
+| BUILD_TESTS_SRC | Enables/disables to build test source codes. Default is ON. |
 
 An example:
 ```
