@@ -57,9 +57,10 @@ namespace sdk {
 					const SOCKET newSockId = m_socket.accept();
 					auto socketDesc = m_socket.createSocketDescriptor(newSockId);
 					std::string requestMsg;
-					socketDesc->read(requestMsg);
-					std::cout << "Message recieved from client: " << requestMsg << "\n";
-					socketDesc->write(response);
+					if (socketDesc->read(requestMsg) > 0) {
+						std::cout << "Message recieved from client: " << requestMsg << "\n";
+						(void)socketDesc->write(response);
+					}
 				}
 				catch (const general::SocketException& ex) {
 					(void)ex;
