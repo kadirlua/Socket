@@ -50,9 +50,10 @@ namespace {
             const auto sockId = server.accept();
             auto serverDescriptor = server.createSocketDescriptor(sockId);
             std::string message;
-            serverDescriptor->read(message);
-            std::cout << "Message from client: " << message << "\r\n";
-            serverDescriptor->write("OK");
+            if (serverDescriptor->read(message) > 0) {
+                std::cout << "Message from client: " << message << "\r\n";
+                (void)serverDescriptor->write("OK");
+            }
         } catch(const sdk::general::SocketException& err) {
             std::cout << err.getErrorMsg() << "\r\n";
         }
@@ -80,9 +81,11 @@ int main()
         opt.setBlockingMode(sdk::network::SocketOpt::ON);   // enable non-blocking mode
         client.connect();
         auto socketDesc = client.createSocketDescriptor(client.getSocketId());
-        socketDesc->write("Hello from client!");
-        socketDesc->read(response);
-        std::cout << "Response from server: " << response << "\r\n";
+        if (socketDesc->write("Hello from client!") > 0) {
+            if (socketDesc->read(response) > 0) {
+                std::cout << "Response from server: " << response << "\r\n";
+            }
+        }
     } catch(const sdk::general::SocketException& err) {
         std::cout << err.getErrorMsg() << "\r\n";
     }
