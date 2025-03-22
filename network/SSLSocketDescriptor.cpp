@@ -98,7 +98,7 @@ namespace sdk {
 			}
 		}
 
-		void SSLSocketDescriptor::accept() // this function used for handshake
+		void SSLSocketDescriptor::accept()
 		{
 			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
