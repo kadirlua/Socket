@@ -34,7 +34,7 @@ int main(int argc, const char** argv)
 		return EXIT_FAILURE;
 	}
 
-	const auto portNumber{ std::atoi(argv[1] };
+	const auto portNumber{ std::atoi(argv[1]) };
 	if (portNumber <= 0 || portNumber > std::numeric_limits<std::uint16_t>::max()) {
 		std::cout << "Invalid port range.\r\n";
 		return EXIT_FAILURE;
