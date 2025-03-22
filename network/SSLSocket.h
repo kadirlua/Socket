@@ -35,16 +35,16 @@
 namespace sdk {
 	namespace network {
 
-		/*
-		 *	This class used for create a secure socket layer on socket.
-		 *	It has some methods that using fill SSL attributes.
-		 */
-
 #if OPENSSL_SUPPORTED
 
 		using CertVerifyCallback = std::function<int(int, X509_STORE_CTX*)>;
 		using SSLCtx_unique_ptr = std::unique_ptr<SSL_CTX, decltype(&SSL_CTX_free)>;
 
+		/**
+		 * @brief This class is a secure socket class that is derived from the Socket class.
+		 *	You can create a secure socket object by calling the constructor of this class.
+		 *	You can use the functions of this class to create a secure socket descriptor.
+		 */
 		class SOCKET_API SSLSocket : public Socket {
 		public:
 			explicit SSLSocket(int port, ConnMethod meth,
@@ -55,63 +55,83 @@ namespace sdk {
 			SSLSocket(const SSLSocket&) = delete;
 			SSLSocket& operator=(const SSLSocket&) = delete;
 
-			/*
-			 *	This function creates an instance of secure socket descriptor.
-			 *	param1: The id of socket.
-			 *	returns: A shared pointer of secure socket descriptor.
+			/**
+			 * @brief This function creates an instance of secure socket descriptor.
+			 * @param socketId The id of socket.
+			 * @return A shared pointer of secure socket descriptor.
 			 */
 			NODISCARD std::shared_ptr<SSLSocketDescriptor> createSocketDescriptor(SOCKET socketId);
-			/*
-			 *	This function sets the list of available ciphers for ctx using the control string str.
-			 *	If this function not use, the default cipher list is "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256".
-			 *	param1:	Use this url https://www.openssl.org/docs/manmaster/man3/SSL_CTX_set_cipher_list.html,
+
+			/**
+			 * @brief This function sets the list of available ciphers for ctx using the control string str.
+			 * If this function not use, the default cipher list is "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256".
+			 * @param str Use this url https://www.openssl.org/docs/manmaster/man3/SSL_CTX_set_cipher_list.html,
 			 *	and you can see usable list of cipher list.
-			 *	returns: nothing.
-			 *	exception: This function throws an SSLSocketException if an error occurs.
+			 * @return nothing.
+			 * @exception This function throws an SSLSocketException if an error occurs.
 			 */
 			void setCipherList(const char* str);
-			/*
-			 *	This function load the certificates in the given file path.
-			 *	param1: File path.
-			 *	returns: nothing.
-			 *	exception: This function throws an SSLSocketException if an error occurs.
+			
+
+			/**
+			 * @brief This function load the certificates in the given file path.
+			 * @param certFile File path.
+			 * @param type The type of certificate file. Default is SSL_FILETYPE_PEM.
+			 * @return nothing.
+			 * @exception This function throws an SSLSocketException if an error occurs.
 			 */
 			void loadCertificateFile(const char* certFile, int type = SSL_FILETYPE_PEM);
-			/*
-			 *	This function load the key in the given file path.
-			 *	param1: File path.
-			 *	returns: nothing.
-			 *	exception: This function throws an SSLSocketException if an error occurs.
+			
+			
+			/**
+			 * @brief This function load the key in the given file path.
+			 * @param keyFile File path.
+			 * @param type The type of key file. Default is SSL_FILETYPE_PEM.
+			 * @return nothing.
+			 * @exception This function throws an SSLSocketException if an error occurs.
 			 */
 			void loadPrivateKeyFile(const char* keyFile, int type = SSL_FILETYPE_PEM);
 			
-			/*
-			 *	This function specifies the locations for ctx, at which CA certificates for verification purposes are located.
-			 *	The certificates available via CAfile and CApath are trusted.
-			 *	param1: Certificate file path.
-			 *	param2: nullptr.
-			 *	returns: nothing.
-			 *	exception: This function throws an SSLSocketException if an error occurs.
+			/**
+			 * @brief This function specifies the locations for ctx, at which CA certificates for verification purposes are located.
+			 * The certificates available via CAfile and CApath are trusted.
+			 * @param caFile Certificate file path.
+			 * @param caPath nullptr.
+			 * @return nothing.
+			 * @exception This function throws an SSLSocketException if an error occurs.
 			 */
 			void loadVerifyLocations(const char* caFile, const char* caPath);
+			
+			/**
+			 * @brief This function loads the client certificate list in the given file path.
+			 * @param path File path.
+			 * @return nothing.
+			 * @exception This function throws an SSLSocketException if an error occurs.
+			 */
 			void loadClientCertificateList(const char* path);
+			
+			/**
+			 * @brief This function sets the depth of the certificate chain verification that shall be performed.
+			 * @param depth The depth of the certificate chain verification.
+			 * @return nothing.
+			 * @exception This function never throws an exception.
+			 */
 			void setVerifyDepth(int depth) noexcept;
-			/*
-			 *	Gets a context object.
-			 *	returns: The pointer address of SSL_CTX object created, otherwise nullptr.
-			 *	exception : This function never throws an exception.
+			
+			/**
+			 * @brief Gets a context object.
+			 * @return The pointer address of SSL_CTX object created, otherwise nullptr.
+			 * @exception This function never throws an exception.
 			 */
 			NODISCARD SSL_CTX* getSSLCtx() const noexcept
 			{
 				return m_ctx.get();
 			}
 
-			/*
-			 *	returns version number of OpenSSL library we use.
-			 *	returns: Version number of OpenSSL library.
-			 *	exception: This function never throws an exception.
+			/**
+			 * @brief Returns version number of OpenSSL library we use.
+			 * @exception: This function never throws an exception.
 			 */
-
 			static const char* get_openssl_version() noexcept
 			{
 #if (OPENSSL_VERSION_NUMBER < 0x30000000L)
@@ -121,6 +141,11 @@ namespace sdk {
 #endif
 			}
 			
+			/**
+			 * @brief This function sets the callback function that is called when the certificate is verified.
+			 * @param callback The callback function.
+			 * @return nothing.
+			 */
 			void setVerifyCallback(const CertVerifyCallback& callback);
 
 		private:
