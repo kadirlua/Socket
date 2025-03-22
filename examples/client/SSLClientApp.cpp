@@ -32,7 +32,7 @@ int main(int argc, const char** argv)
 #if OPENSSL_SUPPORTED
 	if (argc != 6) {
 		std::cout << "Missing argument.\r\nUsage <exe_name> <ip_address> <port_number> <message> <cert_file> <key_file>";
-		return -1;
+		return EXIT_FAILURE;
 	}
 
 	const std::string strIpAddress{ argv[1] };
@@ -40,14 +40,14 @@ int main(int argc, const char** argv)
 	const auto portNumber{ std::atoi(argv[2] };
 	if (portNumber <= 0 || portNumber > std::numeric_limits<std::uint16_t>::max()) {
 		std::cout << "Invalid port range.\r\n";
-		return -1;
+		return EXIT_FAILURE;
 	}
 
 	const std::string strMsg{ argv[3] };
 	
 	if (!sdk::network::Socket::WSAInit(sdk::network::WSA_VER_2_2)) {
 		std::cout << "sdk::network::Socket::WSAInit failed\r\n";
-		return -1;
+		return EXIT_FAILURE;
 	}
 
 	try {
@@ -66,5 +66,5 @@ int main(int argc, const char** argv)
 #else
 	std::cout << "Build the project with OPENSSL_SUPPORTED.\r\n";
 #endif	// OPENSSL_SUPPORTED
-	return 0;
+	return EXIT_SUCCESS;
 }
