@@ -85,77 +85,80 @@ typedef UINT_PTR SOCKET;
 namespace sdk {
 	namespace network {
 
-		/*
-		 *	Creates an instance of socket object via socket id
-		 *	to use independent connection operations.
-		 */
-
 		class Socket; // forward declaration
 
+		/**
+		 * @brief This class is used for socket descriptor operations.
+		 *	You can read and write operations with this class.
+		 */
 		class SOCKET_API SocketDescriptor {
 		public:
 			explicit SocketDescriptor(SOCKET socketId, const Socket& socketRef) noexcept;
 			virtual ~SocketDescriptor();
 
-			/*
-			 *	This function used for reading operations from related socket.
-			 *	param1: One byte character to read.
-			 *	returns: Return byte count that read.
-			 *	exception: this function throws an SocketException if an error occurs.
+			/**
+			 * @brief This function used for reading operations from related socket.
+			 * @param Bytes of message.
+			 * @return Return byte count that read.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual std::size_t read(char& msgByte) const;
 
-			/*
-			 *	This function used for reading operations from related socket.
-			 *	param1: Bytes of vector.
-			 *	param2: max read size.
-			 *	returns: Return byte count that read.
-			 *	exception: this function throws an SocketException if an error occurs.
+			/**
+			 * @brief This function used for reading operations from related socket.
+			 * @param Bytes of message.
+			 * @param Size of message.
+			 * @return Return byte count that read.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual std::size_t read(std::vector<unsigned char>& message, int maxSize = 0) const;
-			/*
-			 *	This function used for reading operations from related socket.
-			 *	param1: Bytes.
-			 *	param2: max read size.
-			 *	returns: Return byte count that read.
-			 *	exception: this function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief This function used for reading operations from related socket.
+			 * @param message string.
+			 * @param maxSize Size of message.
+			 * @return Return byte count that read.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual std::size_t read(std::string& message, int maxSize = 0) const;
 
-			/*
-			 *	This function used for writing operations from related socket.
-			 *	param1: initializer_list of data via modern c++.
-			 *	returns: Return byte count that write.
-			 *	exception: this function throws an SocketException if an error occurs.
+			/**
+			 * @brief This function used for reading operations from related socket.
+			 * @param dataList initializer_list of data via modern c++.
+			 * @return Return byte count that read.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual int write(std::initializer_list<char> dataList);
 
-			/*
-			 *	This function used for writing operations from related socket.
-			 *	param1: Bytes of message.
-			 *	param2: Size of message.
-			 *	returns: Return byte count that write.
-			 *	exception: this function throws an SocketException if an error occurs.
+			/**
+			 * @brief This function used for writing operations from related socket.
+			 * @param data Bytes of message.
+			 * @param dataSize Size of message.
+			 * @return Return byte count that write.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual int write(const char* data, int dataSize);
-			/*
-			 *	This function used for writing operations from related socket.
-			 *	param1: Bytes of vector.
-			 *	returns: Return byte count that write.
-			 *	exception: this function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief This function used for writing operations from related socket.
+			 * @param message Bytes of vector.
+			 * @return Return byte count that write.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual int write(const std::vector<unsigned char>& message);
-			/*
-			 *	This function used for writing operations from related socket.
-			 *	param1: string message.
-			 *	returns: Return byte count that write.
-			 *	exception: this function throws an SocketException if an error occurs.
+
+			/**
+			 * @brief This function used for writing operations from related socket.
+			 * @param message string.
+			 * @return Return byte count that write.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual int write(const std::string& message);
-			/*
-			 *	Gets a socket id from related socket.
-			 *	returns: The id of socket.
-			 *	exception: This function never throws an exception.
+			
+			/**
+			 * @brief Gets a socket id from related socket.
+			 * @return The id of socket.
+			 * @exception This function never throws an exception.
 			 */
 			NODISCARD SOCKET getSocketId() const noexcept
 			{
