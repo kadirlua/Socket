@@ -165,7 +165,7 @@ namespace sdk {
 
 			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;
 
-			do {
+			while (true) {
 				while ((receiveByte = SSL_read(m_ssl.get(), dataVec.data(), bufLen)) == -1) {
 					if (callbackInterrupt &&
 						callbackInterrupt(m_socketRef)) {
@@ -203,7 +203,10 @@ namespace sdk {
 					break;
 				}
 
-			} while (receiveByte > 0);
+				if (receiveByte <= 0) {
+					break;
+				}
+			}
 
 			return strMessage;
 		}
