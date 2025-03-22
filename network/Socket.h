@@ -62,9 +62,7 @@ namespace sdk {
 			WSA_VER_2_2 = MakeVer(2, 2)
 		};
 
-		namespace {
-			constexpr auto const INTERRUPT_MSG = "I/O interrupt callback is called by user.";
-		}
+		inline constexpr auto const INTERRUPT_MSG = "I/O interrupt callback is called by user.";
 
 		class Socket;	// forward declaration
 
