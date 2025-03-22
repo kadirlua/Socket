@@ -37,7 +37,7 @@ int main(int argc, const char** argv)
 
 	const std::string strIpAddress{ argv[1] };
 
-	const auto portNumber{ std::atoi(argv[2] };
+	const auto portNumber{ std::atoi(argv[2]) };
 	if (portNumber <= 0 || portNumber > std::numeric_limits<std::uint16_t>::max()) {
 		std::cout << "Invalid port range.\r\n";
 		return EXIT_FAILURE;
