@@ -163,7 +163,7 @@ namespace sdk {
 					fd_set writeFds{};
 					fd_set exceptFds{};
 
-					do {
+					while (true) {
 						if (m_callbackInterrupt && m_callbackInterrupt(*this)) {
 							throw general::SocketException(INTERRUPT_MSG);
 						}
@@ -179,7 +179,10 @@ namespace sdk {
 						if (FD_ISSET(m_socketId, &exceptFds)) {
 							throw general::SocketException("Cannot connect to the server");
 						}
-					} while (!FD_ISSET(m_socketId, &writeFds));
+						if (FD_ISSET(m_socketId, &writeFds)) {
+							break;
+						}
+					}
 
 				} break;
 				case WSAEALREADY:
@@ -235,7 +238,7 @@ namespace sdk {
 						fd_set readFds{};
 						fd_set exceptFds{};
 
-						do {
+						while (true) {
 							if (m_callbackInterrupt && m_callbackInterrupt(*this)) {
 								throw general::SocketException(INTERRUPT_MSG);
 							}
@@ -251,7 +254,10 @@ namespace sdk {
 							if (FD_ISSET(m_socketId, &exceptFds)) {
 								throw general::SocketException("Cannot connect to the server");
 							}
-						} while (!FD_ISSET(m_socketId, &readFds));
+							if (FD_ISSET(m_socketId, &readFds)) {
+								break;
+							}
+						}
 					} break;
 					default:
 						throw general::SocketException(lasterror);
