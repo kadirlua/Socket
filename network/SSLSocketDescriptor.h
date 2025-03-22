@@ -43,88 +43,89 @@ namespace sdk {
 		using X509_unique_ptr = std::unique_ptr<X509, decltype(&X509_free)>;
 
 		class SSLSocket; // forward declaration
-		/*
-		 *	Creates an instance of secure socket layer object via socket id
-		 *	to use independent connection operations.
+		/**
+		 * @brief Creates an instance of secure socket layer object via socket id 
+		 * to use independent connection operations.
 		 */
 		class SOCKET_API SSLSocketDescriptor : public SocketDescriptor {
 		public:
 			explicit SSLSocketDescriptor(SOCKET socketId, const SSLSocket& sSocket);
 			~SSLSocketDescriptor() override;
-			/*
-			 *	This method used for validating hostname for certificate verification.
-			 *	param1: Hostname such as www.sdk.com.
-			 *	returns: nothing.
-			 *	exception: This method throws an SSLSocketException if an error occurs.
+			/**
+			 * @brief This method used for validating hostname for certificate verification.
+			 * @param hostname Hostname such as www.sdk.com.
+			 * @return nothing.
+			 * @exception This method throws an SSLSocketException if an error occurs.
 			 */
 			void setHostname(const char* hostname);
-			/*
-			 *	Duty of connect method is connected to server for client applications using SSL.
-			 *	returns: nothing
-			 *	exception: This method throws an SSLSocketException if an error occurs.
+			/**
+			 * @brief Duty of connect method is connected to server for client applications using SSL.
+			 * @return nothing.
+			 * @exception This method throws an SSLSocketException if an error occurs.
 			 */
 			void connect();
 
-			/*
-			 *	This method used for reading operations from related secure socket layer.
-			 *	param1: One byte character to read.
-			 *	returns: Return byte count that read.
-			 *	exception: This method throws an SSLSocketException if an error occurs.
+			/**
+			 * @brief This method used for reading operations from related secure socket layer.
+			 * @param msgByte One byte character to read.
+			 * @return Return byte count that read.
+			 * @exception This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD std::size_t read(char& msgByte) const override;
-			/*
-			 *	This method used for reading operations from related secure socket layer.
-			 *	param1: Bytes of vector.
-			 *	param2: max read size.
-			 *	returns: Return byte count that read.
-			 *	exception: This method throws an SSLSocketException if an error occurs.
+			/**
+			 * @brief This method used for reading operations from related secure socket layer.
+			 * @param message String.
+			 * @param maxSize Max read size.
+			 * @return Return byte count that read.
+			 * @exception This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD std::size_t read(std::vector<unsigned char>& message, int maxSize = 0) const override;
-			/*
-			 *	This method used for reading operations from related secure socket layer.
-			 *	param1: String.
-			 *	param2: max read size.
-			 *	returns: Return byte count that read.
-			 *	exception: This method throws an SSLSocketException if an error occurs.
+			/**
+			 * @brief This method used for reading operations from related secure socket layer.
+			 * @param message String.
+			 * @param maxSize Max read size.
+			 * @return Return byte count that read.
+			 * @exception This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD std::size_t read(std::string& message, int maxSize = 0) const override;
 
-			/*
-			 *	This method used for writing operations from related secure socket layer.
-			 *	param1: initializer_list of data via modern c++.
-			 *	returns: Return byte count that write.
-			 *	exception: This method throws an SSLSocketException if an error occurs.
+			/**
+			 * @brief This method used for writing operations from related secure socket layer.
+			 * @param dataList initializer_list of data via modern c++.
+			 * @return Return byte count that write.
+			 * @exception This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD int write(std::initializer_list<char> dataList) override;
 
-			/*
-			 *	This method used for writing operations from related secure socket layer.
-			 *	param1: Bytes of message.
-			 *	param2: Size of message.
-			 *	returns: Return byte count that write.
-			 *	exception: This method throws an SSLSocketException if an error occurs.
+			/**
+			 * @brief This method used for writing operations from related secure socket layer.
+			 * @param data Bytes of message.
+			 * @param dataSize Size of message.
+			 * @return Return byte count that write.
+			 * @exception This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD int write(const char* data, int dataSize) override;
-			/*
-			 *	This method used for writing operations from related secure socket layer.
-			 *	param1: Bytes of vector message.
-			 *	param2: Size of message.
-			 *	returns: Return byte count that write.
-			 *	exception: This method throws an SSLSocketException if an error occurs.
+
+			/**
+			 * @brief This method used for writing operations from related secure socket layer.
+			 * @param message Bytes of vector message.
+			 * @return Return byte count that write.
+			 * @exception This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD int write(const std::vector<unsigned char>& message) override;
-			/*
-			 *	This method used for writing operations from related secure socket layer.
-			 *	param1: String of message.
-			 *	param2: Size of message.
-			 *	returns: Return byte count that write.
-			 *	exception: This method throws an SSLSocketException if an error occurs.
+
+			/**
+			 * @brief This method used for writing operations from related secure socket layer.
+			 * @param message String of message.
+			 * @return Return byte count that write.
+			 * @exception This method throws an SSLSocketException if an error occurs.
 			 */
 			NODISCARD int write(const std::string& message) override;
-			/*
-			 *	Gets a socket id from related socket.
-			 *	returns: The id of socket.
-			 *	exception: This function never throws an exception.
+
+			/**
+			 * @brief This method used for accepting operations from related secure socket layer.
+			 * @return nothing.
+			 * @exception This method throws an SSLSocketException if an error occurs.
 			 */
 			void accept();
 
