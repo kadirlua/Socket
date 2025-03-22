@@ -30,6 +30,12 @@
 
 #include <cstdint>
 
+#if (__cplusplus >= 201703L)
+#define INLINE inline
+#else
+#define INLINE
+#endif
+
 namespace sdk {
 	namespace network {
 
@@ -62,7 +68,7 @@ namespace sdk {
 			WSA_VER_2_2 = MakeVer(2, 2)
 		};
 
-		inline constexpr auto const INTERRUPT_MSG = "I/O interrupt callback is called by user.";
+		INLINE constexpr auto const INTERRUPT_MSG = "I/O interrupt callback is called by user.";
 
 		class Socket;	// forward declaration
 
