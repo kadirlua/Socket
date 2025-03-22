@@ -78,7 +78,7 @@ namespace sdk {
 			/*if (socketOpt.getBytesAvailable() == 0)
 				return strMessage;*/
 
-			do {
+			while (true) {
 				while ((receiveByte = recv(m_socketId, dataVec.data(), bufLen, 0)) == SOCKET_ERROR) {
 					if (callbackInterrupt &&
 						callbackInterrupt(m_socketRef)) {
@@ -146,7 +146,10 @@ namespace sdk {
 				if (!FD_ISSET(m_socketId, &readFds) || FD_ISSET(m_socketId, &exceptFds)) {
 					break;
 				}
-			} while (receiveByte > 0);
+				if (receiveByte <= 0) {
+					break;
+				}
+			}
 
 			return strMessage;
 		}
