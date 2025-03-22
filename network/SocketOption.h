@@ -41,6 +41,10 @@ namespace sdk {
 			ON
 		};
 
+		/**
+		 * @class SocketOption
+		 * @brief This class is a helper class for setting and getting socket options.
+		 */
 		template <typename T>
 		class SOCKET_API SocketOption final {
 		private:
@@ -56,85 +60,95 @@ namespace sdk {
 			SocketOption(const SocketOption&) = delete;
 			SocketOption& operator=(const SocketOption&) = delete;
 
-			/*
-			 *	Enables or disables debug mode on socket.
-			 *	param1: Debug mode is active if 1, disabled 0.
-			 *	returns: nothing.
-			 *	exception: This function throws an SocketException if an error occurs.
+			/**
+			 * @brief Enables or disables debug mode on socket.
+			 * @param debugMode Debug mode is active if 1, disabled 0.
+			 * @return nothing.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setDebug(SocketOpt debugMode);
-			/*
-			 *	If you want to bind two sockets of the same protocol to the same source address and port.
-			 *	param1: Reuse address is active if 1, disabled 0.
-			 *	returns: nothing.
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief If you want to bind two sockets of the same protocol to the same source address and port.
+			 * @param reuseMode Reuse address is active if 1, disabled 0.
+			 * @return nothing.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setReuseAddr(SocketOpt reuseMode);
-			/*
-			 *	Allow an application to enable keep-alive packets for a socket connection.
-			 *	param1: Keep alive is active if 1, disabled 0.
-			 *	returns: nothing.
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief Allow an application to enable keep-alive packets for a socket connection.
+			 * @param keepAliveMode Keep alive is active if 1, disabled 0.
+			 * @return nothing.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setKeepAlive(SocketOpt keepAliveMode);
-			/*
-			 *	Enables or disables non-blocking mode on socket.
-			 *	param1: Non-blocking mode is active if 1, disabled 0.
-			 *	returns: nothing.
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief Enables or disables non-blocking mode on socket.
+			 * @param blockingMode Non-blocking mode is active if 1, disabled 0.
+			 * @return nothing.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setBlockingMode(SocketOpt blockingMode);
-			/*
-			 *	Enables or disables linger option on socket.
-			 *	param1: Linger option is active if 1, disabled 0.
-			 *	returns: nothing.
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief Enables or disables linger option on socket.
+			 * @param mode Linger option is active if 1, disabled 0.
+			 * @param second Linger option time.
+			 * @return nothing.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setLingerOpt(SocketOpt mode, unsigned short second);
-			/*
-			 *	Sets default timeout value for socket connections.
-			 *	param1: seconds.
-			 *	param2: microseconds.
-			 *	returns: nothing.
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief Sets default timeout value for socket connections.
+			 * @param seconds Timeout value in seconds.
+			 * @param microseconds Timeout value in microseconds.
+			 * @return nothing.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setRecvTimeout(long seconds, long microseconds);
-			/*
-			 *	Gets linger option state on socket.
-			 *	returns: Active if returns 1, disabled 0.
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief Gets linger option state on socket.
+			 * @return Active if returns 1, disabled 0.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			int getLingerOpt() const;
-			/*
-			 *	Gets debug mode state on socket.
-			 *	returns: Active if returns 1, disabled 0.
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief Gets debug mode state on socket.
+			 * @return Active if returns 1, disabled 0.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			int getDebug() const;
-			/*
-			 *	Gets reuse address state on socket.
-			 *	returns: Active if returns 1, disabled 0.
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief Gets reuse address state on socket.
+			 * @return Active if returns 1, disabled 0.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			int getReuseAddr() const;
-			/*
-			 *	Gets keep alive state on socket.
-			 *	returns: Active if returns 1, disabled 0.
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief Gets keep alive state on socket.
+			 * @return Active if returns 1, disabled 0.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			int getKeepAlive() const;
 
-			/*
-			 *	Gets default receive timeout.
-			 *	returns: returns default receive timeout.
-			 *	exception: This function throws an SocketException if an error occurs.
+			/**
+			 * @brief Gets default receive timeout.
+			 * @return returns default receive timeout.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			timeval getRecvTimeout() const;
 
-			/*
-			 *	Gets default receive timeout.
-			 *	returns: returns default receive timeout.
-			 *	exception: This function throws an SocketException if an error occurs.
+			/**
+			 * @brief Gets bytes available on socket.
+			 * @return returns bytes available on socket.
+			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			unsigned long getBytesAvailable() const;
 		};
