@@ -29,9 +29,10 @@
 namespace sdk {
     namespace general {
 
-        /*
-        *   These classes determines exception errors while using socket classes.
-        */
+        /**
+         * @brief This class is used to determine the exception errors that 
+         * may occur while using the socket classes.
+         */
         class SOCKET_API SocketException : public BaseException
         {
         public:
@@ -40,11 +41,12 @@ namespace sdk {
             SocketException(int errCode, const std::string& errMsg) noexcept;
             SocketException(const std::string& errMsg) noexcept;
             SocketException(std::string&& errMsg) noexcept;
-            /*
-            *	Gets an error code for detect which error occurs.
-            *	returns: Error code.
-            *	exception: This function never throws an exception.
-            */
+
+            /**
+             * @brief Gets an error code for detect which error occurs.
+             * @return Error code.
+             * @exception This function never throws an exception.
+             */
             int getErrorCode() const noexcept {
                 return m_error_code;
             }
@@ -53,6 +55,10 @@ namespace sdk {
             std::string GetWSALastErrorMessage() const;
         };
 
+        /**
+         * @brief This class is used to determine the exception errors that 
+         * may occur while using the secure socket classes.
+         */
         class SOCKET_API SSLSocketException : public SocketException
         {
         public:
