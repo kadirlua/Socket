@@ -75,13 +75,10 @@ namespace sdk {
 		//	socket interrupt callback
 		using socketInterruptCallback = std::function<bool(const Socket&)>;
 
-		//	This class manage some connection issues for unsecure connection via TCP or UDP.
-		//	This class has methods that works blocking or non-blocking mode.
-		//	Default mode is blocking mode, if you want to work on non-blocking mode
-		//	call setBlockingMode(1) instead.
-		//	Before call these methods you must call WSAInit() once.
-		//	After all operations done, do not forget to call WSADeinit to clean memory properly.
-
+		/**
+		 * @brief Socket class is a base class for all socket operations.
+		 * @details This class is responsible for creating a socket, binding, listening, accepting, and connecting to a server.
+		 */
 		class SOCKET_API Socket {
 			friend class SocketDescriptor;
 			friend class SSLSocketDescriptor;
@@ -98,82 +95,93 @@ namespace sdk {
 			Socket(Socket&&) noexcept = delete;
 			Socket& operator=(Socket&&) noexcept = delete;
 
-			/*
-			 *	This function initiates use of the Winsock DLL by a process.
-			 *	param1: version number
-			 *	returns: true if successfully, false otherwise.
+			/**
+			 * @brief This function initiates use of the Winsock DLL by a process.
+			 * @param versionReq: version number
+			 * @return true if successfully, false otherwise.
 			 */
 			static bool WSAInit(unsigned short versionReq) noexcept;
-			/*
-			 *	This function terminates use of the Winsock DLL.
-			 *	returns: nothing.
+			
+			/**
+			 * @brief This function terminates use of the Winsock DLL.
+			 * @return nothing.
 			 */
 			static void WSADeinit() noexcept;
-			/*
-			 *	Duty of connect method is connected to server for client applications.
-			 *	returns: nothing
-			 *	exception: this function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief Duty of connect method is connected to server for client applications.
+			 * @return nothing.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			virtual void connect();
-			/*
-			 *	The bind function associates a local address with a socket.
-			 *	returns: nothing
-			 *	exception: this function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief The bind function associates a local address with a socket.
+			 * @return nothing.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			virtual void bind();
-			/*
-			 *	The listen function places a socket in a state in which it is listening for an incoming connection.
-			 *	This function is useless for udp connections.
-			 *	returns: nothing
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief The listen function places a socket in a state in which it is listening for an incoming connection.
+			 * This function is useless for udp connections.
+			 * @return nothing.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			virtual void listen(int listenCount);
-			/*
-			 *	The accept function permits an incoming connection attempt on a socket.
-			 *	This function is useless for udp connections.
-			 *	returns: nothing
-			 *	exception: This function throws an SocketException if an error occurs.
+			
+			/**
+			 * @brief The accept function permits an incoming connection attempt on a socket.
+			 * This function is useless for udp connections.
+			 * @param data: data to be sent.
+			 * @return nothing.
+			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual SOCKET accept();
-			/*
-			 *	This function creates an instance of socket descriptor.
-			 *	param1: The id of socket.
-			 *	returns: A shared pointer of socket descriptor.
+			
+			/**
+			 * @brief This function creates an instance of socket descriptor.
+			 * @param socketId: The id of socket.
+			 * @return A shared pointer of socket descriptor.
 			 */
 			NODISCARD std::shared_ptr<SocketDescriptor> createSocketDescriptor(SOCKET socketId);
-			/*
-			 *	This function is useful for client applications to set an ip address.
-			 *	param: Ip address.
-			 *	returns: nothing.
-			 *	exception: This function never throws an exception.
+			
+			/**
+			 * @brief This function is useful for client applications to set an ip address.
+			 * @param ipAddress Ip address.
+			 * @return nothing.
+			 * @exception This function never throws an exception.
 			 */
 			void setIpAddress(std::string ipAddress) noexcept
 			{
 				m_ipAddress = std::move(ipAddress);
 			}
-			/*
-			 *	This function is useful for all socket applications to set a port number.
-			 *	param: Port number.
-			 *	returns: nothing.
-			 *	exception: This function never throws an exception.
+
+			/**
+			 * @brief This function is useful for all socket applications to set a port number..
+			 * @param portNumber Port number.
+			 * @return nothing.
+			 * @exception This function never throws an exception.
 			 */
 			void setPortNumber(int portNumber) noexcept
 			{
 				m_portNumber = portNumber;
 			}
-			/*
-			 *	This function returns socket id if you need.
-			 *	returns: The id of socket.
-			 *	exception: This function never throws an exception.
+
+			/**
+			 * @brief This function returns socket id if you need.
+			 * @return The id of socket.
+			 * @exception This function never throws an exception.
 			 */
 			NODISCARD SOCKET getSocketId() const noexcept
 			{
 				return m_socketId;
 			}
-			/*
-			 *	This function returns port number if you need.
-			 *	returns: port number int type.
-			 *	exception: This function never throws an exception.
+			
+			/**
+			 * @brief This function returns port number if you need.
+			 * @return Port number int type.
+			 * @exception This function never throws an exception.
 			 */
 			NODISCARD int getPort() const noexcept
 			{
