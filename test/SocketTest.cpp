@@ -64,7 +64,7 @@ int main()
 {
     if (!sdk::network::Socket::WSAInit(sdk::network::WSA_VER_2_2)) {
 		std::cout << "sdk::network::Socket::WSAInit failed\r\n";
-		return -1;
+		return EXIT_FAILURE;
 	}
 
     std::string response;
@@ -95,5 +95,5 @@ int main()
     }
 
     sdk::network::Socket::WSADeinit();
-    return !response.empty() ? 0 : -1;
+    return !response.empty() ? EXIT_SUCCESS : EXIT_FAILURE;
 }
