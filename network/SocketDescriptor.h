@@ -98,7 +98,7 @@ namespace sdk {
 
 			/**
 			 * @brief This function used for reading operations from related socket.
-			 * @param Bytes of message.
+			 * @param msgByte of message.
 			 * @return Return byte count that read.
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
@@ -106,8 +106,8 @@ namespace sdk {
 
 			/**
 			 * @brief This function used for reading operations from related socket.
-			 * @param Bytes of message.
-			 * @param Size of message.
+			 * @param message the message that you want to read.
+			 * @param maxSize maximum size of the message.
 			 * @return Return byte count that read.
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
@@ -115,8 +115,8 @@ namespace sdk {
 
 			/**
 			 * @brief This function used for reading operations from related socket.
-			 * @param message string.
-			 * @param maxSize Size of message.
+			 * @param message the message that you want to read.
+			 * @param maxSize maximum size of the message.
 			 * @return Return byte count that read.
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
@@ -166,7 +166,7 @@ namespace sdk {
 			}
 
 		protected:
-			virtual std::string read(int maxSize = 0) const;
+			[[nodiscard]] virtual std::string read(int maxSize = 0) const;
 
 			SOCKET m_socketId{ INVALID_SOCKET };
 			static constexpr int MAX_MESSAGE_SIZE = 8096;
