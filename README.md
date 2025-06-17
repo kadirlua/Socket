@@ -2,7 +2,7 @@
 Secure and non-secure versions of Socket classes. If you want to use secure connections, you have to install OpenSSL.
 
 # Features
-- Cross platform (Windows, MacOS, Linux, Android)
+- Cross-platform (Windows, macOS, Linux, Android)
 - C++11 and later are supported.
 - Plain socket connections
 - TLS/SSL connections
@@ -78,13 +78,13 @@ nmake install
 5. The last two steps may take a while. So you can take a cup of coffee or tea and relax :)
 
 ## Build options
-| Option | Description |
-| --- | --- |
-| BUILD_SHARED_LIBS | Enables/disables shared library. Default is ON. |
-| BUILD_WITH_OPENSSL | Enables/disables openssl support. Default is OFF. |
-| BUILD_EXAMPLES_SRC | Enables/disables to build examples source codes. Default is ON. |
+| Option                | Description                                                                  |
+|-----------------------|------------------------------------------------------------------------------|
+| BUILD_SHARED_LIBS     | Enables/disables shared library. Default is ON.                              |
+| BUILD_WITH_OPENSSL    | Enables/disables openssl support. Default is OFF.                            |
+| BUILD_EXAMPLES_SRC    | Enables/disables to build examples source codes. Default is ON.              |
 | BUILD_APPLICATION_SRC | Enables/disables to build application interface source codes. Default is ON. |
-| BUILD_TESTS_SRC | Enables/disables to build test source codes. Default is ON. |
+| BUILD_TESTS_SRC       | Enables/disables to build test source codes. Default is ON.                  |
 
 An example:
 ```
@@ -102,7 +102,7 @@ After installation completed, you can search and install the required libraries 
   ```
   .\vcpkg\vcpkg install openssl --triplet=x64-windows
   ```
-For Linux or MacOS, change the triplet to x64-linux or x64-osx.
+For Linux or macOS, change the triplet to x64-linux or x64-osx.
 
 # Using vcpkg with CMake 
 Adding the following to your workspace settings.json will make CMake Tools automatically use vcpkg for libraries:
@@ -123,7 +123,7 @@ For using VSCode, create a new folder named '.vscode' in the project root if it 
         "CMAKE_TOOLCHAIN_FILE": "${env:USERPROFILE}/vcpkg/scripts/buildsystems/vcpkg.cmake"
         },
     "C_Cpp.codeAnalysis.clangTidy.enabled": true,
-    "C_Cpp.codeAnalysis.runAutomatically": true,
+    "C_Cpp.codeAnalysis.runAutomatically": true
   }
   ```
 You can configure the project with the arguments described above.
