@@ -115,42 +115,42 @@ namespace sdk {
 			 * @return Active if returns 1, disabled 0.
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
-			int getLingerOpt() const;
+			[[nodiscard]] int getLingerOpt() const;
 
 			/**
 			 * @brief Gets debug mode state on socket.
 			 * @return Active if returns 1, disabled 0.
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
-			int getDebug() const;
+			[[nodiscard]] int getDebug() const;
 
 			/**
 			 * @brief Gets reuse address state on socket.
 			 * @return Active if returns 1, disabled 0.
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
-			int getReuseAddr() const;
+			[[nodiscard]] int getReuseAddr() const;
 
 			/**
 			 * @brief Gets keep alive state on socket.
 			 * @return Active if returns 1, disabled 0.
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
-			int getKeepAlive() const;
+			[[nodiscard]] int getKeepAlive() const;
 
 			/**
 			 * @brief Gets default receive timeout.
 			 * @return returns default receive timeout.
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
-			timeval getRecvTimeout() const;
+			[[nodiscard]] timeval getRecvTimeout() const;
 
 			/**
 			 * @brief Gets bytes available on socket.
 			 * @return returns bytes available on socket.
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
-			unsigned long getBytesAvailable() const;
+			[[nodiscard]] unsigned long getBytesAvailable() const;
 		};
 	}
 }

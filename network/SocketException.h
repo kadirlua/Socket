@@ -46,14 +46,14 @@ namespace sdk {
 			 * @return Error code.
 			 * @exception This function never throws an exception.
 			 */
-			int getErrorCode() const noexcept
+			[[nodiscard]] int getErrorCode() const noexcept
 			{
 				return m_error_code;
 			}
 
 		protected:
 			int m_error_code{};
-			std::string GetWSALastErrorMessage() const;
+			[[nodiscard]] std::string GetWSALastErrorMessage() const;
 		};
 
 		/**
