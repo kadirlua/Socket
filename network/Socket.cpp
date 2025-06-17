@@ -23,7 +23,6 @@
 #include "Socket.h"
 #include "SocketException.h"
 #include <cstring>
-#include <array>
 
 namespace sdk {
 
@@ -136,7 +135,7 @@ namespace sdk {
 		void Socket::connect()
 		{
 #ifdef _WIN32
-			const struct timeval timeout{ 0, DEFAULT_TIMEOUT };
+			constexpr struct timeval timeout{ 0, DEFAULT_TIMEOUT };
 #else
 			struct timeval timeout{ 0, DEFAULT_TIMEOUT };
 #endif
@@ -154,9 +153,7 @@ namespace sdk {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
-				const int lastError = WSAGetLastError();
-
-				switch (lastError) {
+				switch (const int lastError = WSAGetLastError()) {
 				case WSAEINPROGRESS:
 				case WSAEWOULDBLOCK: {
 					fd_set writeFds{};
@@ -171,7 +168,7 @@ namespace sdk {
 						FD_SET(m_socketId, &writeFds);
 						FD_ZERO(&exceptFds);
 						FD_SET(m_socketId, &exceptFds);
-						err = select((int)m_socketId + 1, nullptr, &writeFds, &exceptFds, &timeout);
+						err = select(static_cast<int>(m_socketId) + 1, nullptr, &writeFds, &exceptFds, &timeout);
 						if (err < 0) {
 							throw general::SocketException(WSAGetLastError());
 						}
@@ -215,7 +212,7 @@ namespace sdk {
 		{
 			if (m_protocolType != ProtocolType::udp) {
 #ifdef _WIN32
-				const struct timeval timeout{ 0, DEFAULT_TIMEOUT };
+				constexpr struct timeval timeout{ 0, DEFAULT_TIMEOUT };
 #else
 				struct timeval timeout{ 0, DEFAULT_TIMEOUT };
 #endif
@@ -244,8 +241,7 @@ namespace sdk {
 							FD_SET(m_socketId, &readFds);
 							FD_ZERO(&exceptFds);
 							FD_SET(m_socketId, &exceptFds);
-							const auto err = select((int)m_socketId + 1, &readFds, nullptr, &exceptFds, &timeout);
-							if (err < 0) {
+							if (const auto err = select(static_cast<int>(m_socketId) + 1, &readFds, nullptr, &exceptFds, &timeout); err < 0) {
 								throw general::SocketException(WSAGetLastError());
 							}
 							if (FD_ISSET(m_socketId, &exceptFds)) {
