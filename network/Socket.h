@@ -60,7 +60,7 @@ namespace sdk {
 		};
 
 		// Useful WSA socket DLL versions
-		enum {
+		enum : std::uint16_t {
 			WSA_VER_1_0 = MakeVer(1, 0),
 			WSA_VER_1_1 = MakeVer(1, 1),
 			WSA_VER_2_0 = MakeVer(2, 0),
@@ -133,7 +133,6 @@ namespace sdk {
 			/**
 			 * @brief The accept function permits an incoming connection attempt on a socket.
 			 * This function is useless for udp connections.
-			 * @param data: data to be sent.
 			 * @return nothing.
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
@@ -158,7 +157,7 @@ namespace sdk {
 			}
 
 			/**
-			 * @brief This function is useful for all socket applications to set a port number..
+			 * @brief This function is useful for all socket applications to set a port number.
 			 * @param portNumber Port number.
 			 * @return nothing.
 			 * @exception This function never throws an exception.
