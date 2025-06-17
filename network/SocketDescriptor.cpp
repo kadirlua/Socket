@@ -25,7 +25,6 @@
 #include "SocketException.h"
 #include "SocketOption.h"
 
-#include <memory>
 #include <iterator>
 
 namespace sdk {
@@ -64,7 +63,7 @@ namespace sdk {
 			int receiveByte{};
 			int iResult{};
 #ifdef _WIN32
-			const struct timeval tVal = { 0, 0 };
+			constexpr struct timeval tVal = { 0, 0 };
 #else
 			struct timeval tVal = { 0, 0 };
 #endif
@@ -99,7 +98,7 @@ namespace sdk {
 						FD_ZERO(&readFds);
 						FD_SET(m_socketId, &readFds);
 
-						iResult = select((int)m_socketId + 1, &readFds, nullptr, nullptr, &recvTimeout);
+						iResult = select(static_cast<int>(m_socketId) + 1, &readFds, nullptr, nullptr, &recvTimeout);
 						if (iResult < 0) {
 							throw general::SocketException(WSAGetLastError());
 						}
@@ -126,7 +125,7 @@ namespace sdk {
 					throw general::SocketException(INTERRUPT_MSG);
 				}
 
-				if (maxSize > 0 && strMessage.size() >= (std::size_t)maxSize) {
+				if (maxSize > 0 && strMessage.size() >= static_cast<std::size_t>(maxSize)) {
 					break;
 				}
 
@@ -139,7 +138,7 @@ namespace sdk {
 				FD_SET(m_socketId, &readFds);
 				FD_ZERO(&exceptFds);
 				FD_SET(m_socketId, &exceptFds);
-				iResult = select((int)m_socketId + 1, &readFds, nullptr, &exceptFds, &tVal);
+				iResult = select(static_cast<int>(m_socketId) + 1, &readFds, nullptr, &exceptFds, &tVal);
 				if (iResult < 0) {
 					throw general::SocketException(WSAGetLastError());
 				}
