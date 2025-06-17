@@ -27,48 +27,48 @@
 #include "SocketExport.h"
 
 namespace sdk {
-    namespace general {
+	namespace general {
 
-        /**
-         * @brief This class is used to determine the exception errors that 
-         * may occur while using the socket classes.
-         */
-        class SOCKET_API SocketException : public BaseException
-        {
-        public:
-            SocketException(int errCode) noexcept;
-            SocketException(int errCode, std::string&& errMsg) noexcept;
-            SocketException(int errCode, const std::string& errMsg) noexcept;
-            SocketException(const std::string& errMsg) noexcept;
-            SocketException(std::string&& errMsg) noexcept;
+		/**
+		 * @brief This class is used to determine the exception errors that
+		 * may occur while using the socket classes.
+		 */
+		class SOCKET_API SocketException : public BaseException {
+		public:
+			SocketException(int errCode) noexcept;
+			SocketException(int errCode, std::string&& errMsg) noexcept;
+			SocketException(int errCode, const std::string& errMsg) noexcept;
+			SocketException(const std::string& errMsg) noexcept;
+			SocketException(std::string&& errMsg) noexcept;
 
-            /**
-             * @brief Gets an error code for detect which error occurs.
-             * @return Error code.
-             * @exception This function never throws an exception.
-             */
-            int getErrorCode() const noexcept {
-                return m_error_code;
-            }
-        protected:
-            int m_error_code{};
-            std::string GetWSALastErrorMessage() const;
-        };
+			/**
+			 * @brief Gets an error code for detect which error occurs.
+			 * @return Error code.
+			 * @exception This function never throws an exception.
+			 */
+			int getErrorCode() const noexcept
+			{
+				return m_error_code;
+			}
 
-        /**
-         * @brief This class is used to determine the exception errors that 
-         * may occur while using the secure socket classes.
-         */
-        class SOCKET_API SSLSocketException : public SocketException
-        {
-        public:
-            SSLSocketException(int errCode);
-            SSLSocketException(int errCode, std::string&& errMsg) noexcept;
-            SSLSocketException(int errCode, const std::string& errMsg) noexcept;
-            SSLSocketException(const std::string& errMsg) noexcept;
-            SSLSocketException(std::string&& errMsg) noexcept;
-        };
-    }
+		protected:
+			int m_error_code{};
+			std::string GetWSALastErrorMessage() const;
+		};
+
+		/**
+		 * @brief This class is used to determine the exception errors that
+		 * may occur while using the secure socket classes.
+		 */
+		class SOCKET_API SSLSocketException : public SocketException {
+		public:
+			SSLSocketException(int errCode);
+			SSLSocketException(int errCode, std::string&& errMsg) noexcept;
+			SSLSocketException(int errCode, const std::string& errMsg) noexcept;
+			SSLSocketException(const std::string& errMsg) noexcept;
+			SSLSocketException(std::string&& errMsg) noexcept;
+		};
+	}
 }
 
 #endif

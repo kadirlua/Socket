@@ -67,7 +67,7 @@ namespace sdk {
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setDebug(SocketOpt debugMode);
-			
+
 			/**
 			 * @brief If you want to bind two sockets of the same protocol to the same source address and port.
 			 * @param reuseMode Reuse address is active if 1, disabled 0.
@@ -75,7 +75,7 @@ namespace sdk {
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setReuseAddr(SocketOpt reuseMode);
-			
+
 			/**
 			 * @brief Allow an application to enable keep-alive packets for a socket connection.
 			 * @param keepAliveMode Keep alive is active if 1, disabled 0.
@@ -83,7 +83,7 @@ namespace sdk {
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setKeepAlive(SocketOpt keepAliveMode);
-			
+
 			/**
 			 * @brief Enables or disables non-blocking mode on socket.
 			 * @param blockingMode Non-blocking mode is active if 1, disabled 0.
@@ -91,7 +91,7 @@ namespace sdk {
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setBlockingMode(SocketOpt blockingMode);
-			
+
 			/**
 			 * @brief Enables or disables linger option on socket.
 			 * @param mode Linger option is active if 1, disabled 0.
@@ -100,7 +100,7 @@ namespace sdk {
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setLingerOpt(SocketOpt mode, unsigned short second);
-			
+
 			/**
 			 * @brief Sets default timeout value for socket connections.
 			 * @param seconds Timeout value in seconds.
@@ -109,28 +109,28 @@ namespace sdk {
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			void setRecvTimeout(long seconds, long microseconds);
-			
+
 			/**
 			 * @brief Gets linger option state on socket.
 			 * @return Active if returns 1, disabled 0.
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			int getLingerOpt() const;
-			
+
 			/**
 			 * @brief Gets debug mode state on socket.
 			 * @return Active if returns 1, disabled 0.
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			int getDebug() const;
-			
+
 			/**
 			 * @brief Gets reuse address state on socket.
 			 * @return Active if returns 1, disabled 0.
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			int getReuseAddr() const;
-			
+
 			/**
 			 * @brief Gets keep alive state on socket.
 			 * @return Active if returns 1, disabled 0.
@@ -155,4 +155,4 @@ namespace sdk {
 	}
 }
 
-#endif	// SOCKET_OPTION_H
+#endif // SOCKET_OPTION_H

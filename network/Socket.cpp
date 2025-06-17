@@ -99,13 +99,13 @@ namespace sdk {
 		void Socket::fillAddrInfo()
 		{
 			struct addrinfo hints{};
-			struct addrinfo *res = nullptr;
-			struct addrinfo *ptr = nullptr;
+			struct addrinfo* res = nullptr;
+			struct addrinfo* ptr = nullptr;
 
 			std::memset(&hints, 0, sizeof(hints));
 			hints.ai_family = AF_UNSPEC; // AF_INET or AF_INET6 to force version
 			hints.ai_socktype = SOCK_STREAM;
-			//hints.ai_flags = AI_NUMERICHOST;
+			// hints.ai_flags = AI_NUMERICHOST;
 
 			const auto ret = getaddrinfo(m_ipAddress.c_str(), std::to_string(m_portNumber).c_str(), &hints, &res);
 			if (ret != 0) {
@@ -117,7 +117,7 @@ namespace sdk {
 #endif
 			}
 
-			const std::unique_ptr<addrinfo, decltype(&freeaddrinfo)> pResPtr{ res, freeaddrinfo }; 
+			const std::unique_ptr<addrinfo, decltype(&freeaddrinfo)> pResPtr{ res, freeaddrinfo };
 
 			for (ptr = pResPtr.get(); ptr != nullptr; ptr = ptr->ai_next) {
 				// get the pointer to the address itself,
@@ -146,8 +146,7 @@ namespace sdk {
 
 			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6));
 
-			const auto* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) :
-				reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
+			const auto* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) : reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
 
 			while (::connect(m_socketId, stAddress, addressSize) == SOCKET_ERROR) {
 				//	check if any interrupt happened by user
@@ -197,8 +196,7 @@ namespace sdk {
 		void Socket::bind()
 		{
 			const int addressSize = (m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6));
-			const auto* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) :
-				reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
+			const auto* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<const sockaddr*>(&m_sockAddressIpv4) : reinterpret_cast<const sockaddr*>(&m_sockAddressIpv6));
 			if (::bind(m_socketId, stAddress, addressSize) == SOCKET_ERROR) {
 				throw general::SocketException(WSAGetLastError());
 			}
@@ -224,8 +222,7 @@ namespace sdk {
 				socklen_t addrLen = m_ipVersion == IpVersion::IPv4 ? sizeof(m_sockAddressIpv4) : sizeof(m_sockAddressIpv6);
 				SOCKET newSockId{};
 
-				auto* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<sockaddr*>(&m_sockAddressIpv4) :
-					reinterpret_cast<sockaddr*>(&m_sockAddressIpv6));
+				auto* stAddress = (m_ipVersion == IpVersion::IPv4 ? reinterpret_cast<sockaddr*>(&m_sockAddressIpv4) : reinterpret_cast<sockaddr*>(&m_sockAddressIpv6));
 
 				while ((newSockId = ::accept(m_socketId, stAddress, &addrLen)) == INVALID_SOCKET) {
 					//	check if any interrupt happened by user

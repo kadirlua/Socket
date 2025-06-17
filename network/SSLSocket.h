@@ -30,7 +30,7 @@
 #include <openssl/crypto.h>
 #endif // OPENSSL_SUPPORTED
 
-//#include <functional>
+// #include <functional>
 
 namespace sdk {
 	namespace network {
@@ -71,7 +71,7 @@ namespace sdk {
 			 * @exception This function throws an SSLSocketException if an error occurs.
 			 */
 			void setCipherList(const char* str);
-			
+
 
 			/**
 			 * @brief This function load the certificates in the given file path.
@@ -81,8 +81,8 @@ namespace sdk {
 			 * @exception This function throws an SSLSocketException if an error occurs.
 			 */
 			void loadCertificateFile(const char* certFile, int type = SSL_FILETYPE_PEM);
-			
-			
+
+
 			/**
 			 * @brief This function load the key in the given file path.
 			 * @param keyFile File path.
@@ -91,7 +91,7 @@ namespace sdk {
 			 * @exception This function throws an SSLSocketException if an error occurs.
 			 */
 			void loadPrivateKeyFile(const char* keyFile, int type = SSL_FILETYPE_PEM);
-			
+
 			/**
 			 * @brief This function specifies the locations for ctx, at which CA certificates for verification purposes are located.
 			 * The certificates available via CAfile and CApath are trusted.
@@ -101,7 +101,7 @@ namespace sdk {
 			 * @exception This function throws an SSLSocketException if an error occurs.
 			 */
 			void loadVerifyLocations(const char* caFile, const char* caPath);
-			
+
 			/**
 			 * @brief This function loads the client certificate list in the given file path.
 			 * @param path File path.
@@ -109,7 +109,7 @@ namespace sdk {
 			 * @exception This function throws an SSLSocketException if an error occurs.
 			 */
 			void loadClientCertificateList(const char* path);
-			
+
 			/**
 			 * @brief This function sets the depth of the certificate chain verification that shall be performed.
 			 * @param depth The depth of the certificate chain verification.
@@ -117,7 +117,7 @@ namespace sdk {
 			 * @exception This function never throws an exception.
 			 */
 			void setVerifyDepth(int depth) noexcept;
-			
+
 			/**
 			 * @brief Gets a context object.
 			 * @return The pointer address of SSL_CTX object created, otherwise nullptr.
@@ -140,7 +140,7 @@ namespace sdk {
 				return OpenSSL_version(OPENSSL_FULL_VERSION_STRING);
 #endif
 			}
-			
+
 			/**
 			 * @brief This function sets the callback function that is called when the certificate is verified.
 			 * @param callback The callback function.
@@ -157,4 +157,4 @@ namespace sdk {
 	}
 }
 
-#endif	// SSL_SOCKET_H
+#endif // SSL_SOCKET_H

@@ -60,7 +60,7 @@ namespace sdk {
 
 			std::string strMessage;
 			std::vector<char> dataVec(bufLen);
-			
+
 			int receiveByte{};
 			int iResult{};
 #ifdef _WIN32

@@ -39,7 +39,7 @@
 namespace sdk {
 	namespace network {
 
-		constexpr std::uint16_t MakeVer(std::uint8_t lowByte, std::uint8_t highByte) 
+		constexpr std::uint16_t MakeVer(std::uint8_t lowByte, std::uint8_t highByte)
 		{
 			return (lowByte & 0xff) | ((highByte & 0xff) << 8);
 		}
@@ -70,7 +70,7 @@ namespace sdk {
 
 		INLINE constexpr auto const INTERRUPT_MSG = "I/O interrupt callback is called by user.";
 
-		class Socket;	// forward declaration
+		class Socket; // forward declaration
 
 		//	socket interrupt callback
 		using socketInterruptCallback = std::function<bool(const Socket&)>;
@@ -101,27 +101,27 @@ namespace sdk {
 			 * @return true if successfully, false otherwise.
 			 */
 			static bool WSAInit(unsigned short versionReq) noexcept;
-			
+
 			/**
 			 * @brief This function terminates use of the Winsock DLL.
 			 * @return nothing.
 			 */
 			static void WSADeinit() noexcept;
-			
+
 			/**
 			 * @brief Duty of connect method is connected to server for client applications.
 			 * @return nothing.
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			virtual void connect();
-			
+
 			/**
 			 * @brief The bind function associates a local address with a socket.
 			 * @return nothing.
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			virtual void bind();
-			
+
 			/**
 			 * @brief The listen function places a socket in a state in which it is listening for an incoming connection.
 			 * This function is useless for udp connections.
@@ -129,7 +129,7 @@ namespace sdk {
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			virtual void listen(int listenCount);
-			
+
 			/**
 			 * @brief The accept function permits an incoming connection attempt on a socket.
 			 * This function is useless for udp connections.
@@ -138,14 +138,14 @@ namespace sdk {
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual SOCKET accept();
-			
+
 			/**
 			 * @brief This function creates an instance of socket descriptor.
 			 * @param socketId: The id of socket.
 			 * @return A shared pointer of socket descriptor.
 			 */
 			NODISCARD std::shared_ptr<SocketDescriptor> createSocketDescriptor(SOCKET socketId);
-			
+
 			/**
 			 * @brief This function is useful for client applications to set an ip address.
 			 * @param ipAddress Ip address.
@@ -177,7 +177,7 @@ namespace sdk {
 			{
 				return m_socketId;
 			}
-			
+
 			/**
 			 * @brief This function returns port number if you need.
 			 * @return Port number int type.
@@ -208,4 +208,4 @@ namespace sdk {
 	}
 }
 
-#endif	// SOCKET_H
+#endif // SOCKET_H

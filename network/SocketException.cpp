@@ -31,96 +31,95 @@
 #include <openssl/err.h>
 #endif // OPENSSL_SUPPORTED
 
-namespace sdk{
-    namespace general
-    {
-        SocketException::SocketException(int errCode) noexcept :
-            m_error_code{ errCode }
-        {
-            m_error_msg = GetWSALastErrorMessage();
-        }
+namespace sdk {
+	namespace general {
+		SocketException::SocketException(int errCode) noexcept :
+			m_error_code{ errCode }
+		{
+			m_error_msg = GetWSALastErrorMessage();
+		}
 
-        SocketException::SocketException(int errCode, std::string&& errMsg) noexcept :
-            BaseException{ std::move(errMsg) },
-            m_error_code{ errCode }
-        {
-        }
+		SocketException::SocketException(int errCode, std::string&& errMsg) noexcept :
+			BaseException{ std::move(errMsg) },
+			m_error_code{ errCode }
+		{
+		}
 
-        SocketException::SocketException(int errCode, const std::string& errMsg) noexcept :
-            BaseException{ errMsg },
-            m_error_code{ errCode }
-        {
-        }
+		SocketException::SocketException(int errCode, const std::string& errMsg) noexcept :
+			BaseException{ errMsg },
+			m_error_code{ errCode }
+		{
+		}
 
-        SocketException::SocketException(std::string&& errMsg) noexcept :
-            BaseException{ std::move(errMsg) }
-        {
-        }
+		SocketException::SocketException(std::string&& errMsg) noexcept :
+			BaseException{ std::move(errMsg) }
+		{
+		}
 
-        SocketException::SocketException(const std::string& errMsg) noexcept :
-            BaseException{ errMsg }
-        {
-        }
+		SocketException::SocketException(const std::string& errMsg) noexcept :
+			BaseException{ errMsg }
+		{
+		}
 
-        std::string SocketException::GetWSALastErrorMessage() const
-        {
-            std::string strErrMsg;
+		std::string SocketException::GetWSALastErrorMessage() const
+		{
+			std::string strErrMsg;
 #ifdef _WIN32
-            char* err_msg = nullptr;
-            if (FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                nullptr,
-                m_error_code,
-                0,
-                (LPSTR)&err_msg,
-                0,
-                nullptr) == 0U) {
+			char* err_msg = nullptr;
+			if (FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+					nullptr,
+					m_error_code,
+					0,
+					(LPSTR)&err_msg,
+					0,
+					nullptr) == 0U) {
 				return strErrMsg;
 			}
 
-            strErrMsg = err_msg;
-            LocalFree(err_msg);
+			strErrMsg = err_msg;
+			LocalFree(err_msg);
 #elif __linux__
-#if (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && ! _GNU_SOURCE
-            char strBuffer[1024]{};
-            if (strerror_r(m_error_code, strBuffer, sizeof(strBuffer) * sizeof(char)) == 0)
-                strErrMsg = strBuffer;
+#if (_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600) && !_GNU_SOURCE
+			char strBuffer[1024]{};
+			if (strerror_r(m_error_code, strBuffer, sizeof(strBuffer) * sizeof(char)) == 0)
+				strErrMsg = strBuffer;
 #else
-            strErrMsg = strerror(m_error_code);
+			strErrMsg = strerror(m_error_code);
 #endif
 #endif
-            return strErrMsg;
-        }
+			return strErrMsg;
+		}
 
-        SSLSocketException::SSLSocketException(int errCode):
-            SocketException{ errCode }
-        {
+		SSLSocketException::SSLSocketException(int errCode) :
+			SocketException{ errCode }
+		{
 #if OPENSSL_SUPPORTED
-            unsigned long err{};
-            while ((err = ERR_get_error()) != 0) {
-                m_error_msg += ERR_error_string(err, nullptr);
-            }
+			unsigned long err{};
+			while ((err = ERR_get_error()) != 0) {
+				m_error_msg += ERR_error_string(err, nullptr);
+			}
 #endif // OPENSSL_SUPPORTED
-        }
+		}
 
-        SSLSocketException::SSLSocketException(int errCode, std::string&& errMsg) noexcept :
-            SocketException{ errCode, std::move(errMsg) }
-        {
-        }
+		SSLSocketException::SSLSocketException(int errCode, std::string&& errMsg) noexcept :
+			SocketException{ errCode, std::move(errMsg) }
+		{
+		}
 
-        SSLSocketException::SSLSocketException(int errCode, const std::string& errMsg) noexcept :
-            SocketException{ errCode, errMsg }
-        {
-        }
+		SSLSocketException::SSLSocketException(int errCode, const std::string& errMsg) noexcept :
+			SocketException{ errCode, errMsg }
+		{
+		}
 
-        SSLSocketException::SSLSocketException(std::string&& errMsg) noexcept :
-            SocketException{ std::move(errMsg) }
-        {
-        }
+		SSLSocketException::SSLSocketException(std::string&& errMsg) noexcept :
+			SocketException{ std::move(errMsg) }
+		{
+		}
 
-        SSLSocketException::SSLSocketException(const std::string& errMsg) noexcept :
-            SocketException{ errMsg }
-        {
-        }
+		SSLSocketException::SSLSocketException(const std::string& errMsg) noexcept :
+			SocketException{ errMsg }
+		{
+		}
 
-    }
+	}
 }

@@ -26,8 +26,8 @@
 #include <iterator>
 
 #if OPENSSL_SUPPORTED
-#include <openssl/x509v3.h>	// required for host verification
-#endif // OPENSSL_SUPPORTED
+#include <openssl/x509v3.h> // required for host verification
+#endif						// OPENSSL_SUPPORTED
 
 namespace sdk {
 	namespace network {
@@ -123,7 +123,7 @@ namespace sdk {
 				}
 			}
 
- 			const X509_unique_ptr peer{ SSL_get_peer_certificate(m_ssl.get()), X509_free };
+			const X509_unique_ptr peer{ SSL_get_peer_certificate(m_ssl.get()), X509_free };
 			if (peer) {
 				const long retCode = SSL_get_verify_result(m_ssl.get());
 				if (retCode != X509_V_OK) {
@@ -133,7 +133,7 @@ namespace sdk {
 				// check host
 				// if our server has valid certificate such an google.com uncomment this if block
 				if (!m_hostname.empty()) {
-					const int checkResult = X509_check_host(peer.get(), m_hostname.c_str(), 
+					const int checkResult = X509_check_host(peer.get(), m_hostname.c_str(),
 						m_hostname.size(), 0, nullptr);
 					if (checkResult != 1) {
 						throw general::SSLSocketException(checkResult);
@@ -141,7 +141,7 @@ namespace sdk {
 				}
 			}
 			else {
-				throw general::SSLSocketException("client did not give a certificate");	
+				throw general::SSLSocketException("client did not give a certificate");
 			}
 		}
 
@@ -160,7 +160,7 @@ namespace sdk {
 
 			std::string strMessage;
 			std::vector<char> dataVec(bufLen);
-			
+
 			int receiveByte = 0;
 
 			const auto& callbackInterrupt = m_socketRef.m_callbackInterrupt;

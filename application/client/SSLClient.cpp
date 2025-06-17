@@ -28,9 +28,9 @@ namespace sdk {
 
 #if OPENSSL_SUPPORTED
 
-		SSLClient::SSLClient(const std::string& ipAddr, int port, 
-							network::ProtocolType type /*= network::ProtocolType::tcp*/, 
-							network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
+		SSLClient::SSLClient(const std::string& ipAddr, int port,
+			network::ProtocolType type /*= network::ProtocolType::tcp*/,
+			network::IpVersion ipVer /*= network::IpVersion::IPv4*/) :
 			Client{ ipAddr, port, type, ipVer },
 			m_sslSocket{ port, network::ConnMethod::client, type, ipVer }
 		{

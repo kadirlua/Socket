@@ -44,7 +44,7 @@ int main(int argc, const char** argv)
 	}
 
 	const std::string strMsg{ argv[3] };
-	
+
 	if (!sdk::network::Socket::WSAInit(sdk::network::WSA_VER_2_2)) {
 		std::cout << "sdk::network::Socket::WSAInit failed\r\n";
 		return EXIT_FAILURE;
@@ -58,13 +58,14 @@ int main(int argc, const char** argv)
 		std::string strResponse;
 		static_cast<void>(client.read(strResponse));
 		std::cout << "Response from server: " << strResponse << "\r\n";
-	} catch (const sdk::general::SSLSocketException& ex) {
+	}
+	catch (const sdk::general::SSLSocketException& ex) {
 		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\r\n";
 	}
 
 	sdk::network::Socket::WSADeinit();
 #else
 	std::cout << "Build the project with OPENSSL_SUPPORTED.\r\n";
-#endif	// OPENSSL_SUPPORTED
+#endif // OPENSSL_SUPPORTED
 	return EXIT_SUCCESS;
 }

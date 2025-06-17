@@ -31,10 +31,10 @@ namespace sdk {
 		int SSLSocket::verifyCallbackFunc(int preverifyOK, X509_STORE_CTX* x509Ctx)
 		{
 			/*
-			* Retrieve the pointer to the SSL of the connection currently treated
-			* and the application specific data stored into the SSL object.
-			*/
-			const auto* ssl = static_cast<SSL*>(X509_STORE_CTX_get_ex_data(x509Ctx, 
+			 * Retrieve the pointer to the SSL of the connection currently treated
+			 * and the application specific data stored into the SSL object.
+			 */
+			const auto* ssl = static_cast<SSL*>(X509_STORE_CTX_get_ex_data(x509Ctx,
 				SSL_get_ex_data_X509_STORE_CTX_idx()));
 			if (ssl != nullptr) {
 				const auto* sslCtx = SSL_get_SSL_CTX(ssl);
@@ -56,7 +56,7 @@ namespace sdk {
 				m_ctx = SSLCtx_unique_ptr{ SSL_CTX_new(TLS_server_method()), SSL_CTX_free };
 				SSL_CTX_set_ex_data(m_ctx.get(), 0, this);
 				SSL_CTX_set_verify(m_ctx.get(), SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
-                    &SSLSocket::verifyCallbackFunc);
+					&SSLSocket::verifyCallbackFunc);
 			}
 
 			// We want to support all versions of TLS >= 1.0, but not the deprecated

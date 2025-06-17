@@ -112,7 +112,7 @@ namespace sdk {
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual std::size_t read(std::vector<unsigned char>& message, int maxSize = 0) const;
-			
+
 			/**
 			 * @brief This function used for reading operations from related socket.
 			 * @param message string.
@@ -138,7 +138,7 @@ namespace sdk {
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual int write(const char* data, int dataSize);
-			
+
 			/**
 			 * @brief This function used for writing operations from related socket.
 			 * @param message Bytes of vector.
@@ -154,7 +154,7 @@ namespace sdk {
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual int write(const std::string& message);
-			
+
 			/**
 			 * @brief Gets a socket id from related socket.
 			 * @return The id of socket.
@@ -175,4 +175,4 @@ namespace sdk {
 	}
 }
 
-#endif	// SOCKET_DESCRIPTOR_H
+#endif // SOCKET_DESCRIPTOR_H

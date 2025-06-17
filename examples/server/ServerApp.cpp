@@ -39,7 +39,7 @@ int main(int argc, const char** argv)
 		std::cout << "Invalid port range.\r\n";
 		return EXIT_FAILURE;
 	}
-	
+
 	if (!sdk::network::Socket::WSAInit(sdk::network::WSA_VER_2_2)) {
 		std::cout << "sdk::network::Socket::WSAInit failed\r\n";
 		return EXIT_FAILURE;
@@ -48,7 +48,8 @@ int main(int argc, const char** argv)
 	try {
 		sdk::application::Server srv{ portNumber };
 		srv.startListening();
-	} catch (const sdk::general::SocketException& ex) {
+	}
+	catch (const sdk::general::SocketException& ex) {
 		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\r\n";
 	}
 

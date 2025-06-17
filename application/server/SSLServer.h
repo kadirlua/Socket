@@ -31,7 +31,7 @@ namespace sdk {
 
 		class SOCKET_API SSLServer : public Server {
 		public:
-			SSLServer(int port, network::ProtocolType type = network::ProtocolType::tcp, 
+			SSLServer(int port, network::ProtocolType type = network::ProtocolType::tcp,
 				network::IpVersion ipVer = network::IpVersion::IPv4);
 			~SSLServer() override = default;
 
@@ -45,6 +45,7 @@ namespace sdk {
 			void loadServerPrivateKey(const char* keyFile);
 			void loadServerVerifyLocations(const char* caFile, const char* caPath);
 			void setVerifyCallback(const network::CertVerifyCallback& callback);
+
 		private:
 			network::SSLSocket m_sslSocket;
 		};

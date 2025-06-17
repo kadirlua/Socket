@@ -30,7 +30,7 @@ namespace sdk {
 
 		class SOCKET_API Server {
 		public:
-			Server(int port, network::ProtocolType type = network::ProtocolType::tcp, 
+			Server(int port, network::ProtocolType type = network::ProtocolType::tcp,
 				network::IpVersion ipVer = network::IpVersion::IPv4);
 			virtual ~Server() = default;
 

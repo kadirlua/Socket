@@ -78,7 +78,7 @@ namespace {
 
 		return preverifyOK;
 	}
-#endif	// OPENSSL_SUPPORTED
+#endif // OPENSSL_SUPPORTED
 
 }
 
@@ -95,7 +95,7 @@ int main(int argc, const char** argv)
 		std::cout << "Invalid port range.\r\n";
 		return EXIT_FAILURE;
 	}
-	
+
 	if (!sdk::network::Socket::WSAInit(sdk::network::WSA_VER_2_2)) {
 		std::cout << "sdk::network::Socket::WSAInit failed\r\n";
 		return EXIT_FAILURE;
@@ -108,13 +108,14 @@ int main(int argc, const char** argv)
 		srv.loadServerVerifyLocations(argv[4], nullptr);
 		srv.setVerifyCallback(verifyCallback);
 		srv.startListening();
-	} catch (const sdk::general::SSLSocketException& ex) {
+	}
+	catch (const sdk::general::SSLSocketException& ex) {
 		std::cout << ex.getErrorCode() << ": " << ex.getErrorMsg() << "\r\n";
 	}
 
 	sdk::network::Socket::WSADeinit();
 #else
 	std::cout << "Build the project with OPENSSL_SUPPORTED.\r\n";
-#endif	// OPENSSL_SUPPORTED
+#endif // OPENSSL_SUPPORTED
 	return EXIT_SUCCESS;
 }
