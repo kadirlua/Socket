@@ -10,7 +10,7 @@ on:
 
 env:
   VCPKG_BUILD_TYPE: release
-  VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/.vcpkg-cache,readwrite"
+  # VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/.vcpkg-cache,readwrite"
 
 jobs:
   build:
@@ -27,6 +27,18 @@ jobs:
         git clone https://github.com/microsoft/vcpkg.git
         ./vcpkg/bootstrap-vcpkg.sh
       shell: bash
+
+    - name: Cache vcpkg installed packages
+      id: vcpkg-cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ${{ github.workspace }}/vcpkg/installed
+          ${{ github.workspace }}/vcpkg/downloads # Optional, to cache downloaded archives
+        key: ${{ runner.os }}-${{ matrix.platform.name }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-lock.json') }}-${{ env.BUILD_TYPE }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.platform.name }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-lock.json') }}
+          ${{ runner.os }}-${{ matrix.platform.name }}
 
     - name: Install dependencies with vcpkg
       run: |
