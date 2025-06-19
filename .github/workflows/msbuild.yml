@@ -7,12 +7,8 @@ on:
     branches: [ "main" ]
 
 env:
-  # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: msvc/Socket.sln
-
-  # Configuration type to build (e.g., Release, Debug, or custom like Release_OpenSSL).
   BUILD_CONFIGURATION: Release_OpenSSL
-
   VCPKG_BUILD_TYPE: release
 
 permissions:
@@ -28,28 +24,31 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Determine VCPKG archive cache path
+        id: determine-cache-path
+        shell: cmd
+        run: |
+          echo "VCPKG_CACHE=%LOCALAPPDATA%\\vcpkg\\archives" >> %GITHUB_ENV%
+
       - name: Cache vcpkg archives
         uses: actions/cache@v4
         with:
-          # Path where vcpkg stores built archives on Windows
-          path: C:/Users/runneradmin/AppData/Local/vcpkg/archives
+          path: ${{ env.VCPKG_CACHE }}
           key: ${{ runner.os }}-vcpkg-archives-${{ env.BUILD_CONFIGURATION }}-${{ hashFiles('vcpkg.json') }}
           restore-keys: |
             ${{ runner.os }}-vcpkg-archives-
 
       - name: Ensure vcpkg cache dir exists
         run: |
-          if not exist "C:/Users/runneradmin/AppData/Local/vcpkg/archives" mkdir "C:/Users/runneradmin/AppData/Local/vcpkg/archives"
+          if not exist "${{ env.VCPKG_CACHE }}" mkdir "${{ env.VCPKG_CACHE }}"
         shell: cmd
 
       - name: Set up vcpkg
         run: |
-          :: Only clone if missing or bootstrap script absent
           if not exist "vcpkg\scripts\bootstrap.ps1" (
             rmdir /s /q vcpkg
             git clone https://github.com/microsoft/vcpkg.git
           )
-          :: Bootstrap vcpkg
           powershell -NoProfile -ExecutionPolicy Bypass -Command "& .\vcpkg\scripts\bootstrap.ps1"
         shell: cmd
 
@@ -60,18 +59,16 @@ jobs:
       - name: Install dependencies
         shell: cmd
         run: |
-          set VCPKG_BINARY_SOURCES=clear;files,C:/Users/runneradmin/AppData/Local/vcpkg/archives,readwrite
+          set VCPKG_BINARY_SOURCES=clear;files,${{ env.VCPKG_CACHE }},readwrite
           .\vcpkg\vcpkg install --triplet x64-windows
 
       - name: Restore NuGet packages
-        run: |
-          nuget restore %SOLUTION_FILE_PATH%
+        run: nuget restore %SOLUTION_FILE_PATH%
         shell: cmd
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
       - name: Build solution
-        run: |
-          msbuild %SOLUTION_FILE_PATH% /m /p:Configuration=%BUILD_CONFIGURATION%
+        run: msbuild %SOLUTION_FILE_PATH% /m /p:Configuration=%BUILD_CONFIGURATION%
         shell: cmd
