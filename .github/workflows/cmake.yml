@@ -82,10 +82,11 @@ jobs:
         if: runner.os != 'Windows'
 
       - name: Install vcpkg dependencies (Windows)
-        run: |
-          .\vcpkg\vcpkg install
-        shell: cmd
         if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          set VCPKG_BINARY_SOURCES=clear;files,${{ matrix.platform.cache_path }},readwrite
+          .\vcpkg\vcpkg install
 
       - name: Configure CMake (Unix)
         if: runner.os != 'Windows'
