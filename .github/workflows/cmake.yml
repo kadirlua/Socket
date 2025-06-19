@@ -78,14 +78,14 @@ jobs:
       - name: Install vcpkg dependencies (Unix)
         if: runner.os != 'Windows'
         run: |
-          export VCPKG_BINARY_SOURCES="clear;files=${{ env.VCPKG_CACHE }},readwrite"
+          export VCPKG_BINARY_SOURCES="clear;files,${{ env.VCPKG_CACHE }},readwrite"
           ./vcpkg/vcpkg install
         shell: bash
 
       - name: Install vcpkg dependencies (Windows)
         if: runner.os == 'Windows'
         run: |
-          set VCPKG_BINARY_SOURCES=clear;files=${{ env.VCPKG_CACHE }},readwrite
+          set VCPKG_BINARY_SOURCES=clear;files,${{ env.VCPKG_CACHE }},readwrite
           .\vcpkg\vcpkg install
         shell: cmd
 

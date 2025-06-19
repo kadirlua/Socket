@@ -50,7 +50,7 @@ jobs:
 
       - name: Install dependencies with vcpkg
         run: |
-          export VCPKG_BINARY_SOURCES="clear;files=${{ env.VCPKG_CACHE }},readwrite"
+          export VCPKG_BINARY_SOURCES="clear;files,${{ env.VCPKG_CACHE }},readwrite"
           ./vcpkg/vcpkg install --triplet arm64-android
         shell: bash
 
