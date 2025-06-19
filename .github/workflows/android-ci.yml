@@ -9,53 +9,53 @@ on:
       - main
 
 env:
+  # Build type for vcpkg
   VCPKG_BUILD_TYPE: release
-  # VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/.vcpkg-cache,readwrite"
+  # Enable vcpkg binary caching (archives stored in ~/.cache/vcpkg)
+  VCPKG_BINARY_SOURCES: "clear;files,${HOME}/.cache/vcpkg,readwrite"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        submodules: 'true' # Set to 'recursive' to recursively checkout submodules
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
-    - name: Cache vcpkg installed packages
-      id: vcpkg-cache
-      uses: actions/cache@v4
-      with:
-        # Cache the vcpkg installed packages (and buildtrees/downloads if you like)
-        path: |
-          ~/.cache/vcpkg
-          ${{ github.workspace }}/vcpkg/packages
-        # A key that changes whenever your vcpkg.json (or lockfile) changes
-        key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
-        restore-keys: |
-          ${{ runner.os }}-vcpkg-
+      - name: Cache vcpkg artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/vcpkg
+            ${{ github.workspace }}/vcpkg/packages
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}-${{ hashFiles('android/gradle.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-
 
-    - name: Set up vcpkg
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git
-        ./vcpkg/bootstrap-vcpkg.sh
-      shell: bash
+      - name: Set up vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          ./vcpkg/bootstrap-vcpkg.sh
+        shell: bash
 
-    - name: Install dependencies with vcpkg
-      run: |
-        ./vcpkg/vcpkg install --triplet arm64-android
+      - name: Install dependencies with vcpkg
+        run: |
+          ./vcpkg/vcpkg install --triplet arm64-android
 
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'zulu'
-        java-version: '21'
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
 
-    - name: Change wrapper permissions
-      run: |
-        chmod +x ./android/gradlew
+      - name: Grant Gradle wrapper execute permission
+        run: chmod +x ./android/gradlew
+        shell: bash
 
-    - name: Build with Gradle
-      run: |
-        cd android
-        ./gradlew build
+      - name: Build with Gradle
+        run: |
+          cd android
+          ./gradlew build
+        shell: bash
