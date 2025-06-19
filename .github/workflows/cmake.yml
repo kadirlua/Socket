@@ -1,4 +1,4 @@
-name: CMake
+name: CMake Build
 
 on:
   push:
@@ -7,10 +7,9 @@ on:
     branches: [ "main" ]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   VCPKG_BUILD_TYPE: release
-
+  # Use platform-specific absolute cache path
 jobs:
   build_matrix:
     strategy:
@@ -26,16 +25,16 @@ jobs:
             name: osx
             cache_path: /Users/runner/.cache/vcpkg/archives
         buildType: ["Debug", "Release"]
-        shared:    [true, false]
+        shared: [true, false]
     runs-on: ${{ matrix.platform.os }}
     env:
-      # Instruct vcpkg to use (and populate) the platform-specific archive cache
       VCPKG_BINARY_SOURCES: "clear;files,${{ matrix.platform.cache_path }},readwrite"
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          submodules: 'true' # Set to 'recursive' to recursively checkout submodules
+          submodules: 'true'
 
       - name: Cache vcpkg archives
         uses: actions/cache@v4
@@ -55,22 +54,36 @@ jobs:
         run: mkdir "${{ matrix.platform.cache_path }}"
         shell: cmd
 
-      - name: Bootstrap vcpkg (Unix)
+      - name: Set up vcpkg (Unix)
         if: runner.os != 'Windows'
         run: |
-          git clone https://github.com/microsoft/vcpkg.git
+          if [ ! -f vcpkg/bootstrap-vcpkg.sh ]; then
+            rm -rf vcpkg
+            git clone https://github.com/microsoft/vcpkg.git
+          fi
           ./vcpkg/bootstrap-vcpkg.sh
         shell: bash
 
-      - name: Bootstrap vcpkg (Windows)
+      - name: Set up vcpkg (Windows)
         if: runner.os == 'Windows'
         run: |
-          git clone https://github.com/microsoft/vcpkg.git
-          .\vcpkg\bootstrap-vcpkg.bat
+          if not exist "vcpkg\scripts\bootstrap.ps1" (
+            rmdir /s /q vcpkg
+            git clone https://github.com/microsoft/vcpkg.git
+          )
+          powershell -NoProfile -ExecutionPolicy Bypass -Command "& .\vcpkg\scripts\bootstrap.ps1"
         shell: cmd
 
-      - name: Install dependencies with vcpkg
-        run: ./vcpkg/vcpkg install
+      - name: Install vcpkg dependencies
+        run: |
+          ./vcpkg/vcpkg install
+        shell: bash
+        if: runner.os != 'Windows'
+      - name: Install vcpkg dependencies (Windows)
+        run: |
+          .\vcpkg\vcpkg install
+        shell: cmd
+        if: runner.os == 'Windows'
 
       - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies
         run: |
