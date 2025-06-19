@@ -14,8 +14,8 @@ env:
   BUILD_CONFIGURATION: Release_OpenSSL
 
   VCPKG_BUILD_TYPE: release
-  # Enable vcpkg binary cache archives storage
-  VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/.vcpkg-cache,readwrite"
+  # Enable vcpkg binary cache archives (must be absolute path on Windows)
+  VCPKG_BINARY_SOURCES: "clear;files,C:/Users/runneradmin/AppData/Local/vcpkg/archives,readwrite"
 
 permissions:
   contents: read
@@ -46,8 +46,13 @@ jobs:
 
       - name: Set up vcpkg
         run: |
-          git clone https://github.com/microsoft/vcpkg.git
-          .\vcpkg\bootstrap-vcpkg.bat
+          :: Only clone if missing or bootstrap script absent
+          if not exist "vcpkg\scripts\bootstrap.ps1" (
+            rmdir /s /q vcpkg
+            git clone https://github.com/microsoft/vcpkg.git
+          )
+          :: Bootstrap vcpkg
+          powershell -NoProfile -ExecutionPolicy Bypass -Command "& .\vcpkg\scripts\bootstrap.ps1"
         shell: cmd
 
       - name: Integrate vcpkg
