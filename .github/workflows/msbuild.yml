@@ -59,7 +59,6 @@ jobs:
         shell: cmd
         run: |
           set VCPKG_BINARY_SOURCES=clear;files,${{ env.VCPKG_CACHE }},readwrite
-          cd ..
           .\vcpkg\vcpkg install --triplet x64-windows
 
       - name: Restore NuGet packages
