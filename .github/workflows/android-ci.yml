@@ -36,7 +36,10 @@ jobs:
 
       - name: Set up vcpkg
         run: |
-          git clone https://github.com/microsoft/vcpkg.git
+          # Only clone if vcpkg/ isn’t already there
+          if [ ! -d vcpkg ]; then
+            git clone https://github.com/microsoft/vcpkg.git
+          fi
           ./vcpkg/bootstrap-vcpkg.sh
         shell: bash
 
