@@ -7,9 +7,14 @@ on:
     branches: [ "main" ]
 
 env:
+  # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: msvc/Socket.sln
+
+  # Configuration type to build (e.g., Release, Debug, or custom like Release_OpenSSL).
   BUILD_CONFIGURATION: Release_OpenSSL
+
   VCPKG_BUILD_TYPE: release
+  VCPKG_CACHE: C:/Users/runneradmin/AppData/Local/vcpkg/archives
 
 permissions:
   contents: read
@@ -23,12 +28,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: 'true'
-
-      - name: Determine VCPKG archive cache path
-        id: determine-cache-path
-        shell: cmd
-        run: |
-          echo "VCPKG_CACHE=%LOCALAPPDATA%\\vcpkg\\archives" >> %GITHUB_ENV%
 
       - name: Cache vcpkg archives
         uses: actions/cache@v4
@@ -63,12 +62,14 @@ jobs:
           .\vcpkg\vcpkg install --triplet x64-windows
 
       - name: Restore NuGet packages
-        run: nuget restore %SOLUTION_FILE_PATH%
+        run: |
+          nuget restore %SOLUTION_FILE_PATH%
         shell: cmd
 
       - name: Add MSBuild to PATH
         uses: microsoft/setup-msbuild@v2
 
       - name: Build solution
-        run: msbuild %SOLUTION_FILE_PATH% /m /p:Configuration=%BUILD_CONFIGURATION%
+        run: |
+          msbuild %SOLUTION_FILE_PATH% /m /p:Configuration=%BUILD_CONFIGURATION%
         shell: cmd
