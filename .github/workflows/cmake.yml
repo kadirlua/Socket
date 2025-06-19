@@ -25,6 +25,19 @@ jobs:
       with:
         submodules: 'true' # Set to 'recursive' to recursively checkout submodules
 
+    - name: Cache vcpkg installed packages
+      id: vcpkg-cache
+      uses: actions/cache@v4
+      with:
+        # Cache the vcpkg installed packages (and buildtrees/downloads if you like)
+        path: |
+          ~/.cache/vcpkg
+          ${{ github.workspace }}/vcpkg/packages
+        # A key that changes whenever your vcpkg.json (or lockfile) changes
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+        restore-keys: |
+          ${{ runner.os }}-vcpkg-
+
     - name: Set up vcpkg on Non-Windows
       if: runner.os != 'Windows'
       run: |
@@ -38,18 +51,6 @@ jobs:
         git clone https://github.com/microsoft/vcpkg.git
         .\vcpkg\bootstrap-vcpkg.bat
       shell: cmd
-
-    - name: Cache vcpkg installed packages
-      id: vcpkg-cache
-      uses: actions/cache@v4
-      with:
-        path: |
-          ${{ github.workspace }}/vcpkg/installed
-          ${{ github.workspace }}/vcpkg/downloads # Optional, to cache downloaded archives
-        key: ${{ runner.os }}-${{ matrix.platform.name }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-lock.json') }}-${{ env.BUILD_TYPE }}
-        restore-keys: |
-          ${{ runner.os }}-${{ matrix.platform.name }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-lock.json') }}
-          ${{ runner.os }}-${{ matrix.platform.name }}
 
     - name: Install dependencies with vcpkg
       run: ./vcpkg/vcpkg install

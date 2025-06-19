@@ -30,22 +30,23 @@ jobs:
       with:
         submodules: 'true' # Set to 'recursive' to recursively checkout submodules
 
-    - name: Set up vcpkg on Windows
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git
-        .\vcpkg\bootstrap-vcpkg.bat
-
     - name: Cache vcpkg installed packages
       id: vcpkg-cache
       uses: actions/cache@v4
       with:
+        # Cache the vcpkg installed packages (and buildtrees/downloads if you like)
         path: |
-          ${{ github.workspace }}/vcpkg/installed
-          ${{ github.workspace }}/vcpkg/downloads # Optional, to cache downloaded archives
-        key: ${{ runner.os }}-${{ matrix.platform.name }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-lock.json') }}-${{ env.BUILD_TYPE }}
+          ~/.cache/vcpkg
+          ${{ github.workspace }}/vcpkg/packages
+        # A key that changes whenever your vcpkg.json (or lockfile) changes
+        key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
         restore-keys: |
-          ${{ runner.os }}-${{ matrix.platform.name }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-lock.json') }}
-          ${{ runner.os }}-${{ matrix.platform.name }}
+          ${{ runner.os }}-vcpkg-
+
+    - name: Set up vcpkg on Windows
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git
+        .\vcpkg\bootstrap-vcpkg.bat
 
     - name: Integrate vcpkg
       run: .\vcpkg\vcpkg integrate install
