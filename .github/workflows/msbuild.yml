@@ -10,13 +10,11 @@ env:
   # Path to the solution file relative to the root of the project.
   SOLUTION_FILE_PATH: msvc/Socket.sln
 
-  # Configuration type to build.
-  # You can convert this to a build matrix if you need coverage of multiple configuration types.
-  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+  # Configuration type to build (e.g., Release, Debug, or custom like Release_OpenSSL).
   BUILD_CONFIGURATION: Release_OpenSSL
 
   VCPKG_BUILD_TYPE: release
-  VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/.vcpkg-cache,readwrite"
+  VCPKG_CACHE: C:/Users/runneradmin/AppData/Local/vcpkg/archives
 
 permissions:
   contents: read
@@ -26,27 +24,52 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: 'true' # Set to 'recursive' to recursively checkout submodules
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
-    - name: Set up vcpkg on Windows
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git
-        .\vcpkg\bootstrap-vcpkg.bat
+      - name: Cache vcpkg archives
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.VCPKG_CACHE }}
+          key: ${{ runner.os }}-vcpkg-archives-${{ env.BUILD_CONFIGURATION }}-${{ hashFiles('vcpkg.json') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-archives-
 
-    - name: Integrate vcpkg
-      run: .\vcpkg\vcpkg integrate install
+      - name: Ensure vcpkg cache dir exists
+        run: |
+          if not exist "${{ env.VCPKG_CACHE }}" mkdir "${{ env.VCPKG_CACHE }}"
+        shell: cmd
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v2
+      - name: Set up vcpkg
+        run: |
+          if not exist "vcpkg\scripts\bootstrap.ps1" (
+            rmdir /s /q vcpkg
+            git clone https://github.com/microsoft/vcpkg.git
+          )
+          powershell -NoProfile -ExecutionPolicy Bypass -Command "& .\vcpkg\scripts\bootstrap.ps1"
+        shell: cmd
 
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+      - name: Integrate vcpkg
+        run: .\vcpkg\vcpkg integrate install
+        shell: cmd
 
-    - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      - name: Install dependencies
+        shell: cmd
+        run: |
+          set VCPKG_BINARY_SOURCES=clear;files,${{ env.VCPKG_CACHE }},readwrite
+          .\vcpkg\vcpkg install --triplet x64-windows
+
+      - name: Restore NuGet packages
+        run: |
+          nuget restore %SOLUTION_FILE_PATH%
+        shell: cmd
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build solution
+        run: |
+          msbuild %SOLUTION_FILE_PATH% /m /p:Configuration=%BUILD_CONFIGURATION%
+        shell: cmd

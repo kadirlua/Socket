@@ -9,40 +9,63 @@ on:
       - main
 
 env:
+  # Build type for vcpkg
   VCPKG_BUILD_TYPE: release
-  VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/.vcpkg-cache,readwrite"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      VCPKG_CACHE: $HOME/.cache/vcpkg
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        submodules: 'true' # Set to 'recursive' to recursively checkout submodules
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
-    - name: Set up vcpkg
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git
-        ./vcpkg/bootstrap-vcpkg.sh
-      shell: bash
+      - name: Cache vcpkg artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.VCPKG_CACHE }}
+            ${{ github.workspace }}/vcpkg/packages
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}-${{ hashFiles('android/gradle.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-
 
-    - name: Install dependencies with vcpkg
-      run: |
-        ./vcpkg/vcpkg install --triplet arm64-android
+      - name: Ensure vcpkg cache dir exists
+        run: mkdir -p ${{ env.VCPKG_CACHE }}
+        shell: bash
 
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'zulu'
-        java-version: '21'
+      - name: Set up vcpkg
+        run: |
+          if [ ! -f vcpkg/bootstrap-vcpkg.sh ]; then
+            rm -rf vcpkg
+            git clone https://github.com/microsoft/vcpkg.git
+          fi
+          ./vcpkg/bootstrap-vcpkg.sh
+        shell: bash
 
-    - name: Change wrapper permissions
-      run: |
-        chmod +x ./android/gradlew
+      - name: Install dependencies with vcpkg
+        run: |
+          export VCPKG_BINARY_SOURCES="clear;files,${{ env.VCPKG_CACHE }},readwrite"
+          ./vcpkg/vcpkg install --triplet arm64-android
+        shell: bash
 
-    - name: Build with Gradle
-      run: |
-        cd android
-        ./gradlew build
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Grant Gradle wrapper execute permission
+        run: chmod +x ./android/gradlew
+        shell: bash
+
+      - name: Build with Gradle
+        run: |
+          cd android
+          ./gradlew build
+        shell: bash

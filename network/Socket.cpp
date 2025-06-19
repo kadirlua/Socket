@@ -241,7 +241,8 @@ namespace sdk {
 							FD_SET(m_socketId, &readFds);
 							FD_ZERO(&exceptFds);
 							FD_SET(m_socketId, &exceptFds);
-							if (const auto err = select(static_cast<int>(m_socketId) + 1, &readFds, nullptr, &exceptFds, &timeout); err < 0) {
+						    const auto err = select(static_cast<int>(m_socketId) + 1, &readFds, nullptr, &exceptFds, &timeout);
+							if (err < 0) {
 								throw general::SocketException(WSAGetLastError());
 							}
 							if (FD_ISSET(m_socketId, &exceptFds)) {
