@@ -10,68 +10,77 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   VCPKG_BUILD_TYPE: release
-  # VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/.vcpkg-cache,readwrite"
 
 jobs:
   build_matrix:
     strategy:
       matrix:
-        platform: [ { os: ubuntu-latest, name: linux }, { os: windows-latest, name: windows}, { os: macos-latest, name: osx } ]
+        platform:
+          - os: ubuntu-latest
+            name: linux
+            cache_path: /home/runner/.cache/vcpkg/archives
+          - os: windows-latest
+            name: windows
+            cache_path: C:/Users/runneradmin/AppData/Local/vcpkg/archives
+          - os: macos-latest
+            name: osx
+            cache_path: /Users/runner/.cache/vcpkg/archives
         buildType: ["Debug", "Release"]
-        shared: [true, false]
+        shared:    [true, false]
     runs-on: ${{ matrix.platform.os }}
+    env:
+      # Instruct vcpkg to use (and populate) the platform-specific archive cache
+      VCPKG_BINARY_SOURCES: "clear;files,${{ matrix.platform.cache_path }},readwrite"
+
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: 'true' # Set to 'recursive' to recursively checkout submodules
+      - uses: actions/checkout@v4
 
-    - name: Cache vcpkg installed packages
-      id: vcpkg-cache
-      uses: actions/cache@v4
-      with:
-        # Cache the vcpkg installed packages (and buildtrees/downloads if you like)
-        path: |
-          ~/.cache/vcpkg
-          ${{ github.workspace }}/vcpkg/packages
-        # A key that changes whenever your vcpkg.json (or lockfile) changes
-        key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
-        restore-keys: |
-          ${{ runner.os }}-vcpkg-
+      - name: Cache vcpkg archives
+        uses: actions/cache@v4
+        with:
+          path: ${{ matrix.platform.cache_path }}
+          key: ${{ runner.os }}-vcpkg-archives-${{ matrix.buildType }}-${{ matrix.shared }}-${{ hashFiles('vcpkg.json') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-archives-
 
-    - name: Set up vcpkg on Non-Windows
-      if: runner.os != 'Windows'
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git
-        ./vcpkg/bootstrap-vcpkg.sh
-      shell: bash
+      - name: Ensure vcpkg cache dir exists (Unix)
+        if: runner.os != 'Windows'
+        run: mkdir -p ${{ matrix.platform.cache_path }}
+        shell: bash
 
-    - name: Set up vcpkg on Windows
-      if: runner.os == 'Windows'
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git
-        .\vcpkg\bootstrap-vcpkg.bat
-      shell: cmd
+      - name: Ensure vcpkg cache dir exists (Windows)
+        if: runner.os == 'Windows'
+        run: mkdir "${{ matrix.platform.cache_path }}"
+        shell: cmd
 
-    - name: Install dependencies with vcpkg
-      run: ./vcpkg/vcpkg install
+      - name: Bootstrap vcpkg (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          ./vcpkg/bootstrap-vcpkg.sh
+        shell: bash
 
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-    - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies
-      shell: bash
-      run: |
-        cmake -B "${{github.workspace}}/build" \
+      - name: Bootstrap vcpkg (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          .\vcpkg\bootstrap-vcpkg.bat
+        shell: cmd
+
+      - name: Install dependencies with vcpkg
+        run: ./vcpkg/vcpkg install
+
+      - name: Configure CMake shared=${{ matrix.shared }} with vcpkg dependencies
+        run: |
+          cmake -B "${{ github.workspace }}/build" \
                 -DCMAKE_BUILD_TYPE="${{ matrix.buildType }}" \
-                -DCMAKE_TOOLCHAIN_FILE="./vcpkg/scripts/buildsystems/vcpkg.cmake" \
+                -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" \
                 -DBUILD_SHARED_LIBS="${{ matrix.shared }}" \
                 -DBUILD_WITH_OPENSSL=ON
 
-    - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{ matrix.buildType }}
+      - name: Build
+        run: cmake --build ${{ github.workspace }}/build --config ${{ matrix.buildType }}
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -j 8 -C ${{ matrix.buildType }} -T test --output-on-failure
+      - name: Test
+        working-directory: ${{ github.workspace }}/build
+        run: ctest -j 8 -C ${{ matrix.buildType }} --output-on-failure
