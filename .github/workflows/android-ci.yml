@@ -11,12 +11,13 @@ on:
 env:
   # Build type for vcpkg
   VCPKG_BUILD_TYPE: release
-  # Use absolute path for binary cache
-  VCPKG_BINARY_SOURCES: "clear;files,/home/runner/.cache/vcpkg,readwrite"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      VCPKG_CACHE: $HOME/.cache/vcpkg
 
     steps:
       - name: Checkout code
@@ -28,15 +29,18 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/.cache/vcpkg
+            ${{ env.VCPKG_CACHE }}
             ${{ github.workspace }}/vcpkg/packages
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}-${{ hashFiles('android/gradle.properties') }}
           restore-keys: |
             ${{ runner.os }}-vcpkg-
 
+      - name: Ensure vcpkg cache dir exists
+        run: mkdir -p ${{ env.VCPKG_CACHE }}
+        shell: bash
+
       - name: Set up vcpkg
         run: |
-          # Clone if bootstrap script is missing
           if [ ! -f vcpkg/bootstrap-vcpkg.sh ]; then
             rm -rf vcpkg
             git clone https://github.com/microsoft/vcpkg.git
@@ -46,8 +50,7 @@ jobs:
 
       - name: Install dependencies with vcpkg
         run: |
-          # override binary sources to use absolute cache path
-          VCPKG_BINARY_SOURCES="clear;files,/home/runner/.cache/vcpkg,readwrite" \
+          export VCPKG_BINARY_SOURCES="clear;files=${{ env.VCPKG_CACHE }},readwrite"
           ./vcpkg/vcpkg install --triplet arm64-android
         shell: bash
 
