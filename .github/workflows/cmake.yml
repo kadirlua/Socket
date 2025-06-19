@@ -9,7 +9,7 @@ on:
 env:
   BUILD_TYPE: Release
   VCPKG_BUILD_TYPE: release
-  # Use platform-specific absolute cache path
+
 jobs:
   build_matrix:
     strategy:
@@ -28,7 +28,7 @@ jobs:
         shared: [true, false]
     runs-on: ${{ matrix.platform.os }}
     env:
-      VCPKG_BINARY_SOURCES: "clear;files,${{ matrix.platform.cache_path }},readwrite"
+      VCPKG_CACHE: ${{ matrix.platform.cache_path }}
 
     steps:
       - name: Checkout code
@@ -39,20 +39,20 @@ jobs:
       - name: Cache vcpkg archives
         uses: actions/cache@v4
         with:
-          path: ${{ matrix.platform.cache_path }}
+          path: ${{ env.VCPKG_CACHE }}
           key: ${{ runner.os }}-vcpkg-archives-${{ matrix.buildType }}-${{ matrix.shared }}-${{ hashFiles('vcpkg.json') }}
           restore-keys: |
             ${{ runner.os }}-vcpkg-archives-
 
       - name: Ensure vcpkg cache dir exists (Unix)
         if: runner.os != 'Windows'
-        run: mkdir -p ${{ matrix.platform.cache_path }}
+        run: mkdir -p ${{ env.VCPKG_CACHE }}
         shell: bash
 
       - name: Ensure vcpkg cache dir exists (Windows)
         if: runner.os == 'Windows'
         run: |
-          if not exist "${{ matrix.platform.cache_path }}" mkdir "${{ matrix.platform.cache_path }}"
+          if not exist "${{ env.VCPKG_CACHE }}" mkdir "${{ env.VCPKG_CACHE }}"
         shell: cmd
 
       - name: Set up vcpkg (Unix)
@@ -75,18 +75,19 @@ jobs:
           powershell -NoProfile -ExecutionPolicy Bypass -Command "& .\vcpkg\scripts\bootstrap.ps1"
         shell: cmd
 
-      - name: Install vcpkg dependencies
+      - name: Install vcpkg dependencies (Unix)
+        if: runner.os != 'Windows'
         run: |
+          export VCPKG_BINARY_SOURCES="clear;files=${{ env.VCPKG_CACHE }},readwrite"
           ./vcpkg/vcpkg install
         shell: bash
-        if: runner.os != 'Windows'
 
       - name: Install vcpkg dependencies (Windows)
         if: runner.os == 'Windows'
-        shell: cmd
         run: |
-          set VCPKG_BINARY_SOURCES=clear;files,${{ matrix.platform.cache_path }},readwrite
+          set VCPKG_BINARY_SOURCES=clear;files=${{ env.VCPKG_CACHE }},readwrite
           .\vcpkg\vcpkg install
+        shell: cmd
 
       - name: Configure CMake (Unix)
         if: runner.os != 'Windows'
