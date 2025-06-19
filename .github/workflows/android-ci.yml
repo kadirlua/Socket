@@ -11,8 +11,8 @@ on:
 env:
   # Build type for vcpkg
   VCPKG_BUILD_TYPE: release
-  # Enable vcpkg binary caching (archives stored in ~/.cache/vcpkg)
-  VCPKG_BINARY_SOURCES: "clear;files,${HOME}/.cache/vcpkg,readwrite"
+  # Use absolute path for binary cache
+  VCPKG_BINARY_SOURCES: "clear;files,/home/runner/.cache/vcpkg,readwrite"
 
 jobs:
   build:
@@ -41,12 +41,14 @@ jobs:
             rm -rf vcpkg
             git clone https://github.com/microsoft/vcpkg.git
           fi
-          vcpkg/bootstrap-vcpkg.sh
+          ./vcpkg/bootstrap-vcpkg.sh
         shell: bash
 
       - name: Install dependencies with vcpkg
         run: |
-          vcpkg/vcpkg install --triplet arm64-android
+          # override binary sources to use absolute cache path
+          VCPKG_BINARY_SOURCES="clear;files,/home/runner/.cache/vcpkg,readwrite" \
+          ./vcpkg/vcpkg install --triplet arm64-android
         shell: bash
 
       - name: Set up JDK
