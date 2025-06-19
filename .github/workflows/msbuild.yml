@@ -14,8 +14,6 @@ env:
   BUILD_CONFIGURATION: Release_OpenSSL
 
   VCPKG_BUILD_TYPE: release
-  # Enable vcpkg binary cache archives (must be absolute path on Windows)
-  VCPKG_BINARY_SOURCES: "clear;files,C:/Users/runneradmin/AppData/Local/vcpkg/archives,readwrite"
 
 permissions:
   contents: read
@@ -60,8 +58,10 @@ jobs:
         shell: cmd
 
       - name: Install dependencies
-        run: .\vcpkg\vcpkg install --triplet x64-windows
         shell: cmd
+        run: |
+          set VCPKG_BINARY_SOURCES=clear;files,C:/Users/runneradmin/AppData/Local/vcpkg/archives,readwrite
+          .\vcpkg\vcpkg install --triplet x64-windows
 
       - name: Restore NuGet packages
         run: |
