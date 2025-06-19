@@ -36,16 +36,18 @@ jobs:
 
       - name: Set up vcpkg
         run: |
-          # Only clone if vcpkg/ isn’t already there
-          if [ ! -d vcpkg ]; then
+          # Clone if bootstrap script is missing
+          if [ ! -f vcpkg/bootstrap-vcpkg.sh ]; then
+            rm -rf vcpkg
             git clone https://github.com/microsoft/vcpkg.git
           fi
-          ./vcpkg/bootstrap-vcpkg.sh
+          vcpkg/bootstrap-vcpkg.sh
         shell: bash
 
       - name: Install dependencies with vcpkg
         run: |
-          ./vcpkg/vcpkg install --triplet arm64-android
+          vcpkg/vcpkg install --triplet arm64-android
+        shell: bash
 
       - name: Set up JDK
         uses: actions/setup-java@v4
