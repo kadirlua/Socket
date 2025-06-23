@@ -61,6 +61,9 @@ jobs:
           if [ ! -f vcpkg/bootstrap-vcpkg.sh ]; then
             rm -rf vcpkg
             git clone https://github.com/microsoft/vcpkg.git
+            cd vcpkg
+            git checkout 2025.06.13
+            cd ..
           fi
           ./vcpkg/bootstrap-vcpkg.sh
         shell: bash
@@ -71,6 +74,9 @@ jobs:
           if not exist "vcpkg\scripts\bootstrap.ps1" (
             rmdir /s /q vcpkg
             git clone https://github.com/microsoft/vcpkg.git
+            cd vcpkg
+            git checkout 2025.06.13
+            cd ..
           )
           powershell -NoProfile -ExecutionPolicy Bypass -Command "& .\vcpkg\scripts\bootstrap.ps1"
         shell: cmd
