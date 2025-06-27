@@ -47,6 +47,9 @@ jobs:
           if not exist "vcpkg\scripts\bootstrap.ps1" (
             rmdir /s /q vcpkg
             git clone https://github.com/microsoft/vcpkg.git
+            cd vcpkg
+            git checkout 2025.06.13
+            cd ..
           )
           powershell -NoProfile -ExecutionPolicy Bypass -Command "& .\vcpkg\scripts\bootstrap.ps1"
         shell: cmd
@@ -59,7 +62,7 @@ jobs:
         shell: cmd
         run: |
           set VCPKG_BINARY_SOURCES=clear;files,${{ env.VCPKG_CACHE }},readwrite
-          .\vcpkg\vcpkg install --triplet x64-windows
+          .\vcpkg\vcpkg install --triplet x64-windows --debug
 
       - name: Restore NuGet packages
         run: |
