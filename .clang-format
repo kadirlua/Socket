@@ -1,6 +1,6 @@
 # Visual Studio generated .clang-format file
 
-# The style options in this file are a best effort attempt to replicate the
+# The style options in this file are the best effort attempt to replicate the
 # current IDE formatting configuration from Tools > Options. The following
 # style options, however, should be verified:
 # AfterClass, AfterControlStatement, AfterEnum, AfterFunction, AfterNamespace, 
@@ -8,7 +8,7 @@
 
 AccessModifierOffset: -4
 AlignAfterOpenBracket: DontAlign
-AllowShortBlocksOnASingleLine: true
+AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: All
 BasedOnStyle: LLVM
 BraceWrapping:
@@ -34,7 +34,7 @@ IndentWidth: 4
 MaxEmptyLinesToKeep: 10
 NamespaceIndentation: All
 PointerAlignment: Left
-SortIncludes: false
+SortIncludes: CaseInsensitive
 SortUsingDeclarations: false
 SpaceAfterCStyleCast: false
 SpaceBeforeAssignmentOperators: true
@@ -44,5 +44,5 @@ SpacesInCStyleCastParentheses: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
 TabWidth: 4
-UseTab: true
+UseTab: AlignWithSpaces
 BreakConstructorInitializers: AfterColon
