@@ -53,7 +53,7 @@ endif()
 
 if (ANDROID)
     if (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "armeabi-v7a")
-        set(OPENSSL_ROOT_DIR ${PROJECT_SOURCE_DIR}/vcpkg_installed/arm-neon-android/)
+        set(OPENSSL_ROOT_DIR ${PROJECT_SOURCE_DIR}/vcpkg_installed/arm-neon-android)
     elseif (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "arm64-v8a")
         set(OPENSSL_ROOT_DIR ${PROJECT_SOURCE_DIR}/vcpkg_installed/arm64-android)
     elseif (${CMAKE_ANDROID_ARCH_ABI} STREQUAL "x86")
