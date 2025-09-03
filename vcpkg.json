@@ -1,4 +1,6 @@
 {
+  "name": "socket-lib",
+  "version-string": "1.1.0",
   "dependencies": [
     {
       "name": "openssl",
