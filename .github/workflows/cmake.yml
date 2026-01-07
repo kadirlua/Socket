@@ -32,12 +32,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.1
         with:
           submodules: 'true'
 
       - name: Cache vcpkg archives
-        uses: actions/cache@v4
+        uses: actions/cache@v5.0.1
         with:
           path: ${{ env.VCPKG_CACHE }}
           key: ${{ runner.os }}-vcpkg-archives-${{ matrix.buildType }}-${{ matrix.shared }}-${{ hashFiles('vcpkg.json') }}
