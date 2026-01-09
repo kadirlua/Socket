@@ -30,26 +30,23 @@ public class MainActivity extends AppCompatActivity {
         // Example of a call to a native method
         Button reqBtn = binding.request;
 
-        reqBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Code to execute when the button is clicked
-                String ipAddress = binding.ipaddress.getText().toString();
-                if (!Utils.isValidIPAddressDomain(ipAddress)) {
-                    Toast.makeText(getApplicationContext(), "Invalid IP address, domain",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                String portNumber = binding.portNumber.getText().toString();
-                if (!Utils.isValidPort(portNumber)) {
-                    Toast.makeText(getApplicationContext(), "Invalid port number",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                String reqMessage = binding.requestMessage.getText().toString();
-                EditText result = binding.result;
-                result.setText(SendRequest(ipAddress, Integer.parseInt(portNumber), reqMessage));
+        reqBtn.setOnClickListener(v -> {
+            // Code to execute when the button is clicked
+            String ipAddress = binding.ipaddress.getText().toString();
+            if (!Utils.isValidIPAddressDomain(ipAddress)) {
+                Toast.makeText(getApplicationContext(), "Invalid IP address, domain",
+                        Toast.LENGTH_SHORT).show();
+                return;
             }
+            String portNumber = binding.portNumber.getText().toString();
+            if (!Utils.isValidPort(portNumber)) {
+                Toast.makeText(getApplicationContext(), "Invalid port number",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String reqMessage = binding.requestMessage.getText().toString();
+            EditText result = binding.result;
+            result.setText(SendRequest(ipAddress, Integer.parseInt(portNumber), reqMessage));
         });
     }
 
