@@ -7,7 +7,7 @@
 # AfterStruct, AfterUnion
 
 AccessModifierOffset: -4
-AlignAfterOpenBracket: DontAlign
+AlignAfterOpenBracket: true
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: All
 BasedOnStyle: LLVM
