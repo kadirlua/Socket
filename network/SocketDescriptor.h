@@ -24,18 +24,22 @@
 #define SOCKET_DESCRIPTOR_H
 
 #ifdef _WIN32
+
 #include <winsock2.h>
 #include <ws2tcpip.h>
+
 #elif defined(__linux__) || defined(__APPLE__)
+
 #include <stdio.h>
 #include <unistd.h>
+
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <netdb.h>
 
 #ifndef UINT_PTR
 #if defined(_WIN64)
@@ -58,23 +62,21 @@ typedef UINT_PTR SOCKET;
 #define SD_RECEIVE 0x00
 #define SD_SEND 0x01
 #define SD_BOTH 0x02
-
 #define INVALID_SOCKET (SOCKET)(~0)
 #define SOCKET_ERROR (-1)
-
 #define WSAEWOULDBLOCK EWOULDBLOCK
 #define WSAEALREADY EALREADY
 #define WSAEISCONN EISCONN
 #define WSAEINPROGRESS EINPROGRESS
-
 #define WSAGetLastError() errno
 
 #endif
 
 #include "SocketExport.h"
 
-#include <vector>
+#include <initializer_list>
 #include <string>
+#include <vector>
 
 #if (__cplusplus >= 201703L)
 #define NODISCARD [[nodiscard]]
@@ -89,7 +91,7 @@ namespace sdk {
 
 		/**
 		 * @brief This class is used for socket descriptor operations.
-		 *	You can read and write operations with this class.
+		 * You can read and write operations with this class.
 		 */
 		class SOCKET_API SocketDescriptor {
 		public:
@@ -123,9 +125,9 @@ namespace sdk {
 			NODISCARD virtual std::size_t read(std::string& message, int maxSize = 0) const;
 
 			/**
-			 * @brief This function used for reading operations from related socket.
+			 * @brief This function used for writing operations from related socket.
 			 * @param dataList initializer_list of data via modern c++.
-			 * @return Return byte count that read.
+			 * @return Return byte count that write.
 			 * @exception this function throws an SocketException if an error occurs.
 			 */
 			NODISCARD virtual int write(std::initializer_list<char> dataList);
@@ -156,6 +158,47 @@ namespace sdk {
 			NODISCARD virtual int write(const std::string& message);
 
 			/**
+			 * @brief Reads a UDP datagram and returns the sender endpoint.
+			 * @param message Destination buffer.
+			 * @param ipAddress Sender IP address.
+			 * @param portNumber Sender port number.
+			 * @param maxSize Maximum bytes to read. Default uses the internal buffer size.
+			 * @return Number of bytes read.
+			 */
+			NODISCARD virtual std::size_t readFrom(std::vector<unsigned char>& message,
+			                                       std::string& ipAddress,
+			                                       int& portNumber,
+			                                       int maxSize = 0) const;
+
+			/**
+			 * @brief Reads a UDP datagram and returns the sender endpoint.
+			 * @param message Destination string.
+			 * @param ipAddress Sender IP address.
+			 * @param portNumber Sender port number.
+			 * @param maxSize Maximum bytes to read. Default uses the internal buffer size.
+			 * @return Number of bytes read.
+			 */
+			NODISCARD virtual std::size_t readFrom(std::string& message,
+			                                       std::string& ipAddress,
+			                                       int& portNumber,
+			                                       int maxSize = 0) const;
+
+			/**
+			 * @brief Writes a UDP datagram to a remote endpoint.
+			 */
+			NODISCARD virtual int writeTo(const char* data, int dataSize, const std::string& ipAddress, int portNumber);
+
+			/**
+			 * @brief Writes a UDP datagram to a remote endpoint.
+			 */
+			NODISCARD virtual int writeTo(const std::vector<unsigned char>& message, const std::string& ipAddress, int portNumber);
+
+			/**
+			 * @brief Writes a UDP datagram to a remote endpoint.
+			 */
+			NODISCARD virtual int writeTo(const std::string& message, const std::string& ipAddress, int portNumber);
+
+			/**
 			 * @brief Gets a socket id from related socket.
 			 * @return The id of socket.
 			 * @exception This function never throws an exception.
@@ -172,6 +215,7 @@ namespace sdk {
 			static constexpr int MAX_MESSAGE_SIZE = 8096;
 			const Socket& m_socketRef;
 		};
+
 	}
 }
 
