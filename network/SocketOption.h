@@ -26,9 +26,13 @@
 #include "SocketExport.h"
 
 #ifdef _WIN32
+
 #include <WinSock2.h>
+
 #elif __linux__ || defined(__APPLE__)
+
 #include <sys/time.h>
+
 #endif
 
 #include <cstdint>
@@ -56,7 +60,7 @@ namespace sdk {
 			{
 			}
 
-			//	non-copyable
+			// non-copyable
 			SocketOption(const SocketOption&) = delete;
 			SocketOption& operator=(const SocketOption&) = delete;
 
@@ -111,6 +115,39 @@ namespace sdk {
 			void setRecvTimeout(long seconds, long microseconds);
 
 			/**
+			 * @brief Sets default send timeout value for socket connections.
+			 * @param seconds Timeout value in seconds.
+			 * @param microseconds Timeout value in microseconds.
+			 * @return nothing.
+			 * @exception This function throws an SocketException if an error occurs.
+			 */
+			void setSendTimeout(long seconds, long microseconds);
+
+			/**
+			 * @brief Enables or disables UDP broadcast packets.
+			 * @param broadcastMode Broadcast mode is active if 1, disabled 0.
+			 * @return nothing.
+			 * @exception This function throws an SocketException if an error occurs.
+			 */
+			void setBroadcast(SocketOpt broadcastMode);
+
+			/**
+			 * @brief Sets SO_SNDBUF.
+			 * @param bytes Buffer size in bytes.
+			 * @return nothing.
+			 * @exception This function throws an SocketException if an error occurs.
+			 */
+			void setSendBufferSize(int bytes);
+
+			/**
+			 * @brief Sets SO_RCVBUF.
+			 * @param bytes Buffer size in bytes.
+			 * @return nothing.
+			 * @exception This function throws an SocketException if an error occurs.
+			 */
+			void setRecvBufferSize(int bytes);
+
+			/**
 			 * @brief Gets linger option state on socket.
 			 * @return Active if returns 1, disabled 0.
 			 * @exception This function throws an SocketException if an error occurs.
@@ -146,12 +183,41 @@ namespace sdk {
 			[[nodiscard]] timeval getRecvTimeout() const;
 
 			/**
+			 * @brief Gets default send timeout.
+			 * @return returns default send timeout.
+			 * @exception This function throws an SocketException if an error occurs.
+			 */
+			[[nodiscard]] timeval getSendTimeout() const;
+
+			/**
+			 * @brief Gets UDP broadcast state.
+			 * @return Active if returns 1, disabled 0.
+			 * @exception This function throws an SocketException if an error occurs.
+			 */
+			[[nodiscard]] int getBroadcast() const;
+
+			/**
+			 * @brief Gets SO_SNDBUF.
+			 * @return returns SO_SNDBUF.
+			 * @exception This function throws an SocketException if an error occurs.
+			 */
+			[[nodiscard]] int getSendBufferSize() const;
+
+			/**
+			 * @brief Gets SO_RCVBUF.
+			 * @return returns SO_RCVBUF.
+			 * @exception This function throws an SocketException if an error occurs.
+			 */
+			[[nodiscard]] int getRecvBufferSize() const;
+
+			/**
 			 * @brief Gets bytes available on socket.
 			 * @return returns bytes available on socket.
 			 * @exception This function throws an SocketException if an error occurs.
 			 */
 			[[nodiscard]] unsigned long getBytesAvailable() const;
 		};
+
 	}
 }
 
